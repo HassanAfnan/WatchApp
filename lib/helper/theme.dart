@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-
+const primary = Color(0xff151d3a);
+const secondary = Color(0xffffffff);
 List<BoxShadow>  shadow = <BoxShadow>[BoxShadow(blurRadius: 10,offset: Offset(5, 5),color: AppTheme.apptheme.accentColor,spreadRadius:1)];
 String get description { return '';}
 TextStyle get onPrimaryTitleText { return  TextStyle(color: Colors.white,fontWeight: FontWeight.w600);}

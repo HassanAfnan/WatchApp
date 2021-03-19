@@ -45,6 +45,16 @@ dependencies:
   share: ^0.6.3
   google_fonts: ^0.3.9
   firebase_remote_config: ^0.3.0+3
+  sign_button: ^1.0.1
+  flutter_spinkit: "^4.1.2"
+  animated_text_kit: ^3.1.2
+  simple_animations: ^2.5.1
+  carousel_pro: ^0.0.13
+  badges: ^1.2.0
+  flutter_rating_bar: ^3.2.0
+  rating_bar: any
+
+
 
   # camera:
   # image: ^2.0.75
@@ -75,6 +85,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+   - assets/
    - assets/images/icon-48.png
    - assets/images/icon-480.png
    - assets/images/icon-400.png

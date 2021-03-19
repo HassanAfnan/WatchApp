@@ -1,8 +1,12 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_twitter_clone/helper/theme.dart';
 import 'package:flutter_twitter_clone/state/searchState.dart';
+import 'package:flutter_twitter_clone/watch/ThemeModes/Theme.dart';
+import 'package:flutter_twitter_clone/watch/signin_screen.dart';
+import 'package:flutter_twitter_clone/watch/spash_screen.dart';
 import 'helper/routes.dart';
 import 'state/appState.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +20,10 @@ import 'state/notificationState.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -29,21 +36,18 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<FeedState>(create: (_) => FeedState()),
         ChangeNotifierProvider<ChatState>(create: (_) => ChatState()),
         ChangeNotifierProvider<SearchState>(create: (_) => SearchState()),
-        ChangeNotifierProvider<NotificationState>(
-            create: (_) => NotificationState()),
+        ChangeNotifierProvider<NotificationState>(create: (_) => NotificationState()),
+        ChangeNotifierProvider(create: (_) => ThemeNotifier())
       ],
-      child: MaterialApp(
-        title: 'Fwitter',
-        theme: AppTheme.apptheme.copyWith(
-          textTheme: GoogleFonts.muliTextTheme(
-            Theme.of(context).textTheme,
-          ),
-        ),
-        debugShowCheckedModeBanner: false,
-        routes: Routes.route(),
-        onGenerateRoute: (settings) => Routes.onGenerateRoute(settings),
-        onUnknownRoute: (settings) => Routes.onUnknownRoute(settings),
-        initialRoute: "SplashPage",
+      child: Consumer<ThemeNotifier>(
+        builder: (context, ThemeNotifier notifier, child) {
+          return MaterialApp(
+            title: 'Elite Edge Ware',
+            debugShowCheckedModeBanner: false,
+            theme: notifier.darkTheme ? dark : light,
+            home: WatchSplashScreen(),
+          );
+        } ,
       ),
     );
   }
