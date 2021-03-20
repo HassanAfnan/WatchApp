@@ -13,6 +13,11 @@ import 'package:flutter_twitter_clone/watch/contact.dart';
 import 'package:flutter_twitter_clone/watch/mywatch_screen.dart';
 import 'package:flutter_twitter_clone/watch/news.dart';
 import 'package:flutter_twitter_clone/watch/sale_screen.dart';
+import 'package:flutter_twitter_clone/watch/setting/give_away.dart';
+import 'package:flutter_twitter_clone/watch/setting/help.dart';
+import 'package:flutter_twitter_clone/watch/setting/notifications.dart';
+import 'package:flutter_twitter_clone/watch/setting/profile_screen.dart';
+import 'package:flutter_twitter_clone/watch/setting/terms.dart';
 import 'package:flutter_twitter_clone/watch/settings.dart';
 import 'package:flutter_twitter_clone/watch/watch_detail.dart';
 import 'package:flutter_twitter_clone/watch/wish_list.dart';
@@ -255,6 +260,26 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
 
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen()));
+                  },
+                  child: ListTile(
+                    title: Text('Profile',style: TextStyle(color: notifier.darkTheme ? Colors.white :primary),),
+                    leading: Icon(Icons.person_rounded, color: notifier.darkTheme ? Colors.white :primary,),
+                  ),
+                ),
+
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => GiveAway()));
+                  },
+                  child: ListTile(
+                    title: Text('Give Away',style: TextStyle(color: notifier.darkTheme ? Colors.white :primary),),
+                    leading: Icon(Icons.card_giftcard, color: notifier.darkTheme ? Colors.white :primary,),
+                  ),
+                ),
+
                 Divider(
                   color: notifier.darkTheme ? Colors.white :primary,
                 ),
@@ -271,14 +296,44 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()
-                    ));
+                    //Navigator.push(context, MaterialPageRoute(builder: (context) => GiveAway()));
                   },
                   child: ListTile(
-                    title: Text('Settings',style: TextStyle(color: notifier.darkTheme ? Colors.white :primary),),
-                    leading: Icon(Icons.settings_sharp, color: notifier.darkTheme ? Colors.white :primary,),
+                    title: Text('Message',style: TextStyle(color: notifier.darkTheme ? Colors.white :primary),),
+                    leading: Icon(Icons.message, color: notifier.darkTheme ? Colors.white :primary,),
                   ),
                 ),
+
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Notifications()));
+                  },
+                  child: ListTile(
+                    title: Text('Notifications',style: TextStyle(color: notifier.darkTheme ? Colors.white :primary),),
+                    leading: Icon(Icons.notifications, color: notifier.darkTheme ? Colors.white :primary,),
+                  ),
+                ),
+
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Help()));
+                  },
+                  child: ListTile(
+                    title: Text('Help',style: TextStyle(color: notifier.darkTheme ? Colors.white :primary),),
+                    leading: Icon(Icons.help, color: notifier.darkTheme ? Colors.white :primary,),
+                  ),
+                ),
+
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Terms()));
+                  },
+                  child: ListTile(
+                    title: Text('Terms and conditions',style: TextStyle(color: notifier.darkTheme ? Colors.white :primary),),
+                    leading: Icon(Icons.indeterminate_check_box_rounded, color: notifier.darkTheme ? Colors.white :primary,),
+                  ),
+                ),
+
               ],
             ),
           );
