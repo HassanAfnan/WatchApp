@@ -166,9 +166,9 @@ class _TweetBody extends StatelessWidget {
             ? FontWeight.w400
             : FontWeight.w400;
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        SizedBox(width: 10),
+        SizedBox(width: 20,),
         Container(
           width: 40,
           height: 40,
@@ -183,9 +183,9 @@ class _TweetBody extends StatelessWidget {
             child: customImage(context, model.user.profilePic),
           ),
         ),
-        SizedBox(width: 20),
+        SizedBox(width: 20,),
         Container(
-          width: fullWidth(context) - 80,
+          width: fullWidth(context) - 120,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[

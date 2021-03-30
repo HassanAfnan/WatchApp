@@ -218,7 +218,7 @@ return;
                 Provider.of<FeedState>(context).isBusy,
         isbootomLine: Provider.of<ComposeTweetState>(context).isScrollingDown,
       ),
-      backgroundColor: Theme.of(context).backgroundColor,
+      //backgroundColor: Theme.of(context).backgroundColor,
       body: Container(
         child: Stack(
           children: <Widget>[

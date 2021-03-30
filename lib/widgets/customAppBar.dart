@@ -127,8 +127,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      iconTheme: IconThemeData(color: Colors.blue),
-      backgroundColor: Colors.white,
+      //iconTheme: IconThemeData(color: Colors.blue),
+      //backgroundColor: Colors.white,
       leading: isBackButton
           ? BackButton()
           : isCrossButton

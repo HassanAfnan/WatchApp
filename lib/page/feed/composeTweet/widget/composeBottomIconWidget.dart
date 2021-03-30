@@ -52,7 +52,8 @@ class _ComposeBottomIconWidgetState extends State<ComposeBottomIconWidget> {
       decoration: BoxDecoration(
           border:
               Border(top: BorderSide(color: Theme.of(context).dividerColor)),
-          color: Theme.of(context).backgroundColor),
+          //color: Theme.of(context).backgroundColor
+       ),
       child: Row(
         children: <Widget>[
           IconButton(

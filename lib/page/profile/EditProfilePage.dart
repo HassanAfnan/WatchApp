@@ -191,8 +191,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.blue),
+        //backgroundColor: Colors.white,
+        //iconTheme: IconThemeData(color: Colors.blue),
         title: customTitleText('Profile Edit'),
         actions: <Widget>[
           InkWell(

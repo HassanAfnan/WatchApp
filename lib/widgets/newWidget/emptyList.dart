@@ -13,7 +13,7 @@ class EmptyList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: fullHeight(context) - 135,
-      color: TwitterColor.mystic,
+      //color: TwitterColor.mystic,
       child: NotifyText(title: title,subTitle: subTitle,)
     );
   }

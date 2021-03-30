@@ -276,7 +276,7 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
               UrlText(
                 text: state.chatUser.displayName,
                 style: TextStyle(
-                    color: Colors.black87,
+                    color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.bold),
               ),
@@ -286,8 +286,8 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
               )
             ],
           ),
-          iconTheme: IconThemeData(color: Colors.blue),
-          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.white),
+          //backgroundColor: Colors.white,
           // actions: <Widget>[
           //   IconButton(
           //       icon: Icon(Icons.info, color: AppColor.primary),

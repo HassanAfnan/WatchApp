@@ -18,7 +18,7 @@ class ProfileImageView extends StatelessWidget {
     ];
     var authstate = Provider.of<AuthState>(context, listen: false);
     return Scaffold(
-      backgroundColor: TwitterColor.white,
+      //backgroundColor: TwitterColor.white,
       appBar: AppBar(
         actions: <Widget>[
           PopupMenuButton<Choice>(

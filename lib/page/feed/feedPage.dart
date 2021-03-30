@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_twitter_clone/helper/constant.dart';
-import 'package:flutter_twitter_clone/helper/enum.dart';
-import 'package:flutter_twitter_clone/helper/theme.dart';
 import 'package:flutter_twitter_clone/model/feedModel.dart';
 import 'package:flutter_twitter_clone/state/authState.dart';
 import 'package:flutter_twitter_clone/state/feedState.dart';
@@ -9,7 +7,6 @@ import 'package:flutter_twitter_clone/widgets/customWidgets.dart';
 import 'package:flutter_twitter_clone/widgets/newWidget/customLoader.dart';
 import 'package:flutter_twitter_clone/widgets/newWidget/emptyList.dart';
 import 'package:flutter_twitter_clone/widgets/tweet/tweet.dart';
-import 'package:flutter_twitter_clone/widgets/tweet/widgets/tweetBottomSheet.dart';
 import 'package:provider/provider.dart';
 
 class FeedPage extends StatelessWidget {
@@ -39,7 +36,7 @@ class FeedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: _floatingActionButton(context),
-      backgroundColor: TwitterColor.mystic,
+      //backgroundColor: TwitterColor.mystic,
       body: SafeArea(
         child: Container(
           height: fullHeight(context),
@@ -118,15 +115,19 @@ class _FeedPageBody extends StatelessWidget {
                         delegate: SliverChildListDelegate(
                           list.map(
                             (model) {
-                              return Container(
-                                color: Colors.white,
-                                child: Tweet(
-                                  model: model,
-                                  // trailing: TweetBottomSheet().tweetOptionIcon(
-                                  //   context,
-                                  //   model,
-                                  //   TweetType.Tweet,
-                                  // ),
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Card(
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(20))
+                                  ),
+                                  child: Container(
+                                   // color: Colors.white,
+                                    child: Tweet(
+                                      model: model,
+                                    ),
+                                  ),
                                 ),
                               );
                             },
@@ -139,9 +140,10 @@ class _FeedPageBody extends StatelessWidget {
       child: SliverAppBar(
         floating: true,
         elevation: 0,
-        leading: _getUserAvatar(context),
+        centerTitle: true,
+        //leading: _getUserAvatar(context),
         title: customTitleText('Lounge'),
-        iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Theme.of(context).appBarTheme.color,
         bottom: PreferredSize(
           child: Container(

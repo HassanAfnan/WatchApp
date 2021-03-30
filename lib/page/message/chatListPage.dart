@@ -69,7 +69,7 @@ class _ChatListPageState extends State<ChatListPage> {
 
   Widget _userCard(UserModel model, ChatMessage lastMessage) {
     return Container(
-      color: Colors.white,
+      //color: Colors.white,
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 10),
         onTap: () {
@@ -156,6 +156,7 @@ class _ChatListPageState extends State<ChatListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
+        isBackButton: true,
         scaffoldKey: widget.scaffoldKey,
         title: customTitleText(
           'Messages',
@@ -164,7 +165,7 @@ class _ChatListPageState extends State<ChatListPage> {
         //onActionPressed: onSettingIconPressed,
       ),
    //   floatingActionButton: _newMessageButton(),
-      backgroundColor: TwitterColor.mystic,
+     // backgroundColor: TwitterColor.mystic,
       body: _body(),
     );
   }

@@ -9,6 +9,7 @@ import 'package:flutter_twitter_clone/page/profile/widgets/tabPainter.dart';
 import 'package:flutter_twitter_clone/state/authState.dart';
 import 'package:flutter_twitter_clone/state/chats/chatState.dart';
 import 'package:flutter_twitter_clone/state/feedState.dart';
+import 'package:flutter_twitter_clone/watch/ThemeModes/Theme.dart';
 import 'package:flutter_twitter_clone/widgets/customWidgets.dart';
 import 'package:flutter_twitter_clone/widgets/newWidget/customLoader.dart';
 import 'package:flutter_twitter_clone/widgets/newWidget/customUrlText.dart';
@@ -56,7 +57,7 @@ class _ProfilePageState extends State<ProfilePage>
       expandedHeight: 200,
       elevation: 0,
       stretch: true,
-      iconTheme: IconThemeData(color: Colors.white),
+      //iconTheme: IconThemeData(color: Colors.white),
       backgroundColor: Colors.transparent,
       // actions: <Widget>[
       //   authstate.isbusy
@@ -87,7 +88,7 @@ class _ProfilePageState extends State<ProfilePage>
                     child: Container(
                       padding: EdgeInsets.only(top: 50),
                       height: 30,
-                      color: Colors.white,
+                      //color: Colors.white,
                     ),
                   ),
                   // Container(height: 50, color: Colors.black),
@@ -299,57 +300,60 @@ class _ProfilePageState extends State<ProfilePage>
       onWillPop: _onWillPop,
       child: Scaffold(
         floatingActionButton: !isMyProfile ? null : _floatingActionButton(),
-        backgroundColor: TwitterColor.mystic,
-        body: NestedScrollView(
-          // controller: _scrollController,
-          headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
-            return <Widget>[
-              getAppbar(),
-              authstate.isbusy
-                  ? _emptyBox()
-                  : SliverToBoxAdapter(
-                      child: Container(
-                        color: Colors.white,
-                        child: authstate.isbusy
-                            ? SizedBox.shrink()
-                            : UserNameRowWidget(
-                                user: authstate.profileUserModel,
-                                isMyProfile: isMyProfile,
-                              ),
-                      ),
+        //backgroundColor: TwitterColor.mystic,
+        body: Consumer<ThemeNotifier>(
+          builder: (context,notifier,value) => NestedScrollView(
+            // controller: _scrollController,
+            headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
+              return <Widget>[
+                getAppbar(),
+                authstate.isbusy
+                    ? _emptyBox()
+                    : SliverToBoxAdapter(
+                  child: Container(
+                   // color: Colors.white,
+                    child: authstate.isbusy
+                        ? SizedBox.shrink()
+                        : UserNameRowWidget(
+                      user: authstate.profileUserModel,
+                      isMyProfile: isMyProfile,
                     ),
-              SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    Container(
-                      color: TwitterColor.white,
-                      child: TabBar(
-                        indicator: TabIndicator(),
-                        controller: _tabController,
-                        tabs: <Widget>[
-                          Text("Posts"),
-                          Text("Posts & replies"),
-                          Text("Media")
-                        ],
-                      ),
-                    )
-                  ],
+                  ),
                 ),
-              )
-            ];
-          },
-          body: TabBarView(
-            controller: _tabController,
-            children: [
-              /// Display all independent tweers list
-              _tweetList(context, authstate, list, false, false),
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      Container(
+                        height: 50,
+                       // color: TwitterColor.white,
+                        child: TabBar(
+                          indicator: TabIndicator(),
+                          controller: _tabController,
+                          tabs: <Widget>[
+                            Text("Posts"),
+                            Text("Posts & replies"),
+                            Text("Media")
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ];
+            },
+            body: TabBarView(
+              controller: _tabController,
+              children: [
+                /// Display all independent tweers list
+                _tweetList(context, authstate, list, false, false),
 
-              /// Display all reply tweet list
-              _tweetList(context, authstate, list, true, false),
+                /// Display all reply tweet list
+                _tweetList(context, authstate, list, true, false),
 
-              /// Display all reply and comments tweet list
-              _tweetList(context, authstate, list, false, true)
-            ],
+                /// Display all reply and comments tweet list
+                _tweetList(context, authstate, list, false, true)
+              ],
+            ),
           ),
         ),
       ),
@@ -516,6 +520,21 @@ class UserNameRowWidget extends StatelessWidget {
           ),
         ),
         Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Consumer<ThemeNotifier>(
+            builder: (context,notifier,child) => SwitchListTile(
+              activeColor: primary,
+              title: Text("Dark Mode",style: TextStyle(color: notifier.darkTheme ? Colors.white :primary,fontWeight: FontWeight.bold),),
+              onChanged: (val){
+                notifier.toggleTheme();
+                print(notifier.darkTheme);
+              },
+              value: notifier.darkTheme,
+            ),
+          ),
+        ),
+
+        Padding(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -599,7 +618,6 @@ class ChoiceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextStyle textStyle = Theme.of(context).textTheme.display1;
     return Card(
-      color: Colors.white,
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
