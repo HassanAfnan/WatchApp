@@ -6,7 +6,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_twitter_clone/helper/enum.dart';
 import 'package:flutter_twitter_clone/model/feedModel.dart';
 import 'package:flutter_twitter_clone/helper/utility.dart';
+import 'package:flutter_twitter_clone/model/news_model.dart';
 import 'package:flutter_twitter_clone/model/user.dart';
+import 'package:flutter_twitter_clone/model/watchModel.dart';
 import 'package:flutter_twitter_clone/state/appState.dart';
 import 'package:path/path.dart' as Path;
 // import 'authState.dart';
@@ -23,6 +25,11 @@ class FeedState extends AppState {
   List<FeedModel> _commentlist;
 
   List<FeedModel> _feedlist;
+List<watchModel>  _watchlist=List<watchModel>();
+
+  List<watchModel>  _mywatches=List<watchModel>();
+  List<watchModel> _favouriteslist=List<watchModel>();
+  List<NewsModel> _newslist;
   dabase.Query _feedQuery;
   List<FeedModel> _tweetDetailModelList;
   List<String> _userfollowingList;
@@ -36,6 +43,35 @@ class FeedState extends AppState {
       return null;
     } else {
       return List.from(_feedlist.reversed);
+    }
+  }
+  List<watchModel> get watchlist {
+    if (_watchlist == null) {
+      return null;
+    } else {
+      return List.from(_watchlist);
+    }
+  }
+
+  List<watchModel> get mywatches {
+    if (_mywatches == null) {
+      return null;
+    } else {
+      return List.from(_mywatches);
+    }
+  }
+  List<watchModel> get favouriteslist {
+    if (_favouriteslist == null) {
+      return null;
+    } else {
+      return _favouriteslist;
+    }
+  }
+  List<NewsModel> get newslist {
+    if (_newslist == null) {
+      return null;
+    } else {
+      return _newslist;
     }
   }
 
@@ -57,9 +93,57 @@ class FeedState extends AppState {
         }
 
         /// Only include Tweets of logged-in user's and his following user's
-        if (x.user.userId == userModel.userId ||
-            (userModel?.followingList != null &&
-                userModel.followingList.contains(x.user.userId))) {
+        if (x.user.userId != userModel.userId ) {
+          return true;
+        } else {
+          return false;
+        }
+      }).toList();
+      if (list.isEmpty) {
+        list = null;
+      }
+    }
+    return list;
+  }
+  List<watchModel> getWatches(UserModel userModel) {
+    if (userModel == null) {
+      return null;
+    }
+
+    List<watchModel> list;
+
+    if (!isBusy && _watchlist != null && watchlist.isNotEmpty) {
+      list = watchlist.where((x) {
+        /// If Tweet is a comment then no need to add it in tweet list
+
+
+        /// Only include Tweets of logged-in user's and his following user's
+        if (x.user.userId != userModel.userId && x.type.toLowerCase().contains("added to sell")) {
+          return true;
+        } else {
+          return false;
+        }
+      }).toList();
+      if (list.isEmpty) {
+        list = null;
+      }
+    }
+    return list;
+  }
+  List<watchModel> getmyWatches(UserModel userModel) {
+    if (userModel == null) {
+      return null;
+    }
+
+    List<watchModel> list;
+
+    if (!isBusy && _watchlist != null && watchlist.isNotEmpty) {
+      list = watchlist.where((x) {
+        /// If Tweet is a comment then no need to add it in tweet list
+
+
+        /// Only include Tweets of logged-in user's and his following user's
+        if (x.user.userId == userModel.userId && x.type.toLowerCase().contains("add to my watches")) {
           return true;
         } else {
           return false;
@@ -72,6 +156,31 @@ class FeedState extends AppState {
     return list;
   }
 
+  List<watchModel> getmyWatches_sales(UserModel userModel) {
+    if (userModel == null) {
+      return null;
+    }
+
+    List<watchModel> list;
+
+    if (!isBusy && _watchlist != null && watchlist.isNotEmpty) {
+      list = watchlist.where((x) {
+        /// If Tweet is a comment then no need to add it in tweet list
+
+
+        /// Only include Tweets of logged-in user's and his following user's
+        if (x.user.userId == userModel.userId && x.type.toLowerCase().contains("added to sell")) {
+          return true;
+        } else {
+          return false;
+        }
+      }).toList();
+      if (list.isEmpty) {
+        list = null;
+      }
+    }
+    return list;
+  }
   /// set tweet for detail tweet page
   /// Setter call when tweet is tapped to view detail
   /// Add Tweet detail is added in _tweetDetailModelList
@@ -149,6 +258,7 @@ class FeedState extends AppState {
               var model = FeedModel.fromJson(value);
               model.key = key;
               if (model.isValidTweet) {
+
                 _feedlist.add(model);
               }
             });
@@ -169,7 +279,125 @@ class FeedState extends AppState {
       cprint(error, errorIn: 'getDataFromDatabase');
     }
   }
+  void getwatchDataFromDatabase() {
+    try {
+      isBusy = true;
+      _watchlist = null;
+      notifyListeners();
+      kDatabase.child('watches').once().then((DataSnapshot snapshot) {
+        _watchlist = List<watchModel>();
+        if (snapshot.value != null) {
+          var map = snapshot.value;
+          if (map != null) {
+            map.forEach((key, value) {
+              var model = watchModel.fromJson(value);
+              model.key = key;
 
+              _watchlist.add(model);
+
+
+              /// Sort Tweet by time
+              /// It helps to display newest Tweet first.
+              _watchlist.sort((x, y) =>
+                  DateTime.parse(x.createdAt)
+                      .compareTo(DateTime.parse(y.createdAt)));
+
+            });
+        } else {
+          _watchlist = null;
+        }
+        isBusy = false;
+        notifyListeners();
+      }});
+    } catch (error) {
+      isBusy = false;
+      cprint(error, errorIn: 'getwatchDataFromDatabase');
+    }
+  }
+  void getFavouritesFromDatabase(String userId) {
+    try {
+      isBusy = true;
+      _favouriteslist = null;
+      notifyListeners();
+      kDatabase.child('favourites').child(userId).once().then((DataSnapshot snapshot) {
+        _favouriteslist = List<watchModel>();
+        if (snapshot.value != null) {
+          var map = snapshot.value;
+          if (map != null) {
+            map.forEach((key, value) {
+              var model = watchModel.fromJson(value);
+              model.key = key;
+              //if (model.isValidTweet) {
+                _favouriteslist.add(model);
+            //  }
+            });
+
+            /// Sort Tweet by time
+            /// It helps to display newest Tweet first.
+            _feedlist.sort((x, y) => DateTime.parse(x.createdAt)
+                .compareTo(DateTime.parse(y.createdAt)));
+          }
+        } else {
+          _favouriteslist = List<watchModel>();
+        }
+        isBusy = false;
+        notifyListeners();
+      });
+    } catch (error) {
+      isBusy = false;
+      cprint(error, errorIn: 'getDataFromDatabase');
+    }
+  }
+  void removeFromFavourites(String userId,String favId,watchModel feed){
+    try{
+
+      isBusy = true;
+      kDatabase.child('favourites').child(userId).child(favId).remove();
+      _favouriteslist.removeAt(_favouriteslist.indexOf(feed));
+      notifyListeners();
+      isBusy = false;
+
+    }catch(error){
+
+      isBusy = false;
+      cprint(error, errorIn: 'errorRemovingFromDatabase');
+    }
+
+  }
+  void getNewsFromDatabase() {
+    try {
+      isBusy = true;
+      _newslist = null;
+      notifyListeners();
+      kDatabase.child('news').once().then((DataSnapshot snapshot) {
+        _newslist = List<NewsModel>();
+        if (snapshot.value != null) {
+          var map = snapshot.value;
+          if (map != null) {
+            map.forEach((key, value) {
+              var model = NewsModel.fromJson(value);
+             // model.key = key;
+             // if (model.isValidTweet) {
+                _newslist.add(model);
+            //  }
+            });
+
+            /// Sort Tweet by time
+            /// It helps to display newest Tweet first.
+            _newslist.sort((x, y) => DateTime.parse(x.createdAt)
+                .compareTo(DateTime.parse(y.createdAt)));
+          }
+        } else {
+          _newslist = null;
+        }
+        isBusy = false;
+        notifyListeners();
+      });
+    } catch (error) {
+      isBusy = false;
+      cprint(error, errorIn: 'getNewsFromDatabase');
+    }
+  }
   /// get [Tweet Detail] from firebase realtime kDatabase
   /// If model is null then fetch tweet from firebase
   /// [getpostDetailFromDatabase] is used to set prepare Tweetr to display Tweet detail
@@ -290,6 +518,36 @@ class FeedState extends AppState {
     isBusy = false;
     notifyListeners();
   }
+  createWatch(watchModel model) {
+    ///  Create tweet in [Firebase kDatabase]
+    isBusy = true;
+    notifyListeners();
+    try {
+      kDatabase.child('watches').push().set(model.toJson());
+_mywatches.add(model);
+notifyListeners();
+    } catch (error) {
+      cprint(error, errorIn: 'createWatch');
+    }
+    isBusy = false;
+    notifyListeners();
+  }
+  createFavourite(watchModel feed,String userId){
+    isBusy = true;
+    notifyListeners();
+    try {
+      String favId=DateTime.now().millisecondsSinceEpoch.toString();
+      feed.key=favId;
+      kDatabase.child('favourites').child(userId).child(favId).set(feed.toJson());
+      _favouriteslist.add(feed);
+
+    } catch (error) {
+      cprint(error, errorIn: 'createFavourite');
+    }
+    isBusy = false;
+    notifyListeners();
+
+  }
 
   ///  It will create tweet in [Firebase kDatabase] just like other normal tweet.
   ///  update retweet count for retweet model
@@ -327,7 +585,23 @@ class FeedState extends AppState {
       cprint(error, errorIn: 'deleteTweet');
     }
   }
-
+  deleteWatch(watchModel model) {
+    try {
+      /// Delete tweet if it is in nested tweet detail page
+      kDatabase.child('watches').child(model.key).remove().then((_) {
+        if(_watchlist.contains(model)) {
+          _watchlist.remove(model);
+        }
+        if(_mywatches.contains(model)) {
+          _mywatches.remove(model);
+        }
+          cprint('watch deleted');
+       notifyListeners();
+      });
+    } catch (error) {
+      cprint(error, errorIn: 'deleteWatch');
+    }
+  }
   /// upload [file] to firebase storage and return its  path url
   Future<String> uploadFile(File file) async {
     try {
@@ -346,6 +620,26 @@ class FeedState extends AppState {
       return null;
     } catch (error) {
       cprint(error, errorIn: 'uploadFile');
+      return null;
+    }
+  }
+  Future<String> uploadwatchFile(File file) async {
+    try {
+      isBusy = true;
+      notifyListeners();
+      var storageReference = FirebaseStorage.instance
+          .ref()
+          .child("watches")
+          .child(Path.basename(file.path));
+      await storageReference.putFile(file);
+
+      var url = await storageReference.getDownloadURL();
+      if (url != null) {
+        return url;
+      }
+      return null;
+    } catch (error) {
+      cprint(error, errorIn: 'uploadFileWatch');
       return null;
     }
   }
@@ -373,7 +667,9 @@ class FeedState extends AppState {
   updateTweet(FeedModel model) async {
     await kDatabase.child('tweet').child(model.key).set(model.toJson());
   }
-
+  updateWatch(watchModel model) async {
+    await kDatabase.child('watches').child(model.key).set(model.toJson());
+  }
   /// Add/Remove like on a Tweet
   /// [postId] is tweet id, [userId] is user's id who like/unlike Tweet
   addLikeToTweet(FeedModel tweet, String userId) {

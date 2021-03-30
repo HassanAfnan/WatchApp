@@ -37,7 +37,7 @@ class Tweet extends StatelessWidget {
         SnackBar(
           backgroundColor: TwitterColor.black,
           content: Text(
-            'Tweet copied to clipboard',
+            'Post copied to clipboard',
           ),
         ),
       );
@@ -234,20 +234,76 @@ class _TweetBody extends StatelessWidget {
                   Container(child: trailing == null ? SizedBox() : trailing),
                 ],
               ),
-              UrlText(
-                text: model.description,
-                onHashTagPressed: (tag) {
-                  cprint(tag);
-                },
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: descriptionFontSize,
-                    fontWeight: descriptionFontWeight),
-                urlStyle: TextStyle(
-                    color: Colors.blue,
-                    fontSize: descriptionFontSize,
-                    fontWeight: descriptionFontWeight),
+              Row(
+                children: [
+
+                  UrlText(
+                    text: "Brand Name :",
+                    // onHashTagPressed: (tag) {
+                    //   cprint(tag);
+                    // },
+                    style: TextStyle(
+
+                        color: Colors.black,
+                        fontSize: descriptionFontSize,
+                        fontWeight: FontWeight.bold),
+                    urlStyle: TextStyle(
+                        color: Colors.blue,
+                        fontSize: descriptionFontSize,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  UrlText(
+                    text: model.title==null?"":model.title,
+                    // onHashTagPressed: (tag) {
+                    //   cprint(tag);
+                    // },
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: descriptionFontSize,
+                        fontWeight: descriptionFontWeight),
+                    urlStyle: TextStyle(
+                        color: Colors.blue,
+                        fontSize: descriptionFontSize,
+                        fontWeight: descriptionFontWeight),
+                  ),
+                ],
               ),
+
+              Row(
+                children: [
+
+                  UrlText(
+                    text: "Description : ",
+                    onHashTagPressed: (tag) {
+                      cprint(tag);
+                    },
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: descriptionFontSize,
+                        fontWeight: FontWeight.bold),
+                    urlStyle: TextStyle(
+                        color: Colors.blue,
+                        fontSize: descriptionFontSize,
+                        fontWeight: descriptionFontWeight),
+                  ),
+
+                  UrlText(
+                    text: model.description,
+                    onHashTagPressed: (tag) {
+                      cprint(tag);
+                    },
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: descriptionFontSize,
+                        fontWeight: descriptionFontWeight),
+                    urlStyle: TextStyle(
+                        color: Colors.blue,
+                        fontSize: descriptionFontSize,
+                        fontWeight: descriptionFontWeight),
+                  ),
+
+                ],
+              )
             ],
           ),
         ),

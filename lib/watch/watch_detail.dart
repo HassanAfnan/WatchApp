@@ -1,28 +1,34 @@
 import 'package:badges/badges.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_twitter_clone/animations/bottomAnimation.dart';
 import 'package:flutter_twitter_clone/helper/theme.dart';
+import 'package:flutter_twitter_clone/helper/utility.dart';
+import 'package:flutter_twitter_clone/model/feedModel.dart';
+import 'package:flutter_twitter_clone/model/watchModel.dart';
+import 'package:flutter_twitter_clone/state/authState.dart';
+import 'package:flutter_twitter_clone/state/chats/chatState.dart';
+import 'package:flutter_twitter_clone/state/feedState.dart';
 import 'package:flutter_twitter_clone/watch/ThemeModes/Theme.dart';
 import 'package:flutter_twitter_clone/watch/wish_list.dart';
+import 'package:flutter_twitter_clone/widgets/customWidgets.dart';
+import 'package:flutter_twitter_clone/widgets/newWidget/customLoader.dart';
 import 'package:provider/provider.dart';
 import 'package:rating_bar/rating_bar.dart';
 
 class WatchDetail extends StatefulWidget {
-  final String id;
-  final String brand;
-  final String image;
-  final double price;
-  final int rating;
-  final description;
+final watchModel feed;
 
-  const WatchDetail({Key key, this.id, this.image, this.price, this.rating, this.description, this.brand}) : super(key: key);
+  const WatchDetail({Key key, this.feed}) : super(key: key);
   @override
   _WatchDetailState createState() => _WatchDetailState();
 }
 
 class _WatchDetailState extends State<WatchDetail> {
   int quantity = 1;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   Widget image_coursel = new Container(
     height: 200.0,
     child: new Carousel(
@@ -44,10 +50,21 @@ class _WatchDetailState extends State<WatchDetail> {
 //        indicatorBgPadding: 2.0,
     ),
   );
+  CustomLoader loader;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    loader = CustomLoader();
+  }
   @override
   Widget build(BuildContext context) {
-    double total = widget.price * quantity;
+    var authstate = Provider.of<AuthState>(context, listen: false);
+    var feedState = Provider.of<FeedState>(context);
+
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: primary,
@@ -62,9 +79,9 @@ class _WatchDetailState extends State<WatchDetail> {
                   height: 300,
                   width: double.infinity,
                   child: Hero(
-                    tag: widget.id,
+                    tag: widget.feed.userId,
                     child: Image.network(
-                      widget.image,
+                      widget.feed.imagePath,
                       fit:BoxFit.cover,
                     ),
                   ),
@@ -72,24 +89,24 @@ class _WatchDetailState extends State<WatchDetail> {
                 // SizedBox(height: 10,),
                 // WidgetAnimator(Text("\$ "+widget.price.toString(),style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold,fontSize: 25),)),
                 SizedBox(height: 10,),
-                WidgetAnimator(Text(widget.brand,style: TextStyle(color: notifier.darkTheme ? Colors.white : primary,fontWeight: FontWeight.bold,fontSize: 20),)),
+                WidgetAnimator(Text( widget.feed.title,style: TextStyle(color: notifier.darkTheme ? Colors.white : primary,fontWeight: FontWeight.bold,fontSize: 20),)),
                 SizedBox(height: 10,),
-                WidgetAnimator(
-                  RatingBar.readOnly(
-                    initialRating: double.parse(widget.rating.toString()),
-                    isHalfAllowed: true,
-                    filledColor: Colors.amber,
-                    halfFilledIcon: Icons.star_half,
-                    filledIcon: Icons.star,
-                    emptyIcon: Icons.star_border,
-                  ),
-                ),
+                // WidgetAnimator(
+                //   RatingBar.readOnly(
+                //     initialRating: double.parse(widget.rating.toString()),
+                //     isHalfAllowed: true,
+                //     filledColor: Colors.amber,
+                //     halfFilledIcon: Icons.star_half,
+                //     filledIcon: Icons.star,
+                //     emptyIcon: Icons.star_border,
+                //   ),
+                // ),
                 WidgetAnimator(
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Container(
                       width: 400,
-                      child: Text(widget.description,style: TextStyle(fontSize: 16,color: notifier.darkTheme ? Colors.white :primary),),
+                      child: Text( widget.feed.description,style: TextStyle(fontSize: 16,color: notifier.darkTheme ? Colors.white :primary),),
                     ),
                   ),
                 ),
@@ -148,7 +165,13 @@ class _WatchDetailState extends State<WatchDetail> {
                                   borderRadius: BorderRadius.all(Radius.circular(20))
                               ),
                               color: Colors.red,
-                              onPressed: (){}, icon: Icon(Icons.chat,color: Colors.white,), label: Text("Start Chat",style: TextStyle(color: Colors.white),)),
+                              onPressed: (){
+
+                                final chatState = Provider.of<ChatState>(context, listen: false);
+                                chatState.setChatUser = widget.feed.user;
+                                Navigator.pushNamed(context, '/ChatScreenPage');
+
+                              }, icon: Icon(Icons.chat,color: Colors.white,), label: Text("Start Chat",style: TextStyle(color: Colors.white),)),
                         ),
                         SizedBox(width: 20,),
                         WidgetAnimator(
@@ -157,7 +180,17 @@ class _WatchDetailState extends State<WatchDetail> {
                                   borderRadius: BorderRadius.all(Radius.circular(20))
                               ),
                               color: Colors.green,
-                              onPressed: (){}, icon: Icon(Icons.favorite_border,color: Colors.white,), label: Text("Add To Favourite",style: TextStyle(color: Colors.white),)),
+                              onPressed: (){
+                                if(feedState.favouriteslist.contains(widget.feed)){}
+                                else {
+                                  try {
+                                    feedState.createFavourite(
+                                        widget.feed, authstate.userId);
+                                  customSnackBar(_scaffoldKey,"Added to your wishlist");
+                                  }
+                                  catch(e){}
+                                }
+                              }, icon: Icon(Icons.favorite_border,color: Colors.white,), label: Text("Add To Favourite",style: TextStyle(color: Colors.white),)),
                         ),
                       ],
                     ),
@@ -170,4 +203,38 @@ class _WatchDetailState extends State<WatchDetail> {
       )
     );
   }
+
+//   addtofav(){
+//     // if (name.text == null ||
+//     //     name.text.isEmpty ||
+//     //     email.text == null ||
+//     //     email.text.isEmpty ||
+//     //     comment.text == null||comment.text.isEmpty) {
+//     //   customSnackBar(_scaffoldKey, 'Please fill form carefully');
+//     //   return;
+//     // }
+//
+//     loader.showLoader(context);
+//     try {
+// FeedModel feed=widget.feed;
+// String favId=DateTime.now().millisecondsSinceEpoch.toString();
+// feed.favId=favId;
+//       kDatabase.child('favourites').child(authstate.userId).child(favId).set(widget.feed.toJson());
+//       loader.hideLoader();
+//       Flushbar(
+//         flushbarPosition: FlushbarPosition.TOP,
+//         title: "Success",
+//         message: "This watch is added in your favourites list",
+//         duration: Duration(seconds: 3),)
+//         ..show(context);
+//       setState(() {
+//       });
+//
+//     }
+//     catch(e){
+//       loader.hideLoader();
+//       customSnackBar(_scaffoldKey, 'Error adding this product to Favourites.Try later');
+//
+//     }
+//   }
 }

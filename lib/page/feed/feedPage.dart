@@ -29,7 +29,7 @@ class FeedPage extends StatelessWidget {
         context,
         icon: AppIcon.fabTweet,
         istwitterIcon: true,
-        iconColor: Theme.of(context).colorScheme.onPrimary,
+        iconColor: Colors.black,
         size: 25,
       ),
     );
@@ -109,9 +109,9 @@ class _FeedPageBody extends StatelessWidget {
                 : !state.isBusy && list == null
                     ? SliverToBoxAdapter(
                         child: EmptyList(
-                          'No Tweet added yet',
+                          'No Post added yet',
                           subTitle:
-                              'When new Tweet added, they\'ll show up here \n Tap tweet button to add new',
+                              'When new post added, they\'ll show up here \n Tap post button to add new',
                         ),
                       )
                     : SliverList(
@@ -122,11 +122,11 @@ class _FeedPageBody extends StatelessWidget {
                                 color: Colors.white,
                                 child: Tweet(
                                   model: model,
-                                  trailing: TweetBottomSheet().tweetOptionIcon(
-                                    context,
-                                    model,
-                                    TweetType.Tweet,
-                                  ),
+                                  // trailing: TweetBottomSheet().tweetOptionIcon(
+                                  //   context,
+                                  //   model,
+                                  //   TweetType.Tweet,
+                                  // ),
                                 ),
                               );
                             },
@@ -140,7 +140,7 @@ class _FeedPageBody extends StatelessWidget {
         floating: true,
         elevation: 0,
         leading: _getUserAvatar(context),
-        title: customTitleText('Home'),
+        title: customTitleText('Lounge'),
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
         backgroundColor: Theme.of(context).appBarTheme.color,
         bottom: PreferredSize(

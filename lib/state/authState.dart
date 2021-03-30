@@ -93,7 +93,10 @@ class AuthState extends AppState {
       return null;
     }
   }
+  Future<void> resetPassword(String email) async {
 
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
   /// Create user from `google login`
   /// If user is new then it create a new user
   /// If user is old then it just `authenticate` user and return firebase user data

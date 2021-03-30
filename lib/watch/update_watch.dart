@@ -15,13 +15,16 @@ import 'package:flutter_twitter_clone/watch/ThemeModes/Theme.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class AddWatch extends StatefulWidget {
+class UpdateWatch extends StatefulWidget {
+  final watchModel watch;
+
+  const UpdateWatch({Key key, this.watch}) : super(key: key);
   @override
-  _AddWatchState createState() => _AddWatchState();
+  _UpdateWatchState createState() => _UpdateWatchState();
 }
 
-class _AddWatchState extends State<AddWatch> {
-  int _radioValue1 = 0;
+class _UpdateWatchState extends State<UpdateWatch> {
+  int _radioValue1 = 1;
   int _radioValue2 = 1;
   File _image;
   final picker = ImagePicker();
@@ -46,6 +49,14 @@ class _AddWatchState extends State<AddWatch> {
   void initState() {
     // TODO: implement initState
     super.initState();
+  description.text=widget.watch.description;
+  brand.text=widget.watch.title;
+  price.text=widget.watch.price;
+  condition=widget.watch.condition;
+  type=widget.watch.type;
+_radioValue1=widget.watch.condition=="Used Watch"?1:2;
+
+    _radioValue2=widget.watch.type=="Added To Sell"?1:2;
   }
 
   watchModel createwatchModel() {
@@ -67,6 +78,7 @@ class _AddWatchState extends State<AddWatch> {
         price: price.text,
         condition: condition,
         type: type,
+        key: widget.watch.key,
         userId: myUser.userId);
     return watch;
   }
@@ -100,15 +112,20 @@ class _AddWatchState extends State<AddWatch> {
     /// After sucessfull image upload to firebase storage it returns image path
     /// Add this image path to tweet model and save to firebase database
     try {
-      await state.uploadFile(_image).then((imagePath) {
-        if (imagePath != null) {
-          watch.imagePath = imagePath;
+      if(_image!=null) {
+        await state.uploadFile(_image).then((imagePath) {
+          if (imagePath != null) {
+            watch.imagePath = imagePath;
 
-          /// If type of tweet is new tweet
-          state.createWatch(watch);
-        }
-      });
-
+            /// If type of tweet is new tweet
+            state.updateWatch(watch);
+          }
+        });
+      }
+      else{
+watch.imagePath=widget.watch.imagePath;
+        state.updateWatch(watch);
+      }
       /// Checks for username in tweet description
       /// If foud sends notification to all tagged user
       /// If no user found or not compost tweet screen is closed and redirect back to home page.
@@ -135,7 +152,7 @@ class _AddWatchState extends State<AddWatch> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Add Watch"),
+          title: Text(widget.watch.title),
         ),
         body: Consumer<ThemeNotifier>(builder: (context, notifier, value) {
           return ListView(
@@ -154,7 +171,7 @@ class _AddWatchState extends State<AddWatch> {
                         elevation: 5,
                         child: _image != null
                             ? Image.file(_image, height: 200, width: 200)
-                            : Image.asset("assets/placeholder-image.png",
+                            : widget.watch.imagePath!=null?Image.network(widget.watch.imagePath,height: 200, width: 200):Image.asset("assets/placeholder-image.png",
                                 height: 200, width: 200)),
                   ),
                 ),
@@ -289,6 +306,8 @@ class _AddWatchState extends State<AddWatch> {
                     groupValue: _radioValue1,
                     onChanged: (value) {
                       setState(() {
+
+                        print(value);
                         _radioValue1 = value;
                         condition = "Used Watch";
                       });
@@ -306,6 +325,7 @@ class _AddWatchState extends State<AddWatch> {
                     groupValue: _radioValue1,
                     onChanged: (value) {
                       setState(() {
+                        print(value);
                         _radioValue1 = value;
 
                         condition = "New Watch";
@@ -376,7 +396,7 @@ class _AddWatchState extends State<AddWatch> {
                         _submitButton();
                       },
                       child: Text(
-                        'Add Watch',
+                        'Update Watch',
                         style: TextStyle(color: Colors.white),
                       )),
                 ),

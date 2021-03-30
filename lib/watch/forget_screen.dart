@@ -1,16 +1,26 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_twitter_clone/animations/bottomAnimation.dart';
 import 'package:flutter_twitter_clone/helper/theme.dart';
+import 'package:flutter_twitter_clone/state/authState.dart';
 import 'package:flutter_twitter_clone/watch/signin_screen.dart';
+import 'package:flutter_twitter_clone/widgets/customWidgets.dart';
+import 'package:provider/provider.dart';
 class ForgetScreen extends StatefulWidget {
   @override
   _ForgetScreenState createState() => _ForgetScreenState();
 }
 
 class _ForgetScreenState extends State<ForgetScreen> {
+  TextEditingController email=TextEditingController();
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
+
+    final state = Provider.of<AuthState>(context);
     return Scaffold(
+      key: _scaffoldKey,
       body: SingleChildScrollView(
         child: Container(
           width: double.infinity,
@@ -63,6 +73,8 @@ class _ForgetScreenState extends State<ForgetScreen> {
                                   Radius.circular(30.0)), // set rounded corner radius
                             ),
                             child: TextField(
+                              keyboardType: TextInputType.emailAddress,
+                              controller: email,
                               cursorColor: primary,
                               style: TextStyle(
                                   color: primary
@@ -78,7 +90,21 @@ class _ForgetScreenState extends State<ForgetScreen> {
                         SizedBox(height: 20,),
                         WidgetAnimator(
                           FlatButton(
-                            onPressed: (){},
+                            onPressed: () async {
+                              if(email.text.isEmpty||email.text==null){
+                                return;
+                              }
+                              try {
+
+                                final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+                                await _firebaseAuth.sendPasswordResetEmail(email: email.text);
+                              customSnackBar(_scaffoldKey, "Reset link send to email");
+                              }
+                              catch(e){
+                                customSnackBar(_scaffoldKey, e.toString());
+
+                              }
+                              },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(20))
                             ),
@@ -113,4 +139,5 @@ class _ForgetScreenState extends State<ForgetScreen> {
       ),
     );
   }
+
 }

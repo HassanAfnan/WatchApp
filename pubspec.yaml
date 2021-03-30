@@ -41,6 +41,8 @@ dependencies:
   firebase_messaging: ^6.0.13
   google_sign_in: "^4.5.1" 
   intl: ^0.16.1
+
+  flutter_carousel_slider: ^1.0.5
   url_launcher:
   share: ^0.6.3
   google_fonts: ^0.3.9
@@ -53,7 +55,8 @@ dependencies:
   badges: ^1.2.0
   flutter_rating_bar: ^3.2.0
   rating_bar: any
-
+  flushbar: ^1.10.4
+  sweetalert: ^0.0.1
 
 
   # camera:
@@ -70,8 +73,8 @@ dev_dependencies:
 flutter_icons:
   ios: true
   android: true
-  image_path_ios: "assets/images/icon-400.png"
-  image_path_android: "assets/images/icon-400.png"
+  image_path_ios: "assets/LOGO.png"
+  image_path_android: "assets/LOGO.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

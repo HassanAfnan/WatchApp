@@ -22,9 +22,9 @@ class PrivacyAndSaftyPage extends StatelessWidget {
       body: ListView(
         physics: BouncingScrollPhysics(),
         children: <Widget>[
-          HeaderWidget('Tweets'),
+          HeaderWidget('Posts'),
           SettingRowWidget(
-            "Protect your tweet",
+            "Protect your post",
             subtitle:
                 'Only current followers and people you approve in future will be able to see your tweets.',
             vPadding: 15,
@@ -117,7 +117,7 @@ class PrivacyAndSaftyPage extends StatelessWidget {
             subtitle: "Allow all",
           ),
           SettingRowWidget(
-            "See your Fwitter data",
+            "See your Elite Edge Ware data",
             subtitle:
                 "Review and edit your profile information and data associated with your account.",
           ),

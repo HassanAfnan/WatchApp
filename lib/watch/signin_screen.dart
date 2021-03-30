@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_twitter_clone/animations/bottomAnimation.dart';
 import 'package:flutter_twitter_clone/helper/theme.dart';
+import 'package:flutter_twitter_clone/helper/utility.dart';
+import 'package:flutter_twitter_clone/state/authState.dart';
 import 'package:flutter_twitter_clone/watch/ThemeModes/Theme.dart';
 import 'package:flutter_twitter_clone/watch/forget_screen.dart';
 import 'package:flutter_twitter_clone/watch/home_screen.dart';
 import 'package:flutter_twitter_clone/watch/signup_screen.dart';
+import 'package:flutter_twitter_clone/widgets/newWidget/customLoader.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_button/constants.dart';
 import 'package:sign_button/create_button.dart';
@@ -16,9 +19,23 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool isHidden = true;
+  TextEditingController _email=TextEditingController(),_password=TextEditingController();
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  CustomLoader loader;
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    loader = CustomLoader();
+    super.initState();
+
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Consumer<ThemeNotifier>(
           builder: (context,notifier,child) => SingleChildScrollView(
             child: Container(
@@ -63,6 +80,8 @@ class _LoginState extends State<Login> {
                                       Radius.circular(30.0)), // set rounded corner radius
                                 ),
                                 child: TextField(
+                                  controller: _email,
+                                   keyboardType: TextInputType.emailAddress,
                                   cursorColor: notifier.darkTheme ? Color(0xff151d3a) :primary,
                                   style: TextStyle(
                                       color: notifier.darkTheme ? Color(0xff151d3a) :primary
@@ -91,6 +110,7 @@ class _LoginState extends State<Login> {
                                       Radius.circular(30.0)), // set rounded corner radius
                                 ),
                                 child: TextField(
+                                  controller: _password,
                                   cursorColor: Color(0xff151d3a),
                                   style: TextStyle(
                                       color: Color(0xff151d3a)
@@ -131,7 +151,8 @@ class _LoginState extends State<Login> {
                             WidgetAnimator(
                               FlatButton(
                                 onPressed: (){
-                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                                  _emailLogin();
+                                  //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
                                 },
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.all(Radius.circular(20))
@@ -157,24 +178,24 @@ class _LoginState extends State<Login> {
                         fontWeight: FontWeight.w900
                     ),),
                   ),
-                  SizedBox(height:10),
-                  WidgetAnimator(
-                    SignInButton(
-                        buttonType: ButtonType.google,
-                        buttonSize: ButtonSize.large, // small(default), medium, large
-                        onPressed: () {
-                          print('click');
-                        }),
-                  ),
-                  SizedBox(height: 10,),
-                  WidgetAnimator(
-                    SignInButton(
-                        buttonType: ButtonType.facebook,
-                        buttonSize: ButtonSize.large, // small(default), medium, large
-                        onPressed: () {
-                          print('click');
-                        }),
-                  ),
+                 // SizedBox(height:10),
+                  // WidgetAnimator(
+                  //   SignInButton(
+                  //       buttonType: ButtonType.google,
+                  //       buttonSize: ButtonSize.large, // small(default), medium, large
+                  //       onPressed: () {
+                  //         print('click');
+                  //       }),
+                  // ),
+                  // SizedBox(height: 10,),
+                  // WidgetAnimator(
+                  //   SignInButton(
+                  //       buttonType: ButtonType.facebook,
+                  //       buttonSize: ButtonSize.large, // small(default), medium, large
+                  //       onPressed: () {
+                  //         print('click');
+                  //       }),
+                  // ),
                   SizedBox(height:20),
                   WidgetAnimator(
                     GestureDetector(
@@ -193,5 +214,35 @@ class _LoginState extends State<Login> {
           ),
       ),
     );
+  }
+
+  void _emailLogin() {
+    var state = Provider.of<AuthState>(context, listen: false);
+    if (state.isbusy) {
+      return;
+    }
+    loader.showLoader(context);
+    var isValid = validateCredentials(
+        _scaffoldKey, _email.text, _password.text);
+    if (isValid) {
+      state
+          .signIn(_email.text, _password.text,
+          scaffoldKey: _scaffoldKey)
+          .then((status) {
+        if (state.user != null) {
+          loader.hideLoader();
+
+          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+              HomeScreen()), (Route<dynamic> route) => false);
+
+         // widget.loginCallback();
+        } else {
+          cprint('Unable to login', errorIn: '_emailLoginButton');
+          loader.hideLoader();
+        }
+      });
+    } else {
+      loader.hideLoader();
+    }
   }
 }

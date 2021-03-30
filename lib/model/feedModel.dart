@@ -5,6 +5,7 @@ class FeedModel {
   String parentkey;
   String childRetwetkey;
   String description;
+  String title;
   String userId;
   int likeCount;
   List<String> likeList;
@@ -12,6 +13,7 @@ class FeedModel {
   int retweetCount;
   String createdAt;
   String imagePath;
+  String favId;
   List<String> tags;
   List<String> replyTweetKeyList;
   UserModel user;
@@ -27,6 +29,7 @@ class FeedModel {
       this.likeList,
       this.tags,
       this.user,
+        this.title,
       this.replyTweetKeyList,
       this.parentkey,
       this.childRetwetkey});
@@ -44,7 +47,9 @@ class FeedModel {
       "replyTweetKeyList": replyTweetKeyList,
       "user": user == null ? null : user.toJson(),
       "parentkey": parentkey,
-      "childRetwetkey": childRetwetkey
+      "childRetwetkey": childRetwetkey,
+      "title":title,
+      "favId":favId==null?"":favId
     };
   }
 
@@ -60,6 +65,8 @@ class FeedModel {
     imagePath = map['imagePath'];
     createdAt = map['createdAt'];
     imagePath = map['imagePath'];
+    title=map["title"];
+    favId=map["favId"]==null?"":map["favId"];
     //  username = map['username'];
     user = UserModel.fromJson(map['user']);
     parentkey = map['parentkey'];

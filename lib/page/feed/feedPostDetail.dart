@@ -27,23 +27,23 @@ class _FeedPostDetailState extends State<FeedPostDetail> {
     super.initState();
   }
 
-  Widget _floatingActionButton() {
-    return FloatingActionButton(
-      onPressed: () {
-        var state = Provider.of<FeedState>(context, listen: false);
-        state.setTweetToReply = state.tweetDetailModel?.last;
-        Navigator.of(context).pushNamed('/ComposeTweetPage/' + postId);
-      },
-      child: Icon(Icons.add),
-    );
-  }
+  // Widget _floatingActionButton() {
+  //   return FloatingActionButton(
+  //     onPressed: () {
+  //       var state = Provider.of<FeedState>(context, listen: false);
+  //       state.setTweetToReply = state.tweetDetailModel?.last;
+  //       Navigator.of(context).pushNamed('/ComposeTweetPage/' + postId);
+  //     },
+  //     child: Icon(Icons.add),
+  //   );
+  // }
 
   Widget _commentRow(FeedModel model) {
     return Tweet(
       model: model,
       type: TweetType.Reply,
-      trailing:
-          TweetBottomSheet().tweetOptionIcon(context, model, TweetType.Reply),
+      // trailing:
+      //     TweetBottomSheet().tweetOptionIcon(context, model, TweetType.Reply),
     );
   }
 
@@ -51,8 +51,8 @@ class _FeedPostDetailState extends State<FeedPostDetail> {
     return Tweet(
       model: model,
       type: TweetType.Detail,
-      trailing:
-          TweetBottomSheet().tweetOptionIcon(context, model, TweetType.Detail),
+      // trailing:
+      //     TweetBottomSheet().tweetOptionIcon(context, model, TweetType.Detail),
     );
   }
 
@@ -83,13 +83,13 @@ class _FeedPostDetailState extends State<FeedPostDetail> {
         return Future.value(true);
       },
       child: Scaffold(
-        floatingActionButton: _floatingActionButton(),
+        //floatingActionButton: _floatingActionButton(),
         backgroundColor: Theme.of(context).backgroundColor,
         body: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
               pinned: true,
-              title: customTitleText('Thread'),
+              title: customTitleText('Post Detail'),
               iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
               backgroundColor: Theme.of(context).appBarTheme.color,
               bottom: PreferredSize(

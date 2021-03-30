@@ -130,7 +130,7 @@ class _ChatListPageState extends State<ChatListPage> {
         context,
         icon: AppIcon.newMessage,
         istwitterIcon: true,
-        iconColor: Theme.of(context).colorScheme.onPrimary,
+        iconColor: Colors.black,
         size: 25,
       ),
     );
@@ -160,10 +160,10 @@ class _ChatListPageState extends State<ChatListPage> {
         title: customTitleText(
           'Messages',
         ),
-        icon: AppIcon.settings,
-        onActionPressed: onSettingIconPressed,
+       // icon: AppIcon.settings,
+        //onActionPressed: onSettingIconPressed,
       ),
-      floatingActionButton: _newMessageButton(),
+   //   floatingActionButton: _newMessageButton(),
       backgroundColor: TwitterColor.mystic,
       body: _body(),
     );

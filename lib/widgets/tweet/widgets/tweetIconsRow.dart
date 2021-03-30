@@ -7,6 +7,7 @@ import 'package:flutter_twitter_clone/helper/utility.dart';
 import 'package:flutter_twitter_clone/model/feedModel.dart';
 import 'package:flutter_twitter_clone/page/common/usersListPage.dart';
 import 'package:flutter_twitter_clone/state/authState.dart';
+import 'package:flutter_twitter_clone/state/chats/chatState.dart';
 import 'package:flutter_twitter_clone/state/feedState.dart';
 import 'package:flutter_twitter_clone/widgets/customWidgets.dart';
 import 'package:flutter_twitter_clone/widgets/tweet/widgets/tweetBottomSheet.dart';
@@ -43,23 +44,27 @@ class TweetIconsRow extends StatelessWidget {
           ),
           _iconWidget(
             context,
-            text: isTweetDetail ? '' : model.commentCount.toString(),
+            //text: isTweetDetail ? '' : model.commentCount.toString(),
             icon: AppIcon.reply,
             iconColor: iconColor,
             size: size ?? 20,
             onPressed: () {
-              var state = Provider.of<FeedState>(context, listen: false);
-              state.setTweetToReply = model;
-              Navigator.of(context).pushNamed('/ComposeTweetPage');
+
+              final chatState = Provider.of<ChatState>(context, listen: false);
+              chatState.setChatUser = model.user;
+              Navigator.pushNamed(context, '/ChatScreenPage');
+              // var state = Provider.of<FeedState>(context, listen: false);
+              // state.setTweetToReply = model;
+              // Navigator.of(context).pushNamed('/ComposeTweetPage');
             },
           ),
-          _iconWidget(context,
-              text: isTweetDetail ? '' : model.retweetCount.toString(),
-              icon: AppIcon.retweet,
-              iconColor: iconColor,
-              size: size ?? 20, onPressed: () {
-            TweetBottomSheet().openRetweetbottomSheet(context, type, model);
-          }),
+          // _iconWidget(context,
+          //     text: isTweetDetail ? '' : model.retweetCount.toString(),
+          //     icon: AppIcon.retweet,
+          //     iconColor: iconColor,
+          //     size: size ?? 20, onPressed: () {
+          //   TweetBottomSheet().openRetweetbottomSheet(context, type, model);
+          // }),
           _iconWidget(
             context,
             text: isTweetDetail ? '' : model.likeCount.toString(),
@@ -134,7 +139,7 @@ class TweetIconsRow extends StatelessWidget {
             SizedBox(width: 5),
             customText(getPostTime2(model.createdAt), style: textStyle14),
             SizedBox(width: 10),
-            customText('Fwitter for Android',
+            customText('Elite Edge Ware',
                 style: TextStyle(color: Theme.of(context).primaryColor))
           ],
         ),

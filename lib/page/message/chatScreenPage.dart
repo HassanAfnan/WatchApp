@@ -288,13 +288,13 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
           ),
           iconTheme: IconThemeData(color: Colors.blue),
           backgroundColor: Colors.white,
-          actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.info, color: AppColor.primary),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/ConversationInformation');
-                })
-          ],
+          // actions: <Widget>[
+          //   IconButton(
+          //       icon: Icon(Icons.info, color: AppColor.primary),
+          //       onPressed: () {
+          //         Navigator.pushNamed(context, '/ConversationInformation');
+          //       })
+          // ],
         ),
         body: SafeArea(
           child: Stack(

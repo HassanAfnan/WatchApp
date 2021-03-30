@@ -35,10 +35,10 @@ List<Watches> saleWatches = [
 ];
 
 List<NewsModel> news = [
-  NewsModel("1","GitHub Takes Aim","GitHub Advanced Security will help automatically spot potential security problems in the world's biggest open source platform.","https://media.wired.com/photos/5eb1edb9568b219656eb599b/master/w_2560%2Cc_limit/github-open-source-software-vulnerabilities.jpg"),
-  NewsModel("1","GitHub Takes Aim","GitHub Advanced Security will help automatically spot potential security problems in the world's biggest open source platform.","https://media.wired.com/photos/5eb1edb9568b219656eb599b/master/w_2560%2Cc_limit/github-open-source-software-vulnerabilities.jpg"),
-  NewsModel("1","GitHub Takes Aim","GitHub Advanced Security will help automatically spot potential security problems in the world's biggest open source platform.","https://media.wired.com/photos/5eb1edb9568b219656eb599b/master/w_2560%2Cc_limit/github-open-source-software-vulnerabilities.jpg"),
-  NewsModel("1","GitHub Takes Aim","GitHub Advanced Security will help automatically spot potential security problems in the world's biggest open source platform.","https://media.wired.com/photos/5eb1edb9568b219656eb599b/master/w_2560%2Cc_limit/github-open-source-software-vulnerabilities.jpg")
+  NewsModel("1","GitHub Takes Aim","GitHub Advanced Security will help automatically spot potential security problems in the world's biggest open source platform.","https://media.wired.com/photos/5eb1edb9568b219656eb599b/master/w_2560%2Cc_limit/github-open-source-software-vulnerabilities.jpg","2020-04-2"),
+  NewsModel("1","GitHub Takes Aim","GitHub Advanced Security will help automatically spot potential security problems in the world's biggest open source platform.","https://media.wired.com/photos/5eb1edb9568b219656eb599b/master/w_2560%2Cc_limit/github-open-source-software-vulnerabilities.jpg","2020-04-6"),
+  NewsModel("1","GitHub Takes Aim","GitHub Advanced Security will help automatically spot potential security problems in the world's biggest open source platform.","https://media.wired.com/photos/5eb1edb9568b219656eb599b/master/w_2560%2Cc_limit/github-open-source-software-vulnerabilities.jpg","2020-04-3"),
+  NewsModel("1","GitHub Takes Aim","GitHub Advanced Security will help automatically spot potential security problems in the world's biggest open source platform.","https://media.wired.com/photos/5eb1edb9568b219656eb599b/master/w_2560%2Cc_limit/github-open-source-software-vulnerabilities.jpg","2020-04-4")
 ];
 
 List<Watches> wishList = [

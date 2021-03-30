@@ -58,21 +58,21 @@ class _ProfilePageState extends State<ProfilePage>
       stretch: true,
       iconTheme: IconThemeData(color: Colors.white),
       backgroundColor: Colors.transparent,
-      actions: <Widget>[
-        authstate.isbusy
-            ? SizedBox.shrink()
-            : PopupMenuButton<Choice>(
-                onSelected: (d) {},
-                itemBuilder: (BuildContext context) {
-                  return choices.map((Choice choice) {
-                    return PopupMenuItem<Choice>(
-                      value: choice,
-                      child: Text(choice.title),
-                    );
-                  }).toList();
-                },
-              ),
-      ],
+      // actions: <Widget>[
+      //   authstate.isbusy
+      //       ? SizedBox.shrink()
+      //       : PopupMenuButton<Choice>(
+      //           onSelected: (d) {},
+      //           itemBuilder: (BuildContext context) {
+      //             return choices.map((Choice choice) {
+      //               return PopupMenuItem<Choice>(
+      //                 value: choice,
+      //                 child: Text(choice.title),
+      //               );
+      //             }).toList();
+      //           },
+      //         ),
+      // ],
       flexibleSpace: FlexibleSpaceBar(
         stretchModes: <StretchMode>[
           StretchMode.zoomBackground,
@@ -250,7 +250,7 @@ class _ProfilePageState extends State<ProfilePage>
         context,
         icon: AppIcon.fabTweet,
         istwitterIcon: true,
-        iconColor: Theme.of(context).colorScheme.onPrimary,
+        iconColor: Colors.black,
         size: 25,
       ),
     );
@@ -327,8 +327,8 @@ class _ProfilePageState extends State<ProfilePage>
                         indicator: TabIndicator(),
                         controller: _tabController,
                         tabs: <Widget>[
-                          Text("Tweets"),
-                          Text("Tweets & replies"),
+                          Text("Posts"),
+                          Text("Posts & replies"),
                           Text("Media")
                         ],
                       ),
@@ -399,10 +399,10 @@ class _ProfilePageState extends State<ProfilePage>
                 padding: EdgeInsets.only(top: 50, left: 30, right: 30),
                 child: NotifyText(
                   title: isMyProfile
-                      ? 'You haven\'t ${isreply ? 'reply to any Tweet' : isMedia ? 'post any media Tweet yet' : 'post any Tweet yet'}'
-                      : '${authstate.profileUserModel.userName} hasn\'t ${isreply ? 'reply to any Tweet' : isMedia ? 'post any media Tweet yet' : 'post any Tweet yet'}',
+                      ? 'You haven\'t ${isreply ? 'reply to any Post' : isMedia ? 'post any media Post yet' : 'post any Post yet'}'
+                      : '${authstate.profileUserModel.userName} hasn\'t ${isreply ? 'reply to any Post' : isMedia ? 'post any media Watch yet' : 'post any Watch yet'}',
                   subTitle: isMyProfile
-                      ? 'Tap tweet button to add new'
+                      ? 'Tap Post button to add new'
                       : 'Once he\'ll do, they will be shown up here',
                 ),
               )
@@ -416,11 +416,11 @@ class _ProfilePageState extends State<ProfilePage>
                   child: Tweet(
                     model: list[index],
                     isDisplayOnProfile: true,
-                    trailing: TweetBottomSheet().tweetOptionIcon(
-                      context,
-                      list[index],
-                      TweetType.Tweet,
-                    ),
+                    // trailing: TweetBottomSheet().tweetOptionIcon(
+                    //   context,
+                    //   list[index],
+                    //   TweetType.Tweet,
+                    // ),
                   ),
                 ),
               );
@@ -554,22 +554,22 @@ class UserNameRowWidget extends StatelessWidget {
             ],
           ),
         ),
-        Container(
-          alignment: Alignment.center,
-          child: Row(
-            children: <Widget>[
-              SizedBox(
-                width: 10,
-                height: 30,
-              ),
-              _tappbleText(context, '${user.getFollower()}', ' Followers',
-                  'FollowerListPage'),
-              SizedBox(width: 40),
-              _tappbleText(context, '${user.getFollowing()}', ' Following',
-                  'FollowingListPage'),
-            ],
-          ),
-        ),
+        // Container(
+        //   alignment: Alignment.center,
+        //   child: Row(
+        //     children: <Widget>[
+        //       SizedBox(
+        //         width: 10,
+        //         height: 30,
+        //       ),
+        //       _tappbleText(context, '${user.getFollower()}', ' Followers',
+        //           'FollowerListPage'),
+        //       SizedBox(width: 40),
+        //       _tappbleText(context, '${user.getFollowing()}', ' Following',
+        //           'FollowingListPage'),
+        //     ],
+        //   ),
+        // ),
       ],
     );
   }
@@ -582,13 +582,13 @@ class Choice {
   final String title;
 }
 
-const List<Choice> choices = const <Choice>[
-  const Choice(title: 'Share', icon: Icons.directions_car),
-  const Choice(title: 'Draft', icon: Icons.directions_bike),
-  const Choice(title: 'View Lists', icon: Icons.directions_boat),
-  const Choice(title: 'View Moments', icon: Icons.directions_bus),
-  const Choice(title: 'QR code', icon: Icons.directions_railway),
-];
+// const List<Choice> choices = const <Choice>[
+//   const Choice(title: 'Share', icon: Icons.directions_car),
+//   const Choice(title: 'Draft', icon: Icons.directions_bike),
+//   const Choice(title: 'View Lists', icon: Icons.directions_boat),
+//   const Choice(title: 'View Moments', icon: Icons.directions_bus),
+//   const Choice(title: 'QR code', icon: Icons.directions_railway),
+// ];
 
 class ChoiceCard extends StatelessWidget {
   const ChoiceCard({Key key, this.choice}) : super(key: key);

@@ -1,7 +1,12 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_twitter_clone/animations/bottomAnimation.dart';
 import 'package:flutter_twitter_clone/helper/theme.dart';
+import 'package:flutter_twitter_clone/helper/utility.dart';
+import 'package:flutter_twitter_clone/state/authState.dart';
 import 'package:flutter_twitter_clone/watch/ThemeModes/Theme.dart';
+import 'package:flutter_twitter_clone/widgets/customWidgets.dart';
+import 'package:flutter_twitter_clone/widgets/newWidget/customLoader.dart';
 import 'package:provider/provider.dart';
 
 class Contact extends StatefulWidget {
@@ -10,9 +15,21 @@ class Contact extends StatefulWidget {
 }
 
 class _ContactState extends State<Contact> {
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  TextEditingController name=TextEditingController(),email=TextEditingController(),comment=TextEditingController();
+  CustomLoader loader;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    loader = CustomLoader();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         centerTitle: true,
         title: Text("Contact Us"),
@@ -38,6 +55,7 @@ class _ContactState extends State<Contact> {
                           Radius.circular(10.0)), // set rounded corner radius
                     ),
                     child: TextField(
+                      controller: name,
                       cursorColor: notifier.darkTheme ? Colors.white:Color(0xff151d3a),
                       style: TextStyle(
                           color: notifier.darkTheme ? Colors.white:Color(0xff151d3a)
@@ -68,6 +86,8 @@ class _ContactState extends State<Contact> {
                           Radius.circular(10.0)), // set rounded corner radius
                     ),
                     child: TextField(
+                      controller: email,
+                      keyboardType: TextInputType.emailAddress,
                       cursorColor: notifier.darkTheme ? Colors.white:Color(0xff151d3a),
                       style: TextStyle(
                           color: notifier.darkTheme ? Colors.white:Color(0xff151d3a)
@@ -98,6 +118,7 @@ class _ContactState extends State<Contact> {
                           Radius.circular(10.0)), // set rounded corner radius
                     ),
                     child: TextField(
+                      controller: comment,
                       maxLines: 4,
                       cursorColor: notifier.darkTheme ? Colors.white:Color(0xff151d3a),
                       style: TextStyle(
@@ -124,7 +145,10 @@ class _ContactState extends State<Contact> {
                           borderRadius: BorderRadius.all(Radius.circular(20))
                       ),
                       color: primary,
-                      onPressed: (){}, child: Text('Send',style: TextStyle(color: Colors.white),)),
+                      onPressed: (){
+                        sendquery();
+
+                      }, child: Text('Send',style: TextStyle(color: Colors.white),)),
                 ),
               )
             ],
@@ -132,5 +156,46 @@ class _ContactState extends State<Contact> {
         },
       )
     );
+  }
+  sendquery(){
+    if (name.text == null ||
+        name.text.isEmpty ||
+        email.text == null ||
+        email.text.isEmpty ||
+        comment.text == null||comment.text.isEmpty) {
+      customSnackBar(_scaffoldKey, 'Please fill form carefully');
+      return;
+    }
+
+    loader.showLoader(context);
+    try {
+      var authstate = Provider.of<AuthState>(context, listen: false);
+
+      var body = {
+        "name": name.text,
+        "email": email.text,
+        "comment": comment.text,
+        "userId": authstate.userId
+      };
+      kDatabase.child('queries').push().set(body);
+      loader.hideLoader();
+      Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
+        title: "Success",
+        message: "Your request send to admin",
+        duration: Duration(seconds: 3),)
+        ..show(context);
+      setState(() {
+        name.text="";
+        email.text="";
+        comment.text="";
+      });
+
+    }
+    catch(e){
+      loader.hideLoader();
+      customSnackBar(_scaffoldKey, 'Error sending your query.Try later');
+
+    }
   }
 }

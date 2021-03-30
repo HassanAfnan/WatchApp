@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_twitter_clone/helper/utility.dart';
 import 'package:flutter_twitter_clone/model/user.dart';
+import 'package:flutter_twitter_clone/model/watchModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class ComposeTweetState extends ChangeNotifier {
   bool enableSubmitButton = false;
   bool hideUserList = false;
   String description = "";
+String title="";
   String serverToken;
   final usernameRegex = r'(@\w*[a-zA-Z1-9]$)';
 
@@ -58,7 +60,6 @@ class ComposeTweetState extends ChangeNotifier {
       notifyListeners();
       return;
     }
-
     /// Enable submit button if description is availabele
     enableSubmitButton = true;
     var last = text.substring(text.length - 1, text.length);
@@ -163,6 +164,38 @@ class ComposeTweetState extends ChangeNotifier {
     }
   }
 
+  Future<void> sendNotificationwatch(watchModel model, SearchState state) async {
+    final usernameRegex = r"(@\w*[a-zA-Z1-9])";
+    RegExp regExp = new RegExp(usernameRegex);
+    var status = regExp.hasMatch(description);
+
+    /// Check if username is availeble in description or not
+    if (status) {
+      /// Get FCM server key from firebase remote config
+      getFCMServerKey().then((val) async {
+        /// Reset userlist
+        state.filterByUsername("");
+
+        /// Search all username from description
+        Iterable<Match> _matches = regExp.allMatches(description);
+        print("${_matches.length} name found in description");
+
+        /// Send notification to user one by one
+        await Future.forEach(_matches, (Match match) async {
+          var name = description.substring(match.start, match.end);
+          if (state.userlist.any((x) => x.userName == name)) {
+            /// Fetch user model from userlist
+            /// UserId, FCMtoken is needed to send notification
+            final user = state.userlist.firstWhere((x) => x.userName == name);
+            await sendNotificationToUserWatch(model, user);
+          } else {
+            cprint("Name: $name ,", errorIn: "UserNot found");
+          }
+        });
+      });
+    }
+  }
+
   /// Send notificatinn by using firebase notification rest api;
   Future<void> sendNotificationToUser(FeedModel model, UserModel user) async {
     print("Send notification to: ${user.userName}");
@@ -175,7 +208,47 @@ class ComposeTweetState extends ChangeNotifier {
     /// Create notification payload
     var body = jsonEncode(<String, dynamic>{
       'notification': <String, dynamic>{
-        'body': model.description,
+        'body': model.title,
+        'title': "${model.user.displayName} metioned you in a tweet"
+      },
+      'priority': 'high',
+      'data': <String, dynamic>{
+        'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+        'id': '1',
+        'status': 'done',
+        "type": NotificationType.Mention.toString(),
+        "senderId": model.user.userId,
+        "receiverId": user.userId,
+        "title": "title",
+        "body": "",
+        "tweetId": ""
+      },
+      'to': user.fcmToken
+    });
+
+    var response = await http.post(
+      'https://fcm.googleapis.com/fcm/send',
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'key=$serverToken',
+      },
+      body: body,
+    );
+    cprint(response.body.toString());
+  }
+
+  Future<void> sendNotificationToUserWatch(watchModel model, UserModel user) async {
+    print("Send notification to: ${user.userName}");
+
+    /// Return from here if fcmToken is null
+    if (user.fcmToken == null) {
+      return;
+    }
+
+    /// Create notification payload
+    var body = jsonEncode(<String, dynamic>{
+      'notification': <String, dynamic>{
+        'body': model.title,
         'title': "${model.user.displayName} metioned you in a tweet"
       },
       'priority': 'high',
