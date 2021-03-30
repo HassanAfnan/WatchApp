@@ -9,7 +9,6 @@ import 'package:flutter_twitter_clone/animations/bottomAnimation.dart';
 import 'package:flutter_twitter_clone/helper/theme.dart';
 import 'package:flutter_twitter_clone/model/feedModel.dart';
 import 'package:flutter_twitter_clone/model/watchModel.dart';
-import 'package:flutter_twitter_clone/page/Auth/signin.dart';
 import 'package:flutter_twitter_clone/page/feed/feedPage.dart';
 import 'package:flutter_twitter_clone/page/message/chatListPage.dart';
 import 'package:flutter_twitter_clone/page/profile/profilePage.dart';
@@ -33,6 +32,7 @@ import 'package:flutter_twitter_clone/watch/setting/notifications.dart';
 import 'package:flutter_twitter_clone/watch/setting/profile_screen.dart';
 import 'package:flutter_twitter_clone/watch/setting/terms.dart';
 import 'package:flutter_twitter_clone/watch/settings.dart';
+import 'package:flutter_twitter_clone/watch/signin_screen.dart';
 import 'package:flutter_twitter_clone/watch/watch_detail.dart';
 import 'package:flutter_twitter_clone/watch/wish_list.dart';
 import 'package:flutter_twitter_clone/widgets/customWidgets.dart';
@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         onPressed: () {
                           authstate.logoutCallback();
                           Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(builder: (context) => SignIn()),
+                              MaterialPageRoute(builder: (context) => Login()),
                               (Route<dynamic> route) => false);
                          // exit(0);
                         },
@@ -275,7 +275,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               onPressed: () {
 
                                 final chatState = Provider.of<ChatState>(context, listen: false);
-                                chatState.setChatUser = state.favouriteslist[index].user;
+                                chatState.setChatUser = list[index].user;
                                 Navigator.pushNamed(context, '/ChatScreenPage');
                               },
                             ),

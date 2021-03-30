@@ -420,11 +420,11 @@ class _ProfilePageState extends State<ProfilePage>
                   child: Tweet(
                     model: list[index],
                     isDisplayOnProfile: true,
-                    // trailing: TweetBottomSheet().tweetOptionIcon(
-                    //   context,
-                    //   list[index],
-                    //   TweetType.Tweet,
-                    // ),
+                    trailing: TweetBottomSheet().tweetOptionIcon(
+                      context,
+                      list[index],
+                      TweetType.Tweet,
+                    ),
                   ),
                 ),
               );

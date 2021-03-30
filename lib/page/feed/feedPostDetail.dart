@@ -42,8 +42,8 @@ class _FeedPostDetailState extends State<FeedPostDetail> {
     return Tweet(
       model: model,
       type: TweetType.Reply,
-      // trailing:
-      //     TweetBottomSheet().tweetOptionIcon(context, model, TweetType.Reply),
+      trailing:
+          TweetBottomSheet().tweetOptionIcon(context, model, TweetType.Reply),
     );
   }
 
@@ -51,8 +51,8 @@ class _FeedPostDetailState extends State<FeedPostDetail> {
     return Tweet(
       model: model,
       type: TweetType.Detail,
-      // trailing:
-      //     TweetBottomSheet().tweetOptionIcon(context, model, TweetType.Detail),
+      trailing:
+          TweetBottomSheet().tweetOptionIcon(context, model, TweetType.Detail),
     );
   }
 
