@@ -93,7 +93,7 @@ List<watchModel>  _watchlist=List<watchModel>();
         }
 
         /// Only include Tweets of logged-in user's and his following user's
-        if (x.user.userId != userModel.userId ) {
+        if (x.user.userId != userModel.userId || x.user.userId == userModel.userId) {
           return true;
         } else {
           return false;
@@ -165,10 +165,6 @@ List<watchModel>  _watchlist=List<watchModel>();
 
     if (!isBusy && _watchlist != null && watchlist.isNotEmpty) {
       list = watchlist.where((x) {
-        /// If Tweet is a comment then no need to add it in tweet list
-
-
-        /// Only include Tweets of logged-in user's and his following user's
         if (x.user.userId == userModel.userId && x.type.toLowerCase().contains("added to sell")) {
           return true;
         } else {
@@ -524,7 +520,8 @@ List<watchModel>  _watchlist=List<watchModel>();
     notifyListeners();
     try {
       kDatabase.child('watches').push().set(model.toJson());
-_mywatches.add(model);
+      _watchlist.add(model);
+
 notifyListeners();
     } catch (error) {
       cprint(error, errorIn: 'createWatch');

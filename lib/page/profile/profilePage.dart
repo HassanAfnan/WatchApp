@@ -247,13 +247,7 @@ class _ProfilePageState extends State<ProfilePage>
       onPressed: () {
         Navigator.of(context).pushNamed('/CreateFeedPage');
       },
-      child: customIcon(
-        context,
-        icon: AppIcon.fabTweet,
-        istwitterIcon: true,
-        iconColor: Colors.black,
-        size: 25,
-      ),
+      child:Icon(Icons.add,size: 25,color: Colors.black,)
     );
   }
 

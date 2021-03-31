@@ -114,14 +114,14 @@ class _SaleScreenState extends State<SaleScreen> {
             ),
           ],
         )),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => AddWatch()));
-          },
-          backgroundColor: Colors.red,
-          child: Icon(Icons.add, color: Colors.white,),
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     Navigator.push(
+        //         context, MaterialPageRoute(builder: (context) => AddWatch()));
+        //   },
+        //   backgroundColor: Colors.red,
+        //   child: Icon(Icons.add, color: Colors.white,),
+        // ),
       );
     });
   }

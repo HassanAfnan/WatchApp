@@ -22,13 +22,15 @@ class FeedPage extends StatelessWidget {
       onPressed: () {
         Navigator.of(context).pushNamed('/CreateFeedPage/tweet');
       },
-      child: customIcon(
-        context,
-        icon: AppIcon.fabTweet,
-        istwitterIcon: true,
-        iconColor: Colors.black,
-        size: 25,
-      ),
+      child:Icon(Icons.add,size: 25,color: Colors.black,)
+      //
+      // customIcon(
+      //   context,
+      //   icon: AppIcon.,
+      //   istwitterIcon: true,
+      //   iconColor: Colors.black,
+      //   size: 25,
+      // ),
     );
   }
 
