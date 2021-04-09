@@ -26,7 +26,7 @@ class AppIcon{
   static final int heartFill = 0xf015;
   static final int settings = 0xf059;
   static final int adTheRate = 0xf064;
-  static final int reply = 0xf151;
+  static final int reply = 0xf150;
   static final int retweet = 0xf152;
   static final int image = 0xf109;
   static final int camera = 0xf110;

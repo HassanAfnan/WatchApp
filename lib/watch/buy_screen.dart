@@ -11,6 +11,7 @@ import 'package:flutter_twitter_clone/watch/wish_list.dart';
 import 'package:flutter_twitter_clone/widgets/customWidgets.dart';
 import 'package:provider/provider.dart';
 
+import '../model/watchModel.dart';
 import 'DummyData/dummy.dart';
 
 class BuyScreen extends StatefulWidget {
@@ -30,6 +31,7 @@ class _BuyScreenState extends State<BuyScreen> {
     final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
     return Consumer<FeedState>(builder: (context, state, child) {
       final List<watchModel> list = state.getWatches(authstate.userModel);
+      List<watchModel> list2;
       {
 
         return Scaffold(
@@ -38,18 +40,6 @@ class _BuyScreenState extends State<BuyScreen> {
               centerTitle: true,
               backgroundColor: primary,
               title: Text("Buy"),
-              // actions: [
-              //   Badge(
-              //     position: BadgePosition(
-              //       end: 2,
-              //       top:5,
-              //     ),
-              //     badgeContent: Text('2',style: TextStyle(color: secondary),),
-              //     child: IconButton(icon: Icon(Icons.shopping_cart), onPressed:(){
-              //       Navigator.push(context,MaterialPageRoute(builder: (context) => WishList()));
-              //     }),
-              //   ),
-              // ],
             ),
             body: RefreshIndicator(
               key: refreshIndicatorKey,
@@ -66,7 +56,11 @@ class _BuyScreenState extends State<BuyScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
-                    controller: editingController,
+                    onChanged: (value){
+                      setState(() {
+                        list2 = list.where((element) => element.title == value);
+                      });
+                    },
                     decoration: InputDecoration(
                         labelText: "Search",
                         hintText: "Search",
@@ -76,7 +70,7 @@ class _BuyScreenState extends State<BuyScreen> {
                                 BorderRadius.all(Radius.circular(25.0)))),
                   ),
                 ),
-                Expanded(
+                list2 == null? Expanded(
                   child: GridView.builder(
                     primary: false,
                     itemCount: list==null?0:list.length,
@@ -152,7 +146,83 @@ class _BuyScreenState extends State<BuyScreen> {
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10),
                   ),
-                ),
+                ):Expanded(
+                  child: GridView.builder(
+                    primary: false,
+                    itemCount: list2==null?0:list2.length,
+                    itemBuilder: (cyx, index) {
+                      return WidgetAnimator(Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: GridTile(
+                            child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => WatchDetail(
+                                    feed: list2[index],
+                                  )));
+                                },
+                                child: Hero(
+                                  tag: list2[index].key,
+                                  child: FadeInImage(
+                                    placeholder: NetworkImage(list[index].imagePath),
+                                    image: NetworkImage(list2[index].imagePath),
+                                    fit: BoxFit.cover,
+                                  ),
+                                )),
+                            footer: GridTileBar(
+                              backgroundColor: Colors.black87,
+                              leading: IconButton(
+                                icon: Icon(
+                                  state.favouriteslist.indexWhere((element) => element.key==list2[index].key)>=0?Icons.favorite:Icons.favorite_border,
+                                  color: Colors.red,
+                                ),
+                                onPressed: () {
+
+                                  if(  state.favouriteslist.indexWhere((element) => element.key==list2[index].key)>=0){
+
+                                    state.removeFromFavourites(authstate.userId, list2[index].key,list2[index]);
+
+                                  }
+                                  else {
+                                    try {
+                                      state.createFavourite(
+                                          list2[index], authstate.userId);
+                                      customSnackBar(_scaffoldKey,"Added to your wishlist");
+                                    }
+                                    catch(e){print(e);}
+                                  }
+                                },
+                              ),
+                              trailing: IconButton(
+                                icon: Icon(
+                                  Icons.chat,
+                                  color: Theme.of(context).accentColor,
+                                ),
+                                onPressed: () {
+
+
+                                  final chatState = Provider.of<ChatState>(context, listen: false);
+                                  chatState.setChatUser = list2[index].user;
+                                  Navigator.pushNamed(context, '/ChatScreenPage');
+
+                                },
+                              ),
+                              title: Text(
+                                list2[index].title,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ));
+                    },
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10),
+                  ),
+                )
               ],
             )));
       }
