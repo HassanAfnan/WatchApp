@@ -82,51 +82,51 @@ class _ImageViewPgeState extends State<ImageViewPge> {
                         iconEnableColor:
                             Theme.of(context).colorScheme.onPrimary,
                       ),
-                      // Container(
-                      //   color: Colors.brown.shade700.withAlpha(200),
-                      //   padding:
-                      //       EdgeInsets.only(right: 10, left: 10, bottom: 10),
-                      //   child: TextField(
-                      //     enabled: false,
-                      //     controller: _textEditingController,
-                      //     maxLines: null,
-                      //     style: TextStyle(color: Colors.white),
-                      //     decoration: InputDecoration(
-                      //       fillColor: Colors.blue,
-                      //       border: OutlineInputBorder(
-                      //         borderRadius: BorderRadius.all(
-                      //           Radius.circular(30.0),
-                      //         ),
-                      //         borderSide: BorderSide(
-                      //           color: Colors.white,
-                      //         ),
-                      //       ),
-                      //       focusedBorder: OutlineInputBorder(
-                      //         borderRadius: BorderRadius.all(
-                      //           Radius.circular(30.0),
-                      //         ),
-                      //         borderSide: BorderSide(
-                      //           color: Colors.white,
-                      //         ),
-                      //       ),
-                      //       suffixIcon: IconButton(
-                      //         onPressed: () {
-                      //           _submitButton();
-                      //         },
-                      //         icon: Icon(Icons.send, color: Colors.white),
-                      //       ),
-                      //       focusColor: Colors.black,
-                      //       contentPadding: EdgeInsets.symmetric(
-                      //         horizontal: 10,
-                      //         vertical: 10,
-                      //       ),
-                      //       hintText: 'Comment here..',
-                      //       hintStyle: TextStyle(
-                      //         color: Colors.white,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                      Container(
+                        color: Colors.brown.shade700.withAlpha(200),
+                        padding:
+                            EdgeInsets.only(right: 10, left: 10, bottom: 10),
+                        child: TextField(
+                          //enabled: false,
+                          controller: _textEditingController,
+                          maxLines: null,
+                          style: TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            fillColor: Colors.blue,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(30.0),
+                              ),
+                              borderSide: BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(30.0),
+                              ),
+                              borderSide: BorderSide(
+                                color: Colors.white,
+                              ),
+                            ),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                _submitButton();
+                              },
+                              icon: Icon(Icons.send, color: Colors.white),
+                            ),
+                            focusColor: Colors.black,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 10,
+                            ),
+                            hintText: 'Comment here..',
+                            hintStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -186,6 +186,7 @@ class _ImageViewPgeState extends State<ImageViewPge> {
       tags: tags,
       userId: commentedUser.userId,
       parentkey: postId,
+      type: "reply"
     );
     state.addcommentToPost(reply);
     FocusScope.of(context).requestFocus(_focusNode);

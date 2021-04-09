@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/firebase_database.dart' as dabase;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_twitter_clone/helper/enum.dart';
 import 'package:flutter_twitter_clone/model/feedModel.dart';
 import 'package:flutter_twitter_clone/helper/utility.dart';
@@ -93,7 +94,38 @@ List<watchModel>  _watchlist=List<watchModel>();
         }
 
         /// Only include Tweets of logged-in user's and his following user's
-        if (x.user.userId != userModel.userId || x.user.userId == userModel.userId) {
+        if (x.user.userId != userModel.userId || x.user.userId == userModel.userId && (x.type!="reply")) {
+          return true;
+        } else {
+          return false;
+        }
+      }).toList();
+      if (list.isEmpty) {
+        list = null;
+      }
+    }
+    return list;
+  }
+  List<FeedModel> getTweetListFriends(UserModel userModel) {
+    if (userModel == null) {
+      return null;
+    }
+
+    List<FeedModel> list;
+
+    if (!isBusy && feedlist != null && feedlist.isNotEmpty) {
+      list = feedlist.where((x) {
+        /// If Tweet is a comment then no need to add it in tweet list
+        if (x.parentkey != null &&
+            x.childRetwetkey == null &&
+            x.user.userId != userModel.userId) {
+          return false;
+        }
+print(x.type);
+        /// Only include Tweets of logged-in user's and his following user's
+        if (x.user.userId == userModel.userId&&x.type!="reply"||
+            (userModel?.followingList != null &&
+                userModel.followingList.contains(x.user.userId))) {
           return true;
         } else {
           return false;
@@ -118,7 +150,7 @@ List<watchModel>  _watchlist=List<watchModel>();
 
 
         /// Only include Tweets of logged-in user's and his following user's
-        if (x.user.userId != userModel.userId && x.type.toLowerCase().contains("added to sell")) {
+        if (x.user.userId != userModel.userId && x.type.toLowerCase().contains("add to sell")) {
           return true;
         } else {
           return false;
@@ -143,7 +175,7 @@ List<watchModel>  _watchlist=List<watchModel>();
 
 
         /// Only include Tweets of logged-in user's and his following user's
-        if (x.user.userId == userModel.userId && x.type.toLowerCase().contains("add to my watches")) {
+        if (x.user.userId == userModel.userId ) {
           return true;
         } else {
           return false;
@@ -165,7 +197,8 @@ List<watchModel>  _watchlist=List<watchModel>();
 
     if (!isBusy && _watchlist != null && watchlist.isNotEmpty) {
       list = watchlist.where((x) {
-        if (x.user.userId == userModel.userId && x.type.toLowerCase().contains("added to sell")) {
+
+        if (x.user.userId == userModel.userId && x.type.toLowerCase().contains("add to sell")) {
           return true;
         } else {
           return false;
@@ -288,7 +321,6 @@ List<watchModel>  _watchlist=List<watchModel>();
             map.forEach((key, value) {
               var model = watchModel.fromJson(value);
               model.key = key;
-
               _watchlist.add(model);
 
 
@@ -321,16 +353,17 @@ List<watchModel>  _watchlist=List<watchModel>();
           var map = snapshot.value;
           if (map != null) {
             map.forEach((key, value) {
+              print(key);
+              print(value);
               var model = watchModel.fromJson(value);
               model.key = key;
-              //if (model.isValidTweet) {
                 _favouriteslist.add(model);
-            //  }
+
             });
 
             /// Sort Tweet by time
             /// It helps to display newest Tweet first.
-            _feedlist.sort((x, y) => DateTime.parse(x.createdAt)
+            _favouriteslist.sort((x, y) => DateTime.parse(x.createdAt)
                 .compareTo(DateTime.parse(y.createdAt)));
           }
         } else {
@@ -346,10 +379,10 @@ List<watchModel>  _watchlist=List<watchModel>();
   }
   void removeFromFavourites(String userId,String favId,watchModel feed){
     try{
-
       isBusy = true;
       kDatabase.child('favourites').child(userId).child(favId).remove();
-      _favouriteslist.removeAt(_favouriteslist.indexOf(feed));
+      _favouriteslist.removeAt(
+          _favouriteslist.indexWhere((element) => element.key==feed.key));
       notifyListeners();
       isBusy = false;
 
@@ -518,8 +551,10 @@ List<watchModel>  _watchlist=List<watchModel>();
     ///  Create tweet in [Firebase kDatabase]
     isBusy = true;
     notifyListeners();
+    String key=DateTime.now().millisecondsSinceEpoch.toString();
+    model.key=key;
     try {
-      kDatabase.child('watches').push().set(model.toJson());
+      kDatabase.child('watches').child(key).set(model.toJson());
       _watchlist.add(model);
 
 notifyListeners();
@@ -533,9 +568,9 @@ notifyListeners();
     isBusy = true;
     notifyListeners();
     try {
-      String favId=DateTime.now().millisecondsSinceEpoch.toString();
-      feed.key=favId;
-      kDatabase.child('favourites').child(userId).child(favId).set(feed.toJson());
+      // String favId=DateTime.now().millisecondsSinceEpoch.toString();
+      // feed.key=favId;
+      kDatabase.child('favourites').child(userId).child(feed.key).set(feed.toJson());
       _favouriteslist.add(feed);
 
     } catch (error) {
@@ -664,8 +699,13 @@ notifyListeners();
   updateTweet(FeedModel model) async {
     await kDatabase.child('tweet').child(model.key).set(model.toJson());
   }
-  updateWatch(watchModel model) async {
+  updateWatch(watchModel model,watchModel oldmodel) async {
+
     await kDatabase.child('watches').child(model.key).set(model.toJson());
+
+    notifyListeners();
+    getwatchDataFromDatabase();
+
   }
   /// Add/Remove like on a Tweet
   /// [postId] is tweet id, [userId] is user's id who like/unlike Tweet

@@ -16,7 +16,7 @@ class ChatState extends AppState {
   List<ChatMessage> _messageList;
   List<ChatMessage> _chatUserList;
   UserModel _chatUser;
-  String serverToken = "<FCM SERVER KEY>";
+  String serverToken = "AAAAdir5_Ds:APA91bGEecEUoA-Vu0oNXnhwezm9xThcHLhSpgwGztwfM78QuwcqkNKee9TvMUnsHS8xsrFbEUHBklD3fldwmltjwuM5Nhc34PsuoAiiK_Ke-EvlHxm-2wenvemExcspyjh5q-9KAT7H";
 
   /// Get FCM server key from firebase project settings
   UserModel get chatUser => _chatUser;

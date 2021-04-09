@@ -216,8 +216,8 @@ class _ProfilePageState extends State<ProfilePage>
                                     isMyProfile
                                         ? 'Edit Profile'
                                         : isFollower()
-                                            ? 'Following'
-                                            : 'Follow',
+                                            ? 'My Watch Buddy'
+                                            : 'Add Watch Buddy',
                                     style: TextStyle(
                                       color: isMyProfile
                                           ? Colors.black87.withAlpha(180)
@@ -567,22 +567,22 @@ class UserNameRowWidget extends StatelessWidget {
             ],
           ),
         ),
-        // Container(
-        //   alignment: Alignment.center,
-        //   child: Row(
-        //     children: <Widget>[
-        //       SizedBox(
-        //         width: 10,
-        //         height: 30,
-        //       ),
-        //       _tappbleText(context, '${user.getFollower()}', ' Followers',
-        //           'FollowerListPage'),
-        //       SizedBox(width: 40),
-        //       _tappbleText(context, '${user.getFollowing()}', ' Following',
-        //           'FollowingListPage'),
-        //     ],
-        //   ),
-        // ),
+        Container(
+          alignment: Alignment.center,
+          child: Row(
+            children: <Widget>[
+              SizedBox(
+                width: 10,
+                height: 30,
+              ),
+              _tappbleText(context, '${user.getFollower()}', ' Watch Followers',
+                  'FollowerListPage'),
+              SizedBox(width: 40),
+              _tappbleText(context, '${user.getFollowing()}', " Watch Buddy's",
+                  'FollowingListPage'),
+            ],
+          ),
+        ),
       ],
     );
   }

@@ -26,6 +26,7 @@ class _WishListState extends State<WishList> {
   Widget build(BuildContext context) {
 
     var state = Provider.of<FeedState>(context);
+    var authstate = Provider.of<AuthState>(context,listen: false);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -78,7 +79,7 @@ class _WishListState extends State<WishList> {
                               color: Colors.red,
                             ),
                             onPressed: (){
-                              state.removeFromFavourites(state.favouriteslist[index].userId, state.favouriteslist[index].key, state.favouriteslist[index]);
+                              state.removeFromFavourites(authstate.userId, state.favouriteslist[index].key, state.favouriteslist[index]);
 
                               customSnackBar(_scaffoldKey,"Removed from wishlist");
                             },),

@@ -86,21 +86,21 @@ class _WatchDetailState extends State<WatchDetail> {
                     ),
                   ),
                 ),
-                // SizedBox(height: 10,),
-                // WidgetAnimator(Text("\$ "+widget.price.toString(),style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold,fontSize: 25),)),
+                SizedBox(height: 10,),
+                WidgetAnimator(Text("\£ "+widget.feed.sales_price==null?"":widget.feed.sales_price,style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold,fontSize: 25),)),
                 SizedBox(height: 10,),
                 WidgetAnimator(Text( widget.feed.title,style: TextStyle(color: notifier.darkTheme ? Colors.white : primary,fontWeight: FontWeight.bold,fontSize: 20),)),
                 SizedBox(height: 10,),
-                // WidgetAnimator(
-                //   RatingBar.readOnly(
-                //     initialRating: double.parse(widget.rating.toString()),
-                //     isHalfAllowed: true,
-                //     filledColor: Colors.amber,
-                //     halfFilledIcon: Icons.star_half,
-                //     filledIcon: Icons.star,
-                //     emptyIcon: Icons.star_border,
-                //   ),
-                // ),
+                WidgetAnimator(
+                  RatingBar.readOnly(
+                    initialRating: double.parse(widget.feed.watch_condition.toString()),
+                    isHalfAllowed: true,
+                    filledColor: Colors.amber,
+                    halfFilledIcon: Icons.star_half,
+                    filledIcon: Icons.star,
+                    emptyIcon: Icons.star_border,
+                  ),
+                ),
                 WidgetAnimator(
                   Padding(
                     padding: const EdgeInsets.all(15.0),

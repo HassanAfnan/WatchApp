@@ -38,7 +38,7 @@ class _MyWatchState extends State<MyWatch> {
         final authstate = Provider.of<AuthState>(context,listen: false);
         /// refresh home page feed
         var feedState = Provider.of<FeedState>(context, listen: false);
-        feedState.getFavouritesFromDatabase(authstate.userId);
+        feedState.getWatches(authstate.userModel);
         return Future.value(true);
         },
         child:
@@ -63,7 +63,7 @@ class _MyWatchState extends State<MyWatch> {
                                       context, MaterialPageRoute(builder: (context) =>UpdateWatch(watch: list[index],)));
                                 },
                                 child: Hero(
-                                  tag: list[index].key,
+                                  tag: list[index].createdAt,
                                   child: FadeInImage(
                                     placeholder: NetworkImage(list[index].imagePath),
                                     image: NetworkImage(list[index].imagePath),

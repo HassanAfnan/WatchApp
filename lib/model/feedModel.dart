@@ -15,6 +15,7 @@ class FeedModel {
   String imagePath;
   String favId;
   List<String> tags;
+  String type;
   List<String> replyTweetKeyList;
   UserModel user;
   FeedModel(
@@ -32,6 +33,7 @@ class FeedModel {
         this.title,
       this.replyTweetKeyList,
       this.parentkey,
+        this.type,
       this.childRetwetkey});
   toJson() {
     return {
@@ -49,7 +51,8 @@ class FeedModel {
       "parentkey": parentkey,
       "childRetwetkey": childRetwetkey,
       "title":title,
-      "favId":favId==null?"":favId
+      "favId":favId==null?"":favId,
+      "type":type==null?"":type,
     };
   }
 
@@ -69,6 +72,7 @@ class FeedModel {
     favId=map["favId"]==null?"":map["favId"];
     //  username = map['username'];
     user = UserModel.fromJson(map['user']);
+    type=map["type"];
     parentkey = map['parentkey'];
     childRetwetkey = map['childRetwetkey'];
     if (map['tags'] != null) {

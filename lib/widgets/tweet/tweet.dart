@@ -234,24 +234,26 @@ class _TweetBody extends StatelessWidget {
                   Container(child: trailing == null ? SizedBox() : trailing),
                 ],
               ),
+
+              Divider(),
               Row(
                 children: [
 
-                  UrlText(
-                    text: "Brand Name :",
-                    // onHashTagPressed: (tag) {
-                    //   cprint(tag);
-                    // },
-                    style: TextStyle(
-
-                        color: Colors.black,
-                        fontSize: descriptionFontSize,
-                        fontWeight: FontWeight.bold),
-                    urlStyle: TextStyle(
-                        color: Colors.blue,
-                        fontSize: descriptionFontSize,
-                        fontWeight: FontWeight.bold),
-                  ),
+                  // UrlText(
+                  //   text: "Brand Name :",
+                  //   // onHashTagPressed: (tag) {
+                  //   //   cprint(tag);
+                  //   // },
+                  //   style: TextStyle(
+                  //
+                  //       color: Colors.black,
+                  //       fontSize: descriptionFontSize,
+                  //       fontWeight: FontWeight.bold),
+                  //   urlStyle: TextStyle(
+                  //       color: Colors.blue,
+                  //       fontSize: descriptionFontSize,
+                  //       fontWeight: FontWeight.bold),
+                  // ),
                   UrlText(
                     text: model.title==null?"":model.title,
                     // onHashTagPressed: (tag) {
@@ -259,33 +261,21 @@ class _TweetBody extends StatelessWidget {
                     // },
                     style: TextStyle(
                         color: Colors.black,
-                        fontSize: descriptionFontSize,
-                        fontWeight: descriptionFontWeight),
+                        fontSize: descriptionFontSize+2,
+                        fontWeight: FontWeight.bold),
                     urlStyle: TextStyle(
                         color: Colors.blue,
-                        fontSize: descriptionFontSize,
-                        fontWeight: descriptionFontWeight),
+                        fontSize: descriptionFontSize+2,
+                        fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
+              Divider(),
 
               Row(
                 children: [
 
-                  UrlText(
-                    text: "Description : ",
-                    onHashTagPressed: (tag) {
-                      cprint(tag);
-                    },
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: descriptionFontSize,
-                        fontWeight: FontWeight.bold),
-                    urlStyle: TextStyle(
-                        color: Colors.blue,
-                        fontSize: descriptionFontSize,
-                        fontWeight: descriptionFontWeight),
-                  ),
+
 
                   UrlText(
                     text: model.description,

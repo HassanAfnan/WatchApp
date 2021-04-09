@@ -104,20 +104,23 @@ class _BuyScreenState extends State<BuyScreen> {
                               backgroundColor: Colors.black87,
                               leading: IconButton(
                                 icon: Icon(
-                                  Icons.favorite_border,
+                                  state.favouriteslist.indexWhere((element) => element.key==list[index].key)>=0?Icons.favorite:Icons.favorite_border,
                                   color: Colors.red,
                                 ),
                                 onPressed: () {
 
-                                  var feedState = Provider.of<FeedState>(context,listen: false);
-                                  if(feedState.favouriteslist.contains(list[index])){}
+                                  if(  state.favouriteslist.indexWhere((element) => element.key==list[index].key)>=0){
+
+                                    state.removeFromFavourites(authstate.userId, list[index].key,list[index]);
+
+                                  }
                                   else {
                                     try {
-                                      feedState.createFavourite(
+                                      state.createFavourite(
                                           list[index], authstate.userId);
                                       customSnackBar(_scaffoldKey,"Added to your wishlist");
                                     }
-                                    catch(e){}
+                                    catch(e){print(e);}
                                   }
                                 },
                               ),

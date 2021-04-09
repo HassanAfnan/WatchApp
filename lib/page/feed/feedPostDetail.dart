@@ -27,16 +27,16 @@ class _FeedPostDetailState extends State<FeedPostDetail> {
     super.initState();
   }
 
-  // Widget _floatingActionButton() {
-  //   return FloatingActionButton(
-  //     onPressed: () {
-  //       var state = Provider.of<FeedState>(context, listen: false);
-  //       state.setTweetToReply = state.tweetDetailModel?.last;
-  //       Navigator.of(context).pushNamed('/ComposeTweetPage/' + postId);
-  //     },
-  //     child: Icon(Icons.add),
-  //   );
-  // }
+  Widget _floatingActionButton() {
+    return FloatingActionButton(
+      onPressed: () {
+        var state = Provider.of<FeedState>(context, listen: false);
+        state.setTweetToReply = state.tweetDetailModel?.last;
+        Navigator.of(context).pushNamed('/ComposeTweetPage/' + postId);
+      },
+      child: Icon(Icons.add),
+    );
+  }
 
   Widget _commentRow(FeedModel model) {
     return Tweet(
@@ -83,7 +83,7 @@ class _FeedPostDetailState extends State<FeedPostDetail> {
         return Future.value(true);
       },
       child: Scaffold(
-        //floatingActionButton: _floatingActionButton(),
+        floatingActionButton: _floatingActionButton(),
         backgroundColor: Theme.of(context).backgroundColor,
         body: CustomScrollView(
           slivers: <Widget>[

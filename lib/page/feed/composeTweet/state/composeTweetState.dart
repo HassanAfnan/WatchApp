@@ -15,7 +15,7 @@ class ComposeTweetState extends ChangeNotifier {
   bool hideUserList = false;
   String description = "";
 String title="";
-  String serverToken;
+  String serverToken="AAAAdir5_Ds:APA91bGEecEUoA-Vu0oNXnhwezm9xThcHLhSpgwGztwfM78QuwcqkNKee9TvMUnsHS8xsrFbEUHBklD3fldwmltjwuM5Nhc34PsuoAiiK_Ke-EvlHxm-2wenvemExcspyjh5q-9KAT7H";
   final usernameRegex = r'(@\w*[a-zA-Z1-9]$)';
 
   bool _isScrollingDown = false;

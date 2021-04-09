@@ -33,7 +33,8 @@ class UsersListPage extends StatelessWidget {
       appBar: CustomAppBar(
           isBackButton: true,
           title: customTitleText(pageTitle),
-          icon: appBarIcon),
+          icon: appBarIcon
+      ),
       body: Consumer<SearchState>(
         builder: (context, state, child) {
           if (userIdsList != null && userIdsList.isNotEmpty) {

@@ -44,27 +44,27 @@ class TweetIconsRow extends StatelessWidget {
           ),
           _iconWidget(
             context,
-            //text: isTweetDetail ? '' : model.commentCount.toString(),
+            text: isTweetDetail ? '' : model.commentCount.toString(),
             icon: AppIcon.reply,
             iconColor: iconColor,
             size: size ?? 20,
             onPressed: () {
 
-              final chatState = Provider.of<ChatState>(context, listen: false);
-              chatState.setChatUser = model.user;
-              Navigator.pushNamed(context, '/ChatScreenPage');
-              // var state = Provider.of<FeedState>(context, listen: false);
-              // state.setTweetToReply = model;
-              // Navigator.of(context).pushNamed('/ComposeTweetPage');
+              // final chatState = Provider.of<ChatState>(context, listen: false);
+              // chatState.setChatUser = model.user;
+              // Navigator.pushNamed(context, '/ChatScreenPage');
+              var state = Provider.of<FeedState>(context, listen: false);
+              state.setTweetToReply = model;
+              Navigator.of(context).pushNamed('/ComposeTweetPage');
             },
           ),
-          // _iconWidget(context,
-          //     text: isTweetDetail ? '' : model.retweetCount.toString(),
-          //     icon: AppIcon.retweet,
-          //     iconColor: iconColor,
-          //     size: size ?? 20, onPressed: () {
-          //   TweetBottomSheet().openRetweetbottomSheet(context, type, model);
-          // }),
+          _iconWidget(context,
+              text: isTweetDetail ? '' : model.retweetCount.toString(),
+              icon: AppIcon.retweet,
+              iconColor: iconColor,
+              size: size ?? 20, onPressed: () {
+            TweetBottomSheet().openRetweetbottomSheet(context, type, model);
+          }),
           _iconWidget(
             context,
             text: isTweetDetail ? '' : model.likeCount.toString(),

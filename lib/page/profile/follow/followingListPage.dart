@@ -11,7 +11,7 @@ class FollowingListPage extends StatelessWidget {
     return UsersListPage(
         pageTitle: 'Following',
         userIdsList: state.profileUserModel.followingList,
-        appBarIcon: AppIcon.follow,
+       // appBarIcon: AppIcon.follow,
         emptyScreenText:
             '${state?.profileUserModel?.userName ?? state.userModel.userName} isn\'t follow anyone',
         emptyScreenSubTileText: 'When they do they\'ll be listed here.');

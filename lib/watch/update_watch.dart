@@ -1,19 +1,23 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_twitter_clone/animations/bottomAnimation.dart';
 import 'package:flutter_twitter_clone/helper/constant.dart';
 import 'package:flutter_twitter_clone/helper/theme.dart';
 import 'package:flutter_twitter_clone/helper/utility.dart';
 import 'package:flutter_twitter_clone/model/user.dart';
 import 'package:flutter_twitter_clone/model/watchModel.dart';
+import 'package:flutter_twitter_clone/model/watch_model_Model.dart';
 import 'package:flutter_twitter_clone/page/feed/composeTweet/state/composeTweetState.dart';
+import 'package:flutter_twitter_clone/state/adminState.dart';
 import 'package:flutter_twitter_clone/state/authState.dart';
 import 'package:flutter_twitter_clone/state/feedState.dart';
 import 'package:flutter_twitter_clone/state/searchState.dart';
 import 'package:flutter_twitter_clone/watch/ThemeModes/Theme.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:rating_bar/rating_bar.dart';
 
 class UpdateWatch extends StatefulWidget {
   final watchModel watch;
@@ -26,13 +30,21 @@ class UpdateWatch extends StatefulWidget {
 class _UpdateWatchState extends State<UpdateWatch> {
   int _radioValue1 = 1;
   int _radioValue2 = 1;
+
+  int _radioValue3 = 3;
+  int _radioValue4 = 4;
   File _image;
   final picker = ImagePicker();
   TextEditingController brand = TextEditingController(),
       description = TextEditingController(),
-      price = TextEditingController();
-  String condition = "Used Watch", type = "Added To Sell";
+      price = TextEditingController(),
+  trades_price=TextEditingController(),
 
+      sales_price = TextEditingController(),
+  model_number = TextEditingController();
+  String condition = "Used Watch", type = "Added To Sell",sell_type="trade";
+  bool fully_boxed=false;
+  int watchcondition=0;
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
@@ -54,9 +66,34 @@ class _UpdateWatchState extends State<UpdateWatch> {
   price.text=widget.watch.price;
   condition=widget.watch.condition;
   type=widget.watch.type;
-_radioValue1=widget.watch.condition=="Used Watch"?1:2;
+  model_number.text=widget.watch.model_number;
+try {
+  sales_price.text =
+  widget.watch.sales_price.isEmpty || widget.watch.sales_price == null
+      ? ''
+      : widget.watch.sales_price;
+}
+catch(e){}
+try {
+  trades_price.text =
+  widget.watch.trades_price.isEmpty || widget.watch.trades_price == null
+      ? ''
+      : widget.watch.trades_price;
+}
+catch(e){
 
-    _radioValue2=widget.watch.type=="Added To Sell"?1:2;
+}
+  _radioValue1=widget.watch.condition=="Used Watch"?1:2;
+
+    _radioValue2=widget.watch.type=="Add To Sell"?1:2;
+    _radioValue3=widget.watch.selltype=="both"?3:1;
+    _radioValue4=widget.watch.fully_boxed?1:4;
+    setState(() {
+
+      watchcondition=widget.watch.watch_condition;
+      print(type);
+sell_type=widget.watch.selltype;
+    });
   }
 
   watchModel createwatchModel() {
@@ -78,7 +115,15 @@ _radioValue1=widget.watch.condition=="Used Watch"?1:2;
         price: price.text,
         condition: condition,
         type: type,
+        sales_price: sales_price.text==null?'0':sales_price.text,
+        trades_price: trades_price.text==null?'0':trades_price.text,
+
+        fully_boxed: fully_boxed,
+        selltype: sell_type,
+        watch_condition: watchcondition,
         key: widget.watch.key,
+
+        model_number: model_number.text,
         userId: myUser.userId);
     return watch;
   }
@@ -94,13 +139,26 @@ _radioValue1=widget.watch.condition=="Used Watch"?1:2;
     if (price.text == null || price.text.isEmpty) {
       return;
     }
-
+    if (model_number.text == null || model_number.text.isEmpty) {
+      return;
+    }
     if (type == null || type.isEmpty) {
       return;
     }
 
     if (condition == null || condition.isEmpty) {
       return;
+    }
+    if(type=="Add To Sell"){
+      if(sell_type==null || sell_type.isEmpty || fully_boxed ==null || watchcondition==null){
+
+        return;
+      }
+      // if(trades_price.text.isEmpty||trades_price==null){
+      //   return;
+      // }
+
+
     }
     var state = Provider.of<FeedState>(context, listen: false);
     kScreenloader.showLoader(context);
@@ -118,13 +176,13 @@ _radioValue1=widget.watch.condition=="Used Watch"?1:2;
             watch.imagePath = imagePath;
 
             /// If type of tweet is new tweet
-            state.updateWatch(watch);
+            state.updateWatch(watch,widget.watch);
           }
         });
       }
       else{
 watch.imagePath=widget.watch.imagePath;
-        state.updateWatch(watch);
+        state.updateWatch(watch,widget.watch);
       }
       /// Checks for username in tweet description
       /// If foud sends notification to all tagged user
@@ -149,6 +207,8 @@ watch.imagePath=widget.watch.imagePath;
   }
   @override
   Widget build(BuildContext context) {
+    final state = Provider.of<AdminState>(context);
+
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -180,37 +240,124 @@ watch.imagePath=widget.watch.imagePath;
                 Padding(
                   padding: const EdgeInsets.only(left: 28.0, right: 28),
                   child: Container(
-                    width: 250,
-                    padding: EdgeInsets.all(4),
                     decoration: BoxDecoration(
                       border: Border.all(
-                          // set border color
-                          ), // set border width
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10.0)), // set rounded corner radius
-                    ),
-                    child: TextField(
-                      controller: brand,
-                      cursorColor:
-                          notifier.darkTheme ? Colors.white : Color(0xff151d3a),
-                      style: TextStyle(
-                          color: notifier.darkTheme
-                              ? Colors.white
-                              : Color(0xff151d3a)),
-                      decoration: InputDecoration(
-                        prefixText: "     ",
-                        hintStyle: TextStyle(
-                          color: notifier.darkTheme
-                              ? Colors.white
-                              : Color(0xff151d3a),
-                        ),
-                        hintText: 'Enter brand',
-                        border: InputBorder.none,
+                        color: Colors.black,
                       ),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    height: 50,
+                    width: double.infinity,
+                    child: DropDown(
+                      showUnderline: false,
+
+                      items: state.brandnames,
+                       initialValue: brand.text,
+                      hint: Text(
+                        "Select Brand",
+                        style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                            fontSize: 15),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          brand.text = value;
+                        });
+                      },
                     ),
                   ),
                 ),
               ),
+              SizedBox(
+                height: 20,
+              ),
+              WidgetAnimator(
+                Padding(
+                  padding: const EdgeInsets.only(left: 28.0, right: 28),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.black,
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    height: 50,
+
+                    width: double.infinity,
+                    child: DropDown<watch_model_Model>(
+                      showUnderline: false,
+                      items: state.brandmodels
+                          .where((element) =>
+                      element.watch_brand ==
+                          (brand.text == null || brand.text.isEmpty
+                              ? state.brandnames[0]
+                              : brand.text))
+                          .toList(),
+                      customWidgets: state.brandmodels
+                          .where((element) =>
+                      element.watch_brand ==
+                          (brand.text == null || brand.text.isEmpty
+                              ? state.brandnames[0]
+                              : brand.text))
+                          .toList()
+                          .map((p) => buildDropDownRow(p))
+                          .toList(),
+
+                       initialValue: state.brandmodels[state.brandmodels.indexWhere((element) => element.watch_model==model_number.text)],
+                      hint: Text(
+                        "Brand Model",
+                        style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black,
+                            fontSize: 15),
+                      ),
+                      onChanged: (watch_model_Model value) {
+                        setState(() {
+                          model_number.text = value.watch_model;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              // WidgetAnimator(
+              //   Padding(
+              //     padding: const EdgeInsets.only(left: 28.0, right: 28),
+              //     child: Container(
+              //       width: 250,
+              //       padding: EdgeInsets.all(4),
+              //       decoration: BoxDecoration(
+              //         border: Border.all(
+              //             // set border color
+              //             ), // set border width
+              //         borderRadius: BorderRadius.all(
+              //             Radius.circular(10.0)), // set rounded corner radius
+              //       ),
+              //       child: TextField(
+              //         controller: brand,
+              //         cursorColor:
+              //             notifier.darkTheme ? Colors.white : Color(0xff151d3a),
+              //         style: TextStyle(
+              //             color: notifier.darkTheme
+              //                 ? Colors.white
+              //                 : Color(0xff151d3a)),
+              //         decoration: InputDecoration(
+              //           prefixText: "     ",
+              //           hintStyle: TextStyle(
+              //             color: notifier.darkTheme
+              //                 ? Colors.white
+              //                 : Color(0xff151d3a),
+              //           ),
+              //           hintText: 'Enter brand',
+              //           border: InputBorder.none,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               WidgetAnimator(
                 Padding(
                   padding:
@@ -382,6 +529,266 @@ watch.imagePath=widget.watch.imagePath;
                   ),
                 ),
               ),
+
+              if(type=="Add To Sell")
+
+                SizedBox(
+                  height: 20,
+                ),
+
+              if(type=="Add To Sell")
+
+                WidgetAnimator(
+                  Padding(
+                    padding: const EdgeInsets.only(left: 30.0),
+                    child: Text(
+                      'Sell Type',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                  ),
+                ),
+
+              if(type=="Add To Sell")
+
+                WidgetAnimator(
+                  ListTile(
+                    title: const Text('Sell'),
+                    leading: Radio(
+                      value: 1,
+                      activeColor:
+                      notifier.darkTheme ? Colors.white : Color(0xff151d3a),
+                      groupValue: _radioValue3,
+                      onChanged: (value) {
+                        setState(() {
+                          _radioValue3 = value;
+
+                          sell_type = "sell";
+                        });
+                      },
+                    ),
+                  ),
+                ),
+
+              if(type=="Add To Sell")
+
+                WidgetAnimator(
+                  ListTile(
+                    title: const Text('Trade'),
+                    leading: Radio(
+                      value: 2,
+                      activeColor:
+                      notifier.darkTheme ? Colors.white : Color(0xff151d3a),
+                      groupValue: _radioValue3,
+                      onChanged: (value) {
+                        setState(() {
+                          _radioValue3 = value;
+
+                          sell_type = "trade";
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              if (type == "Add To Sell")
+                WidgetAnimator(
+                  ListTile(
+                    title: const Text('Both'),
+                    leading: Radio(
+                      value: 3,
+                      activeColor:
+                      notifier.darkTheme ? Colors.white : Color(0xff151d3a),
+                      groupValue: _radioValue3,
+                      onChanged: (value) {
+                        setState(() {
+                          _radioValue3 = value;
+
+                          sell_type = "both";
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              if(type=="Add To Sell")
+                SizedBox(
+                  height: 20,
+                ),
+              if(type=="Add To Sell")
+                WidgetAnimator(
+                  Padding(
+                    padding: const EdgeInsets.only(left: 30.0),
+                    child: Text(
+                      'Fully boxed with papers?',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                  ),
+                ),
+              if(type=="Add To Sell")
+                WidgetAnimator(
+                  ListTile(
+                    title: const Text('Yes'),
+                    leading: Radio(
+                      value: 1,
+                      activeColor:
+                      notifier.darkTheme ? Colors.white : Color(0xff151d3a),
+                      groupValue: _radioValue4,
+                      onChanged: (value) {
+                        setState(() {
+                          _radioValue4 = value;
+
+                          fully_boxed = true;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              if(type=="Add To Sell")
+
+                WidgetAnimator(
+                  ListTile(
+                    title: const Text('No'),
+                    leading: Radio(
+                      value: 4,
+                      activeColor:
+                      notifier.darkTheme ? Colors.white : Color(0xff151d3a),
+                      groupValue: _radioValue4,
+                      onChanged: (value) {
+                        setState(() {
+                          _radioValue4 = value;
+
+                          fully_boxed=false;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              if(type=="Add To Sell")
+
+                SizedBox(
+                  height: 20,
+                ),
+              if (type == "Add To Sell")
+                WidgetAnimator(
+                  Padding(
+                    padding: const EdgeInsets.only(left: 30.0),
+                    child: Text(
+                      sell_type == 'trade' ? 'Trade price' :sell_type=='sell'? 'Sales price':'Trade/Sell Price',
+                      style:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                  ),
+                ),
+              if (type == "Add To Sell" && (sell_type=="both" || sell_type=="trade"))
+                WidgetAnimator(
+                  Padding(
+                    padding:
+                    const EdgeInsets.only(top: 20, left: 28.0, right: 28),
+                    child: Container(
+                      width: 250,
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          // set border color
+                        ), // set border width
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(10.0)), // set rounded corner radius
+                      ),
+                      child: TextField(
+                        controller: trades_price,
+                        keyboardType: TextInputType.numberWithOptions(),
+                        cursorColor: notifier.darkTheme
+                            ? Colors.white
+                            : Color(0xff151d3a),
+                        style: TextStyle(
+                            color: notifier.darkTheme
+                                ? Colors.white
+                                : Color(0xff151d3a)),
+                        decoration: InputDecoration(
+                          prefixText: "     ",
+                          hintStyle: TextStyle(
+                            color: notifier.darkTheme
+                                ? Colors.white
+                                : Color(0xff151d3a),
+                          ),
+                          hintText: 'Trade price',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              if (type == "Add To Sell" && (sell_type=="both" || sell_type=="sell"))
+                WidgetAnimator(
+                  Padding(
+                    padding:
+                    const EdgeInsets.only(top: 20, left: 28.0, right: 28),
+                    child: Container(
+                      width: 250,
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          // set border color
+                        ), // set border width
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(10.0)), // set rounded corner radius
+                      ),
+                      child: TextField(
+                        controller: sales_price,
+                        keyboardType: TextInputType.numberWithOptions(),
+                        cursorColor: notifier.darkTheme
+                            ? Colors.white
+                            : Color(0xff151d3a),
+                        style: TextStyle(
+                            color: notifier.darkTheme
+                                ? Colors.white
+                                : Color(0xff151d3a)),
+                        decoration: InputDecoration(
+                          prefixText: "     ",
+                          hintStyle: TextStyle(
+                            color: notifier.darkTheme
+                                ? Colors.white
+                                : Color(0xff151d3a),
+                          ),
+                          hintText:'Sales price',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
+              if(type=="Add To Sell")
+
+                SizedBox(
+                  height: 20,
+                ),
+              if(type=="Add To Sell")
+
+                WidgetAnimator(
+                  Padding(
+                    padding: const EdgeInsets.only(left: 30.0),
+                    child: Text(
+                      'Watch Condition?',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                  ),
+                ),
+              if(type=="Add To Sell")
+
+                WidgetAnimator(
+                  RatingBar(onRatingChanged: (rating) {
+                    setState(() {
+                      watchcondition=rating.toInt();
+                    });
+
+                  },
+                    initialRating: watchcondition==null?0:watchcondition.toDouble(),
+                    isHalfAllowed: true,
+                    filledColor: Colors.amber,
+                    halfFilledIcon: Icons.star_half,
+                    filledIcon: Icons.star,
+                    emptyIcon: Icons.star_border,
+                  ),
+                ),
               SizedBox(
                 height: 20,
               ),
@@ -405,5 +812,11 @@ watch.imagePath=widget.watch.imagePath;
           );
         }));
   }
-
+  Row buildDropDownRow(watch_model_Model model) {
+    return Row(
+      children: <Widget>[
+        if (model.watch_brand == brand.text) Text(model.watch_model),
+      ],
+    );
+  }
 }

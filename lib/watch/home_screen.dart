@@ -6,12 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_twitter_clone/animations/bottomAnimation.dart';
+import 'package:flutter_twitter_clone/helper/constant.dart';
 import 'package:flutter_twitter_clone/helper/theme.dart';
 import 'package:flutter_twitter_clone/model/feedModel.dart';
 import 'package:flutter_twitter_clone/model/watchModel.dart';
 import 'package:flutter_twitter_clone/page/feed/feedPage.dart';
+import 'package:flutter_twitter_clone/page/feed/feedPageFriends.dart';
 import 'package:flutter_twitter_clone/page/message/chatListPage.dart';
 import 'package:flutter_twitter_clone/page/profile/profilePage.dart';
+import 'package:flutter_twitter_clone/page/search/SearchPage.dart';
 import 'package:flutter_twitter_clone/state/adminState.dart';
 import 'package:flutter_twitter_clone/state/appState.dart';
 import 'package:flutter_twitter_clone/state/authState.dart';
@@ -29,8 +32,10 @@ import 'package:flutter_twitter_clone/watch/sale_screen.dart';
 import 'package:flutter_twitter_clone/watch/setting/give_away.dart';
 import 'package:flutter_twitter_clone/watch/setting/help.dart';
 import 'package:flutter_twitter_clone/watch/setting/notifications.dart';
+import 'package:flutter_twitter_clone/watch/setting/privacy.dart';
 import 'package:flutter_twitter_clone/watch/setting/profile_screen.dart';
 import 'package:flutter_twitter_clone/watch/setting/terms.dart';
+import 'package:flutter_twitter_clone/watch/setting/terms_conditions.dart';
 import 'package:flutter_twitter_clone/watch/settings.dart';
 import 'package:flutter_twitter_clone/watch/signin_screen.dart';
 import 'package:flutter_twitter_clone/watch/watch_detail.dart';
@@ -74,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
     state.getDataFromDatabase();
     state.getwatchDataFromDatabase();
     state.getNewsFromDatabase();
-    state.getFavouritesFromDatabase(authstate.userId);
+    state.getFavouritesFromDatabase(authstate.user.uid);
   }
 
   List<NetworkImage> _sliders;
@@ -88,6 +93,8 @@ class _HomeScreenState extends State<HomeScreen> {
     await state.getslidersfromdatabase();
     await state.getterms_and_condition();
     await state.getFaqs();
+    state.getBrandNames();
+    state.getBrandModels();
     for (int i = 0; i < state.sliders.length; i++) {
       setState(() {
         _sliders.add(NetworkImage(state.sliders[i]));
@@ -138,6 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Consumer<FeedState>(builder: (context, state, child) {
       final List<watchModel> list = state.getWatches(authstate.userModel);
+
       return Scaffold(
         appBar: AppBar(
           key: _scaffoldKey,
@@ -225,6 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   primary: false,
                   itemCount: list == null ? 0 : list.length,
                   itemBuilder: (cyx, index) {
+
                     return WidgetAnimator(Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ClipRRect(
@@ -251,21 +260,24 @@ class _HomeScreenState extends State<HomeScreen> {
                             backgroundColor: Colors.black87,
                             leading: IconButton(
                               icon: Icon(
-                                Icons.favorite_border,
+                                state.favouriteslist.indexWhere((element) => element.key==list[index].key)>=0?Icons.favorite:Icons.favorite_border,
                                 color: Colors.red,
                               ),
                               onPressed: () {
+                                if(  state.favouriteslist.indexWhere((element) => element.key==list[index].key)>=0){
 
-                                var feedState = Provider.of<FeedState>(context, listen: false);
-                                if(feedState.favouriteslist.contains(list[index])){}
+                                  state.removeFromFavourites(authstate.userId, list[index].key,list[index]);
+
+                                }
                               else {
                                 try {
-                                  feedState.createFavourite(
+                                  state.createFavourite(
                                       list[index], authstate.userId);
                                   customSnackBar(_scaffoldKey,"Added to your wishlist");
                                 }
-                                catch(e){}
-                              }},
+                                catch(e){print(e);}
+                              }
+                              },
                             ),
                             trailing: IconButton(
                               icon: Icon(
@@ -363,7 +375,28 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: notifier.darkTheme ? Colors.white : primary),
                     ),
                   ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                              new FeedPageFriends(scaffoldKey: _scaffoldKey)));
+                      // Navigator.push(context, MaterialPageRoute(builder: (context) => new EventPage(
+                      //   type: "user",
+                      // )));
+                    },
+                    child: ListTile(
+                      title: Text(
+                        "Watch Buddy's Lobby",
+                        style: TextStyle(
+                            color: notifier.darkTheme ? Colors.white : primary),
+                      ),
 
+                      leading: Icon(Icons.contacts,
+                          color: notifier.darkTheme ? Colors.white : primary),
+                    ),
+                  ),
                   InkWell(
                     onTap: () {
                       Navigator.push(
@@ -579,7 +612,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   InkWell(
                     onTap: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Terms()));
+                          MaterialPageRoute(builder: (context) => TermsAndConditions()));
                     },
                     child: ListTile(
                       title: Text(
@@ -589,6 +622,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       leading: Icon(
                         Icons.indeterminate_check_box_rounded,
+                        color: notifier.darkTheme ? Colors.white : primary,
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Privacy()));
+                    },
+                    child: ListTile(
+                      title: Text(
+                        'Privacy Policy',
+                        style: TextStyle(
+                            color: notifier.darkTheme ? Colors.white : primary),
+                      ),
+                      leading: Icon(
+                        Icons.privacy_tip,
                         color: notifier.darkTheme ? Colors.white : primary,
                       ),
                     ),

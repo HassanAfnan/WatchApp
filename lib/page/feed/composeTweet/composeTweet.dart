@@ -86,10 +86,12 @@ class _ComposeTweetReplyPageState extends State<ComposeTweetPage> {
 
   /// Submit tweet to save in firebase database
   void _submitButton() async {
-    if (_titleEditingController.text == null ||
-        _titleEditingController.text.isEmpty ) {
-      return;
-    }
+    // if(widget.isTweet) {
+    //   if (_titleEditingController.text == null ||
+    //       _titleEditingController.text.isEmpty) {
+    //     return;
+    //   }
+    // }
     if (_textEditingController.text == null ||
         _textEditingController.text.isEmpty ) {
       return;
@@ -120,6 +122,7 @@ class _ComposeTweetReplyPageState extends State<ComposeTweetPage> {
 
           /// If type of tweet is new comment tweet
           else {
+            tweetModel.type="reply";
             state.addcommentToPost(tweetModel);
           }
         }
@@ -145,6 +148,7 @@ return;
 
       /// If type of tweet is new comment tweet
       else {
+        tweetModel.type="reply";
         state.addcommentToPost(tweetModel);
       }
     }
@@ -182,10 +186,11 @@ return;
     var tags = getHashTags(_textEditingController.text);
     FeedModel reply = FeedModel(
         description: _textEditingController.text,
-        title:_titleEditingController.text,
+        title:widget.isRetweet?"":_titleEditingController.text,
         user: commentedUser,
         createdAt: DateTime.now().toUtc().toString(),
         tags: tags,
+        type: "",
         parentkey: widget.isTweet
             ? null
             : widget.isRetweet
@@ -343,15 +348,15 @@ class _ComposeRetweet
                     customImage(context, authState.user?.photoUrl, height: 40),
               ),
 
-              Expanded(
-                child: _TextField(
-                  isTweet: false,
-                  isRetweet: true,
-                  textEditingController: viewState._titleEditingController,
-
-                  titleEditingController: viewState._titleEditingController,
-                ),
-              ),
+              // Expanded(
+              //   child: _TextField(
+              //     isTweet: false,
+              //     isRetweet: true,
+              //     textEditingController: viewState._titleEditingController,
+              //
+              //     titleEditingController: viewState._titleEditingController,
+              //   ),
+              // ),
               SizedBox(
                 width: 16,
               ),
@@ -434,24 +439,21 @@ class _ComposeTweet
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-
+                  Divider(),
                   Container(
                     width: fullWidth(context) - 72,
                     child: UrlText(
                       text: viewState.model.title ?? '',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                      urlStyle: TextStyle(
-                        fontSize: 16,
-                        color: Colors.blue,
-                        fontWeight: FontWeight.w400,
-                      ),
+
                     ),
                   ),
-                  SizedBox(height: 30),
+                  Divider(),
+                  //SizedBox(height: 30),
                   Container(
                     width: fullWidth(context) - 72,
                     child: UrlText(
@@ -537,7 +539,7 @@ class _ComposeTweet
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              customImage(context, authState.user?.photoUrl, height: 40),
+             // customImage(context, authState.user?.photoUrl, height: 40),
               SizedBox(
                 width: 10,
               ),
@@ -600,29 +602,36 @@ class _TextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-
-        TextField(
-          controller: titleEditingController,
-          onChanged: (text) {
-          },
-          maxLines: null,
-          decoration: InputDecoration(
+        if(isRetweet)
+          TextField(
+            controller: titleEditingController,
+            onChanged: (text) {
+            },
+            maxLines: null,
+            style:  TextStyle(fontSize: 22,fontWeight: FontWeight.bold),
+            decoration: InputDecoration(
               border: InputBorder.none,
-              hintText:  'Brand Name?'
-                 ,
-              hintStyle: TextStyle(fontSize: 18)),
-        ),
+              hintText:  'Title?',
+              hintStyle: TextStyle(fontSize: 22,fontWeight: FontWeight.bold),
+
+            ),
+          ),
+        if(isRetweet)
+          Divider(),
         TextField(
           controller: textEditingController,
+
           onChanged: (text) {
             Provider.of<ComposeTweetState>(context, listen: false)
                 .onDescriptionChanged(text, searchState);
           },
           maxLines: null,
           decoration: InputDecoration(
+              focusedBorder: InputBorder.none,
+
               border: InputBorder.none,
               hintText: isTweet
-                  ? 'Brand Description?'
+                  ? 'Description?'
                   : isRetweet
                       ? 'Add a comment'
                       : 'Reply',

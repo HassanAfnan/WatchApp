@@ -14,7 +14,7 @@ description: A new Flutter project.
 version: 1.0.6+11
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.5.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -41,7 +41,8 @@ dependencies:
   firebase_messaging: ^6.0.13
   google_sign_in: "^4.5.1" 
   intl: ^0.16.1
-
+  flutter_dropdown: ^0.0.8
+  advance_pdf_viewer: any
   flutter_carousel_slider: ^1.0.5
   url_launcher:
   share: ^0.6.3

@@ -40,8 +40,8 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       appBar: CustomAppBar(
         scaffoldKey: widget.scaffoldKey,
-        icon: AppIcon.settings,
-        onActionPressed: onSettingIconPressed,
+ //       icon: AppIcon.settings,
+   //     onActionPressed: onSettingIconPressed,
         onSearchChanged: (text) {
           state.filterByUsername(text);
         },
