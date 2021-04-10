@@ -42,7 +42,7 @@ class _AddWatchState extends State<AddWatch> {
       model_number = TextEditingController(),
   new_brand=TextEditingController(),
   new_model=TextEditingController();
-  String condition = "Used Watch", type = "Add To Sell", sell_type = "trade";
+  String condition = "Used Watch", type = "Add To Sell", sell_type = "both";
   bool fully_boxed = false;
   int watchcondition = 0;
 

@@ -132,12 +132,15 @@ String title="";
 
   /// Fecth FCM server key from firebase Remote config
   /// send notification to user once fcmToken is retrieved from firebase
-  Future<void> sendNotification(FeedModel model, SearchState state) async {
+  Future<void> sendNotification(FeedModel model, SearchState state,[String tweetuserid]) async {
+
     final usernameRegex = r"(@\w*[a-zA-Z1-9])";
     RegExp regExp = new RegExp(usernameRegex);
     var status = regExp.hasMatch(description);
 
     /// Check if username is availeble in description or not
+    status=true;
+
     if (status) {
       /// Get FCM server key from firebase remote config
       getFCMServerKey().then((val) async {
@@ -147,7 +150,14 @@ String title="";
         /// Search all username from description
         Iterable<Match> _matches = regExp.allMatches(description);
         print("${_matches.length} name found in description");
-
+        if (state.userlist.any((x) => x.userId == tweetuserid)) {
+          /// Fetch user model from userlist
+          /// UserId, FCMtoken is needed to send notification
+          final user = state.userlist.firstWhere((x) => x.userId == tweetuserid);
+          await sendNotificationToUser(model, user);
+        } else {
+          cprint("Name: error,", errorIn: "UserNot found");
+        }
         /// Send notification to user one by one
         await Future.forEach(_matches, (Match match) async {
           var name = description.substring(match.start, match.end);
@@ -209,7 +219,7 @@ String title="";
     var body = jsonEncode(<String, dynamic>{
       'notification': <String, dynamic>{
         'body': model.title,
-        'title': "${model.user.displayName} metioned you in a tweet"
+        'title': "${model.user.displayName} metioned you in a post"
       },
       'priority': 'high',
       'data': <String, dynamic>{
@@ -234,6 +244,8 @@ String title="";
       },
       body: body,
     );
+    print("testing tweet notification1");
+
     cprint(response.body.toString());
   }
 
@@ -249,7 +261,7 @@ String title="";
     var body = jsonEncode(<String, dynamic>{
       'notification': <String, dynamic>{
         'body': model.title,
-        'title': "${model.user.displayName} metioned you in a tweet"
+        'title': "${model.user.displayName} metioned you in a post"
       },
       'priority': 'high',
       'data': <String, dynamic>{
@@ -274,6 +286,7 @@ String title="";
       },
       body: body,
     );
+    print("testing tweet notification");
     cprint(response.body.toString());
   }
 }

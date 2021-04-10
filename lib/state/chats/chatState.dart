@@ -313,6 +313,7 @@ class ChatState extends AppState {
       cprint("You are using Invalid FCM key");
       return;
     }
+    print("testing notification message");
     print(response.body.toString());
   }
 }

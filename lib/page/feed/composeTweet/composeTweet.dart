@@ -85,7 +85,7 @@ class _ComposeTweetReplyPageState extends State<ComposeTweetPage> {
   }
 
   /// Submit tweet to save in firebase database
-  void _submitButton() async {
+  void _submitButton([String userid]) async {
     // if(widget.isTweet) {
     //   if (_titleEditingController.text == null ||
     //       _titleEditingController.text.isEmpty) {
@@ -134,10 +134,10 @@ class _ComposeTweetReplyPageState extends State<ComposeTweetPage> {
       /// If type of tweet is new tweet
       if (widget.isTweet) {
 
-        kScreenloader.hideLoader();
-        customSnackBar(_scaffoldKey, 'Please attach picture');
-return;
-       // state.createTweet(tweetModel);
+//         kScreenloader.hideLoader();
+//         customSnackBar(_scaffoldKey, 'Please attach picture');
+// return;
+        state.createTweet(tweetModel);
 
       }
 
@@ -158,7 +158,7 @@ return;
     /// If no user found or not compost tweet screen is closed and redirect back to home page.
     await Provider.of<ComposeTweetState>(context, listen: false)
         .sendNotification(
-            tweetModel, Provider.of<SearchState>(context, listen: false))
+            tweetModel, Provider.of<SearchState>(context, listen: false),userid)
         .then((_) {
       /// Hide running loader on screen
       kScreenloader.hideLoader();
@@ -211,7 +211,7 @@ return;
       key: _scaffoldKey,
       appBar: CustomAppBar(
         title: customTitleText(''),
-        onActionPressed: _submitButton,
+        onActionPressed:(){ _submitButton(this.model.userId);},
         isCrossButton: true,
         submitButtonText: widget.isTweet
             ? 'Post'

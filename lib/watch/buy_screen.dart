@@ -58,7 +58,12 @@ class _BuyScreenState extends State<BuyScreen> {
                   child: TextField(
                     onChanged: (value){
                       setState(() {
-                        list2 = list.where((element) => element.title == value);
+                       list2= list
+                            .where((x) =>
+                        x.title != null &&
+                            x.title.toLowerCase().contains(value.toLowerCase()))
+                            .toList();
+
                       });
                     },
                     decoration: InputDecoration(
