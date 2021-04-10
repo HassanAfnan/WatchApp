@@ -121,7 +121,6 @@ List<watchModel>  _watchlist=List<watchModel>();
             x.user.userId != userModel.userId) {
           return false;
         }
-print(x.type);
         /// Only include Tweets of logged-in user's and his following user's
         if (x.user.userId == userModel.userId&&x.type!="reply"||
             (userModel?.followingList != null &&

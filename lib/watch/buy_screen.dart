@@ -67,10 +67,14 @@ class _BuyScreenState extends State<BuyScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     controller: editingController,
+                    onChanged: (value) {
+
+                    },
                     decoration: InputDecoration(
                         labelText: "Search",
                         hintText: "Search",
                         prefixIcon: Icon(Icons.search),
+
                         border: OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(25.0)))),

@@ -87,7 +87,7 @@ class _WatchDetailState extends State<WatchDetail> {
                   ),
                 ),
                 SizedBox(height: 10,),
-                WidgetAnimator(Text("\£ "+widget.feed.sales_price==null?"":widget.feed.sales_price,style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold,fontSize: 25),)),
+                WidgetAnimator(Text(widget.feed.sales_price==null?"":"£"+widget.feed.sales_price,style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold,fontSize: 25),)),
                 SizedBox(height: 10,),
                 WidgetAnimator(Text( widget.feed.title,style: TextStyle(color: notifier.darkTheme ? Colors.white : primary,fontWeight: FontWeight.bold,fontSize: 20),)),
                 SizedBox(height: 10,),
