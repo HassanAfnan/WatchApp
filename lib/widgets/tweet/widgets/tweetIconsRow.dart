@@ -46,13 +46,10 @@ class TweetIconsRow extends StatelessWidget {
             context,
             text: isTweetDetail ? '' : model.commentCount.toString(),
             icon: AppIcon.reply,
+            sysIcon: Icons.chat,
             iconColor: iconColor,
             size: size ?? 20,
             onPressed: () {
-
-              // final chatState = Provider.of<ChatState>(context, listen: false);
-              // chatState.setChatUser = model.user;
-              // Navigator.pushNamed(context, '/ChatScreenPage');
               var state = Provider.of<FeedState>(context, listen: false);
               state.setTweetToReply = model;
               Navigator.of(context).pushNamed('/ComposeTweetPage');
@@ -61,6 +58,7 @@ class TweetIconsRow extends StatelessWidget {
           _iconWidget(context,
               text: isTweetDetail ? '' : model.retweetCount.toString(),
               icon: AppIcon.retweet,
+              sysIcon: Icons.refresh,
               iconColor: iconColor,
               size: size ?? 20, onPressed: () {
             TweetBottomSheet().openRetweetbottomSheet(context, type, model);
@@ -71,6 +69,8 @@ class TweetIconsRow extends StatelessWidget {
             icon: model.likeList.any((userId) => userId == authState.userId)
                 ? AppIcon.heartFill
                 : AppIcon.heartEmpty,
+            sysIcon: model.likeList.any((userId) => userId == authState.userId)
+            ? Icons.favorite: Icons.favorite_border,
             onPressed: () {
               addLikeToTweet(context);
             },
@@ -105,15 +105,14 @@ class TweetIconsRow extends StatelessWidget {
               onPressed: () {
                 if (onPressed != null) onPressed();
               },
-              icon: sysIcon != null
-                  ? Icon(sysIcon, color: iconColor, size: size)
-                  : customIcon(
-                      context,
-                      size: size,
-                      icon: icon,
-                      istwitterIcon: true,
-                      iconColor: iconColor,
-                    ),
+              icon: Icon(sysIcon, color: iconColor, size: size)
+                  // : customIcon(
+                  //     context,
+                  //     size: size,
+                  //     icon: icon,
+                  //     istwitterIcon: true,
+                  //     iconColor: iconColor,
+                  //   ),
             ),
             customText(
               text,

@@ -324,9 +324,9 @@ class _ProfilePageState extends State<ProfilePage>
                           indicator: TabIndicator(),
                           controller: _tabController,
                           tabs: <Widget>[
-                            Text("Posts"),
-                            Text("Posts & replies"),
-                            Text("Media")
+                            Text("Posts",style: TextStyle(color: notifier.darkTheme?Colors.white:Colors.black),),
+                            Text("Posts & replies",style: TextStyle(color: notifier.darkTheme?Colors.white:Colors.black)),
+                            Text("Media",style: TextStyle(color: notifier.darkTheme?Colors.white:Colors.black))
                           ],
                         ),
                       )
