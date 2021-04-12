@@ -211,7 +211,7 @@ class _ComposeTweetReplyPageState extends State<ComposeTweetPage> {
       key: _scaffoldKey,
       appBar: CustomAppBar(
         title: customTitleText(''),
-        onActionPressed:(){ _submitButton(this.model.userId);},
+        onActionPressed:(){ _submitButton(this.model==null?"":this.model.userId);},
         isCrossButton: true,
         submitButtonText: widget.isTweet
             ? 'Post'

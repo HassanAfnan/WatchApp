@@ -60,12 +60,13 @@ class _HomeScreenState extends State<HomeScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       var state = Provider.of<AppState>(context, listen: false);
       state.setpageIndex = 0;
-      initTweets();
+
       initProfile();
       initSearch();
       initNotification();
       initChat();
       initAdminSettings();
+      initTweets();
     });
     // TODO: implement initState
     super.initState();

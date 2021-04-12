@@ -235,7 +235,7 @@ class _LoginState extends State<Login> {
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
               HomeScreen()), (Route<dynamic> route) => false);
 
-         // widget.loginCallback();
+          // widget.loginCallback();
         } else {
           cprint('Unable to login', errorIn: '_emailLoginButton');
           loader.hideLoader();
