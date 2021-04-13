@@ -172,17 +172,16 @@ class _ContactState extends State<Contact> {
       var authstate = Provider.of<AuthState>(context, listen: false);
 
       var body = {
-        "name": name.text,
-        "email": email.text,
         "comment": comment.text,
-        "userId": authstate.userId
+        "user":authstate.userModel.toJson(),
+        "createdAt":DateTime.now()
       };
       kDatabase.child('queries').push().set(body);
       loader.hideLoader();
       Flushbar(
         flushbarPosition: FlushbarPosition.TOP,
         title: "Success",
-        message: "Your request send to admin",
+        message: "Your request is send to admin",
         duration: Duration(seconds: 3),)
         ..show(context);
       setState(() {
