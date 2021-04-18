@@ -12,6 +12,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_twitter_clone/helper/enum.dart';
 import 'package:flutter_twitter_clone/helper/utility.dart';
 import 'package:flutter_twitter_clone/model/faq.dart';
+import 'package:flutter_twitter_clone/model/notifications.dart';
 import 'package:flutter_twitter_clone/model/user.dart';
 import 'package:flutter_twitter_clone/model/watch_model_Model.dart';
 import 'appState.dart';
@@ -20,11 +21,32 @@ class AdminState extends AppState {
   List<String> _sliders=List<String>();
   String _terms_and_condition="";
   List<Faqs> _faqs=List<Faqs>();
-  List<Map<String,dynamic>> _notifications=  List<Map<String,dynamic>>();
+  List<Notifications> _notifications=List<Notifications>();
   String _termsconditionlink="";
   String _privacylink="";
   List<String> _brandnames=List<String>();
+  List<UserModel> _contestusers=List<UserModel>();
   List<watch_model_Model> _brandmodel=new List<watch_model_Model>();
+
+  List<Notifications> get notification{
+    if(_notifications==null){
+
+      return null;
+    }
+    else{
+
+      return _notifications;
+    }
+
+  }
+  List<UserModel> get contestusers{
+    if(_contestusers==null){
+      return null;
+    }
+    else{
+      return _contestusers;
+    }
+  }
   String get terms_and_conditions{
     if(_terms_and_condition==null){
       return "";
@@ -33,6 +55,7 @@ class AdminState extends AppState {
       return _terms_and_condition;
     }
   }
+
   List<watch_model_Model> get brandmodels{
     if(_brandmodel==null){
       return null;
@@ -59,15 +82,40 @@ class AdminState extends AppState {
       return _privacylink;
     }
   }
-  List<Map<String,dynamic>> get notification{
-    if(_notifications==null){
 
+  getNotification() async {
+    var snapshot = await kDatabase.child('notifications').once();
+    if (snapshot.value != null) {
+
+      var map=snapshot.value;
+
+      map.forEach((key, value) {
+        _notifications.add(Notifications.fromJson(value));
+
+
+      });
+    } else {
       return null;
     }
-    else{
+    notifyListeners();
 
-      return _notifications;
+  }
+
+  getContestUsers() async {
+    var snapshot = await kDatabase.child('contest').once();
+    if (snapshot.value != null) {
+
+      var map=snapshot.value;
+
+      map.forEach((key, value) {
+        _contestusers.add(UserModel.fromJson(value));
+
+
+      });
+    } else {
+      return null;
     }
+    notifyListeners();
 
   }
   List<String> get sliders {
@@ -208,5 +256,17 @@ String key=DateTime.now().millisecondsSinceEpoch.toString();
 
 
   }
+  void registeredContest(UserModel user){
+    try{
+
+
+      kDatabase.child('contest').child(user.userId).set(user.toJson());
+    }catch(e){
+
+      print(e);
+      print("Error registering in contest");
+    }
+
+}
 
 }

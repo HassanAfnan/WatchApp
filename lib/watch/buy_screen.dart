@@ -22,17 +22,34 @@ class BuyScreen extends StatefulWidget {
 class _BuyScreenState extends State<BuyScreen> {
   TextEditingController editingController = new TextEditingController();
 
+
+  final GlobalKey<RefreshIndicatorState> refreshIndicatorKey=new GlobalKey<RefreshIndicatorState>();
+  List<watchModel> list,list1;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  getdata(){
+    var authstate = Provider.of<AuthState>(context,listen: false);
+    var state = Provider.of<FeedState>(context,listen: false);
+    setState(() {
+
+      list = state.getWatches(
+          authstate.userModel);
+      list1=list;
+    });
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     var authstate = Provider.of<AuthState>(context);
+    var state = Provider.of<FeedState>(context,listen: false);
 
-    final GlobalKey<RefreshIndicatorState> refreshIndicatorKey=new GlobalKey<RefreshIndicatorState>();
-
-    final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-    return Consumer<FeedState>(builder: (context, state, child) {
-      final List<watchModel> list = state.getWatches(authstate.userModel);
-      List<watchModel> list2;
-      {
+    // return Consumer<FeedState>(builder: (context, state, child) {
+    //   final List<watchModel> list = state.getWatches(authstate.userModel);
+    //   List<watchModel> list2;
+    //   {
 
         return Scaffold(
           key: _scaffoldKey,
@@ -58,12 +75,16 @@ class _BuyScreenState extends State<BuyScreen> {
                   child: TextField(
                     onChanged: (value){
                       setState(() {
-                       list2= list
-                            .where((x) =>
-                        x.title != null &&
-                            x.title.toLowerCase().contains(value.toLowerCase()))
-                            .toList();
-
+                        if(value.isNotEmpty) {
+                          list = list
+                              .where((x) =>
+                          x.title != null &&
+                              x.title.toLowerCase().contains(value.toLowerCase()))
+                              .toList();
+                        }
+                        else{
+                          list=list1;
+                        }
                       });
                     },
                     decoration: InputDecoration(
@@ -76,7 +97,7 @@ class _BuyScreenState extends State<BuyScreen> {
                                 BorderRadius.all(Radius.circular(25.0)))),
                   ),
                 ),
-                list2 == null? Expanded(
+                 Expanded(
                   child: GridView.builder(
                     primary: false,
                     itemCount: list==null?0:list.length,
@@ -152,86 +173,10 @@ class _BuyScreenState extends State<BuyScreen> {
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10),
                   ),
-                ):Expanded(
-                  child: GridView.builder(
-                    primary: false,
-                    itemCount: list2==null?0:list2.length,
-                    itemBuilder: (cyx, index) {
-                      return WidgetAnimator(Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: GridTile(
-                            child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => WatchDetail(
-                                    feed: list2[index],
-                                  )));
-                                },
-                                child: Hero(
-                                  tag: list2[index].key,
-                                  child: FadeInImage(
-                                    placeholder: NetworkImage(list[index].imagePath),
-                                    image: NetworkImage(list2[index].imagePath),
-                                    fit: BoxFit.cover,
-                                  ),
-                                )),
-                            footer: GridTileBar(
-                              backgroundColor: Colors.black87,
-                              leading: IconButton(
-                                icon: Icon(
-                                  state.favouriteslist.indexWhere((element) => element.key==list2[index].key)>=0?Icons.favorite:Icons.favorite_border,
-                                  color: Colors.red,
-                                ),
-                                onPressed: () {
-
-                                  if(  state.favouriteslist.indexWhere((element) => element.key==list2[index].key)>=0){
-
-                                    state.removeFromFavourites(authstate.userId, list2[index].key,list2[index]);
-
-                                  }
-                                  else {
-                                    try {
-                                      state.createFavourite(
-                                          list2[index], authstate.userId);
-                                      customSnackBar(_scaffoldKey,"Added to your wishlist");
-                                    }
-                                    catch(e){print(e);}
-                                  }
-                                },
-                              ),
-                              trailing: IconButton(
-                                icon: Icon(
-                                  Icons.chat,
-                                  color: Theme.of(context).accentColor,
-                                ),
-                                onPressed: () {
-
-
-                                  final chatState = Provider.of<ChatState>(context, listen: false);
-                                  chatState.setChatUser = list2[index].user;
-                                  Navigator.pushNamed(context, '/ChatScreenPage');
-
-                                },
-                              ),
-                              title: Text(
-                                list2[index].title,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ));
-                    },
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10),
-                  ),
                 )
               ],
             )));
-      }
-    });
+     // }
+    //});
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_twitter_clone/animations/bottomAnimation.dart';
+import 'package:flutter_twitter_clone/state/adminState.dart';
+import 'package:provider/provider.dart';
 
 class Notifications extends StatefulWidget {
   @override
@@ -7,20 +9,18 @@ class Notifications extends StatefulWidget {
 }
 
 class _NotificationsState extends State<Notifications> {
-  List<Map<String,dynamic>> notifications =[
-    {"title":"Notification1","message":"Lorem ipsum dolor sit amet consectetur adipiscing elit eros ante facilisis nec tempus, faucibus nascetur taciti dui pretium eu lobortis himenaeos mi interdum scelerisque. Justo himenaeos vitae tellus at fringilla nascetur pharetra per duis interdum, "},
-    {"title":"Notification2","message":"Lorem ipsum dolor sit amet consectetur adipiscing elit eros ante facilisis nec tempus, faucibus nascetur taciti dui pretium eu lobortis himenaeos mi interdum scelerisque. Justo himenaeos vitae tellus at fringilla nascetur pharetra per duis interdum, "},
-    {"title":"Notification2","message":"Lorem ipsum dolor sit amet consectetur adipiscing elit eros ante facilisis nec tempus, faucibus nascetur taciti dui pretium eu lobortis himenaeos mi interdum scelerisque. Justo himenaeos vitae tellus at fringilla nascetur pharetra per duis interdum, "},
-  ];
+
   @override
   Widget build(BuildContext context) {
+
+    final state = Provider.of<AdminState>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text("Notifications"),
       ),
       body: ListView.builder(
-          itemCount: notifications.length,
+          itemCount: state.notification==null?0:state.notification.length,
           itemBuilder: (context,index){
         return WidgetAnimator(
            Padding(
@@ -37,11 +37,11 @@ class _NotificationsState extends State<Notifications> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(notifications[index]['title'],style: TextStyle(fontWeight: FontWeight.bold),),
+                      child: Text(state.notification[index].title,style: TextStyle(fontWeight: FontWeight.bold),),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(notifications[index]['message']),
+                      child: Text(state.notification[index].message),
                     )
                   ],
                 ),

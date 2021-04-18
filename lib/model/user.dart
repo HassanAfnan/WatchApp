@@ -12,6 +12,7 @@ class UserModel {
   String dob;
   String createdAt;
   bool isVerified;
+  bool isBlocked;
   int followers;
   int following;
   String fcmToken;
@@ -36,6 +37,7 @@ class UserModel {
     this.isVerified,
     this.fcmToken,
     this.followersList,
+    this.isBlocked
   });
 
   UserModel.fromJson(Map<dynamic, dynamic> map) {
@@ -60,6 +62,7 @@ class UserModel {
     userName = map['userName'];
     webSite = map['webSite'];
     fcmToken = map['fcmToken'];
+    isBlocked=map["isBlocked"]==null?false:map["isBlocked"];
     isVerified = map['isVerified'] ?? false;
     if (map['followerList'] != null) {
       followersList = List<String>();
@@ -96,7 +99,8 @@ class UserModel {
       'isVerified': isVerified ?? false,
       'fcmToken': fcmToken,
       'followerList': followersList,
-      'followingList': followingList
+      'followingList': followingList,
+      'isBlocked':isBlocked==null?false:isBlocked
     };
   }
 

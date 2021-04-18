@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:badges/badges.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -96,6 +97,8 @@ class _HomeScreenState extends State<HomeScreen> {
     await state.getFaqs();
     state.getBrandNames();
     state.getBrandModels();
+    state.getNotification();
+    state.getContestUsers();
     for (int i = 0; i < state.sliders.length; i++) {
       setState(() {
         _sliders.add(NetworkImage(state.sliders[i]));
@@ -176,6 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       FlatButton(
                         child: Text("Yes"),
                         onPressed: () {
+
                           authstate.logoutCallback();
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(builder: (context) => Login()),

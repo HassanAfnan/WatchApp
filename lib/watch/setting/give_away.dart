@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_twitter_clone/animations/bottomAnimation.dart';
 import 'package:flutter_twitter_clone/helper/theme.dart';
+import 'package:flutter_twitter_clone/state/adminState.dart';
+import 'package:flutter_twitter_clone/state/authState.dart';
+import 'package:provider/provider.dart';
+import 'package:sweetalert/sweetalert.dart';
 
 class GiveAway extends StatefulWidget {
   @override
@@ -8,8 +12,13 @@ class GiveAway extends StatefulWidget {
 }
 
 class _GiveAwayState extends State<GiveAway> {
+
   @override
   Widget build(BuildContext context) {
+
+    final state = Provider.of<AdminState>(context);
+
+    final authstate = Provider.of<AuthState>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -103,9 +112,18 @@ class _GiveAwayState extends State<GiveAway> {
                   ),
                   color: primary,
                   onPressed: (){
+                 if(state.contestusers.indexWhere((element) => element.userId==authstate.userModel.userId)>=0){}
+                 else {
+                   state.registeredContest(authstate.userModel);
+                   SweetAlert.show(context,
+                       title: "Success",
+                       subtitle: "Successfully Registered",
+                       style: SweetAlertStyle.success);
+                 }
+
                     //Navigator.push(context, MaterialPageRoute(builder: (context) => Contact()));
                   },
-                  child: Text("Click To Take Part",style: TextStyle(color: Colors.white),),
+                  child: Text(state.contestusers.indexWhere((element) => element.userId==authstate.userModel.userId)>=0?"Already Registered":"Click To Take Part",style: TextStyle(color: Colors.white),),
                 ),
               ),
             )

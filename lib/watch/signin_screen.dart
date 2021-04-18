@@ -1,12 +1,15 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_twitter_clone/animations/bottomAnimation.dart';
 import 'package:flutter_twitter_clone/helper/theme.dart';
 import 'package:flutter_twitter_clone/helper/utility.dart';
+import 'package:flutter_twitter_clone/model/user.dart';
 import 'package:flutter_twitter_clone/state/authState.dart';
 import 'package:flutter_twitter_clone/watch/ThemeModes/Theme.dart';
 import 'package:flutter_twitter_clone/watch/forget_screen.dart';
 import 'package:flutter_twitter_clone/watch/home_screen.dart';
 import 'package:flutter_twitter_clone/watch/signup_screen.dart';
+import 'package:flutter_twitter_clone/widgets/customWidgets.dart';
 import 'package:flutter_twitter_clone/widgets/newWidget/customLoader.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_button/constants.dart';
@@ -151,6 +154,7 @@ class _LoginState extends State<Login> {
                             WidgetAnimator(
                               FlatButton(
                                 onPressed: (){
+
                                   _emailLogin();
                                   //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
                                 },
@@ -218,29 +222,53 @@ class _LoginState extends State<Login> {
 
   void _emailLogin() {
     var state = Provider.of<AuthState>(context, listen: false);
-    if (state.isbusy) {
-      return;
-    }
+    // if (state.isbusy) {
+    //   return;
+    // }
     loader.showLoader(context);
     var isValid = validateCredentials(
         _scaffoldKey, _email.text, _password.text);
     if (isValid) {
-      state
-          .signIn(_email.text, _password.text,
-          scaffoldKey: _scaffoldKey)
-          .then((status) {
-        if (state.user != null) {
-          loader.hideLoader();
+      try {
+        state
+            .signIn(_email.text, _password.text,
+            scaffoldKey: _scaffoldKey)
+            .then((status) async {
+          if (state.user != null) {
+            kDatabase
+                .child("profile")
+                .child(state.user.uid)
+                .once()
+                .then((DataSnapshot snapshot) {
+              if (snapshot.value != null) {
+                var map = snapshot.value;
+                if (map != null) {
+                  UserModel user=(UserModel.fromJson(map));
+                  if (user.isBlocked) {
+                    loader.hideLoader();
 
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-              HomeScreen()), (Route<dynamic> route) => false);
+                    customSnackBar(_scaffoldKey, 'This user is block by admin');
+                  }
+                  else {
+                    loader.hideLoader();
 
-          // widget.loginCallback();
-        } else {
-          cprint('Unable to login', errorIn: '_emailLoginButton');
-          loader.hideLoader();
-        }
-      });
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) =>
+                            HomeScreen()), (Route<dynamic> route) => false);
+                  }                }
+              }
+            });
+
+            // widget.loginCallback();
+          } else {
+            cprint('Unable to login', errorIn: '_emailLoginButton');
+            loader.hideLoader();
+          }
+        });
+      }catch(e){
+        loader.hideLoader();
+        print(e);
+      }
     } else {
       loader.hideLoader();
     }
