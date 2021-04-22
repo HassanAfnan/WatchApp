@@ -196,46 +196,22 @@ class _StripePaymentState extends State<StripePayment> {
     );
     strip.StripePayment.createTokenWithCard(
       testCard1,
-    ).then((token) {
-      showDialog(
-          context: context,
-          builder: (context) =>
-              AlertDialog(
-                title: Text("Watch"),
-                content: Text("Payment Confirmed"),
-              )
-      );
-      //  _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('Payment Confirmed')));
-      setState(() async {
-        // _paymentToken = token;
-        // print("token");
-        // print(token.toJson());
-        // print(token.tokenId);
-        // print(widget.amount);
+    ).then((token) async {
 
         Map<String, String> headers = {"Content-type": "application/json"};
-//                    String json='{ "stripeToken": token.tokenId,
-//                        "name":'talha',
-//                        "email":'talha@gmail.com',
-//                        "total_price": 77
-//                    }';
-
+        var authState = Provider.of<AuthState>(context, listen: false);
         String m = token.tokenId.toString();
         String json = '{"stripeToken":"' + m +
-            '","name":"talha","email":"talha@gmail.com","total_price": "'+
+            '","name":"${authState.userModel.displayName}","email":"${authState.userModel.email}","total_price": "'+
             widget.cost + '"}';
         if (token != null) {
           http.Response response = await http.post(
               "https://calm-hollows-88609.herokuapp.com/donate", body: (json),
               headers: headers);
-          // check the status code for the result
           int statusCode = response.statusCode;
-          print(statusCode);
-          print(response.body);
           if (statusCode == 200) {
             print(response.body);
 
-            var authState = Provider.of<AuthState>(context, listen: false);
             UserModel user=authState.userModel;
             user.isSubscribed=true;
             user.subscribeDate=DateTime.now().toString();
@@ -255,31 +231,14 @@ class _StripePaymentState extends State<StripePayment> {
                 MaterialPageRoute(builder: (context) =>
                     WatchSplashScreen()), (Route<dynamic> route) => false);
           }
-        }
-        //   print(_paymentMethod.card.token);
-//                    final request = await http.post(
-//                      "https://pam-app.herokuapp.com/",
-//                      body: {
-//                        "stripeToken": token.tokenId,
-//                        "name":'talha',
-//                        "email":'talha@gmail.com',
-//                        "total_price": 77
-//                      },
-//                      headers: <String, String>{
-//                        'Content-Type': 'application/json; charset=UTF-8',
-//                     },
-//                    );
-//                    if (request.statusCode == 200) {
-//                      print(request.body);
-//                      print("hussain");
-//                      return true;
-//                    } else {
-//
-//                      print(jsonDecode(request.body));
-//                      return false;
-//                    }
+          else{
+              //_scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('Payment Confirmed')));
 
-      });
+
+          }
+        }
+
+
     }).catchError(setError);
   }
 
