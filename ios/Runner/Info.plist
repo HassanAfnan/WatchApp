@@ -27,6 +27,7 @@
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
+
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
@@ -52,6 +53,12 @@
     	<dict>
     		<key>CFBundleTypeRole</key>
     		<string>Editor</string>
+            <key>CFBundleURLName</key>
+            <string>3ds.stripesdk.io</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>stripesdk</string>
+            </array>
     		<key>CFBundleURLSchemes</key>
     		<array>
     			<!-- TODO Replace this value: -->

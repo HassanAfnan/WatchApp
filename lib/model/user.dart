@@ -12,6 +12,8 @@ class UserModel {
   String dob;
   String createdAt;
   bool isVerified;
+  bool isSubscribed;
+  String subscribeDate;
   bool isBlocked;
   int followers;
   int following;
@@ -37,7 +39,9 @@ class UserModel {
     this.isVerified,
     this.fcmToken,
     this.followersList,
-    this.isBlocked
+    this.isBlocked,
+    this.isSubscribed,
+    this.subscribeDate
   });
 
   UserModel.fromJson(Map<dynamic, dynamic> map) {
@@ -64,6 +68,9 @@ class UserModel {
     fcmToken = map['fcmToken'];
     isBlocked=map["isBlocked"]==null?false:map["isBlocked"];
     isVerified = map['isVerified'] ?? false;
+    isSubscribed=map["isSubscribed"]==null?false:map["isSubscribed"];
+    subscribeDate=map["subscribeDate"]==null?"":map["subscribeDate"];
+
     if (map['followerList'] != null) {
       followersList = List<String>();
       map['followerList'].forEach((value) {
@@ -100,7 +107,10 @@ class UserModel {
       'fcmToken': fcmToken,
       'followerList': followersList,
       'followingList': followingList,
-      'isBlocked':isBlocked==null?false:isBlocked
+      'isBlocked':isBlocked==null?false:isBlocked,
+      "isSubscribed":isSubscribed==null?false:isSubscribed,
+      "subscribeDate":subscribeDate==null?"":subscribeDate
+
     };
   }
 

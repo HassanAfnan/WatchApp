@@ -6,6 +6,7 @@ import 'package:flutter_twitter_clone/helper/constant.dart';
 import 'package:flutter_twitter_clone/helper/enum.dart';
 import 'package:flutter_twitter_clone/helper/theme.dart';
 import 'package:flutter_twitter_clone/model/user.dart';
+import 'package:flutter_twitter_clone/page/Agreement.dart';
 import 'package:flutter_twitter_clone/state/authState.dart';
 import 'package:flutter_twitter_clone/watch/home_screen.dart';
 import 'package:flutter_twitter_clone/watch/signin_screen.dart';
@@ -286,24 +287,13 @@ class _RegisterState extends State<Register> {
       profilePic: dummyProfilePicList[randomNumber],
       isVerified: false,
     );
-    state
-        .signUp(
-      user,
-      password: password.text,
-      scaffoldKey: _scaffoldKey,
-    )
-        .then((status) {
-      print(status);
-    }).whenComplete(
-          () {
-        loader.hideLoader();
-        if (state.authStatus == AuthStatus.LOGGED_IN) {
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-              HomeScreen()), (Route<dynamic> route) => false);
 
-          // widget.loginCallback();
-        }
-      },
-    );
+    loader.hideLoader();
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+            new CreateAgreement(user: user,password: password.text,)));
   }
 }

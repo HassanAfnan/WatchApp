@@ -41,6 +41,11 @@ dependencies:
   firebase_messaging: ^6.0.13
   google_sign_in: "^4.5.1" 
   intl: ^0.16.1
+
+  stripe_sdk: ^3.0.1+1
+  http_auth: any
+  webview_flutter: any
+  stripe_payment: ^1.0.11
   flutter_dropdown: ^0.0.8
   advance_pdf_viewer: any
   flutter_carousel_slider: ^1.0.5

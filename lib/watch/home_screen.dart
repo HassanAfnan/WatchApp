@@ -27,6 +27,7 @@ import 'package:flutter_twitter_clone/watch/DummyData/dummy.dart';
 import 'package:flutter_twitter_clone/watch/ThemeModes/Theme.dart';
 import 'package:flutter_twitter_clone/watch/buy_screen.dart';
 import 'package:flutter_twitter_clone/watch/contact.dart';
+import 'package:flutter_twitter_clone/watch/makePayment.dart';
 import 'package:flutter_twitter_clone/watch/mywatch_screen.dart';
 import 'package:flutter_twitter_clone/watch/news.dart';
 import 'package:flutter_twitter_clone/watch/sale_screen.dart';
@@ -43,6 +44,7 @@ import 'package:flutter_twitter_clone/watch/watch_detail.dart';
 import 'package:flutter_twitter_clone/watch/wish_list.dart';
 import 'package:flutter_twitter_clone/widgets/customWidgets.dart';
 import 'package:provider/provider.dart';
+import 'package:sweetalert/sweetalert.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -361,6 +363,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   InkWell(
                     onTap: () {
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -382,11 +385,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                              new FeedPageFriends(scaffoldKey: _scaffoldKey)));
+                      if(authstate.userModel.isSubscribed) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                new FeedPageFriends(
+                                    scaffoldKey: _scaffoldKey)));
+                      }
+                      else{
+
+                        SweetAlert.show(context,
+                            title: "Subscription",
+                            subtitle: "Get yourself subscibed",
+                            style: SweetAlertStyle.confirm,
+                            confirmButtonText: "Ok",
+                            showCancelButton: true, onPress: (bool isConfirm) {
+                              if (isConfirm) {
+                                //SweetAlert.show(context,style: SweetAlertStyle.success,title: "Success");
+                                // return false to keep dialog
+                                return false;
+                              }
+                            });
+                      }
                       // Navigator.push(context, MaterialPageRoute(builder: (context) => new EventPage(
                       //   type: "user",
                       // )));
@@ -404,10 +425,27 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => new BuyScreen()));
+                      if(authstate.userModel.isSubscribed) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => new BuyScreen()));
+                      }
+                      else{
+
+                        SweetAlert.show(context,
+                            title: "Subscription",
+                            subtitle: "Get yourself subscibed",
+                            style: SweetAlertStyle.confirm,
+                            confirmButtonText: "Ok",
+                            showCancelButton: true, onPress: (bool isConfirm) {
+                              if (isConfirm) {
+                                //SweetAlert.show(context,style: SweetAlertStyle.success,title: "Success");
+                                // return false to keep dialog
+                                return false;
+                              }
+                            });
+                      }
                     },
                     child: ListTile(
                       title: Text(
@@ -422,10 +460,26 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SaleScreen()));
+                      if(authstate.userModel.isSubscribed) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SaleScreen()));
+                      } else{
+
+                        SweetAlert.show(context,
+                            title: "Subscription",
+                            subtitle: "Get yourself subscibed",
+                            style: SweetAlertStyle.confirm,
+                            confirmButtonText: "Ok",
+                            showCancelButton: true, onPress: (bool isConfirm) {
+                              if (isConfirm) {
+                                //SweetAlert.show(context,style: SweetAlertStyle.success,title: "Success");
+                                // return false to keep dialog
+                                return false;
+                              }
+                            });
+                      }
                     },
                     child: ListTile(
                       title: Text(
@@ -519,8 +573,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => GiveAway()));
+                      if(authstate.userModel.isSubscribed) {
+                        Navigator.push(context,
+                            MaterialPageRoute(
+                                builder: (context) => GiveAway()));
+                      } else{
+
+                        SweetAlert.show(context,
+                            title: "Subscription",
+                            subtitle: "Get yourself subscibed",
+                            style: SweetAlertStyle.confirm,
+                            confirmButtonText: "Ok",
+                            showCancelButton: true, onPress: (bool isConfirm) {
+                              if (isConfirm) {
+                                //SweetAlert.show(context,style: SweetAlertStyle.success,title: "Success");
+                                // return false to keep dialog
+                                return false;
+                              }
+                            });
+                      }
                     },
                     child: ListTile(
                       title: Text(
@@ -596,6 +667,45 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
 
+                  InkWell(
+                    onTap: () {
+                      if(authstate.userModel.isSubscribed){
+
+
+                        SweetAlert.show(context,
+                            title: "Subscribed",
+                            subtitle: "You are already subscribed",
+                            style: SweetAlertStyle.confirm,
+                            confirmButtonText: "Ok",
+                            showCancelButton: true, onPress: (bool isConfirm) {
+                              if (isConfirm) {
+                                //SweetAlert.show(context,style: SweetAlertStyle.success,title: "Success");
+                                // return false to keep dialog
+                                return false;
+                              }
+                            });
+
+                      }
+                      else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    makePayment(cost: "11.99",)));
+                      }
+                      },
+                    child: ListTile(
+                      title: Text(
+                        'Subscriptions',
+                        style: TextStyle(
+                            color: notifier.darkTheme ? Colors.white : primary),
+                      ),
+                      leading: Icon(
+                        Icons.subscriptions,
+                        color: notifier.darkTheme ? Colors.white : primary,
+                      ),
+                    ),
+                  ),
                   InkWell(
                     onTap: () {
                       Navigator.push(context,
