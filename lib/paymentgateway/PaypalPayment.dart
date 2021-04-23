@@ -28,7 +28,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
   PaypalServices services = PaypalServices();
 
   // you can change default currency according to your need
-  Map<dynamic,dynamic> defaultCurrency = {"symbol": "EUR", "decimalDigits": 2, "symbolBeforeTheNumber": true, "currency": "USD"};
+  Map<dynamic,dynamic> defaultCurrency = {"symbol": "EUR", "decimalDigits": 2, "symbolBeforeTheNumber": true, "currency": "EURO"};
 
   bool isEnableShipping = false;
   bool isEnableAddress = false;

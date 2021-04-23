@@ -42,7 +42,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(centerTitle: true, title: Text("Privacy Policy")),
+      appBar: AppBar(centerTitle: true, title: Text("Terms and Conditions")),
       body: Center(
           child: _isLoading
               ? Center(child:SpinKitRipple(color: Colors.deepPurpleAccent,))

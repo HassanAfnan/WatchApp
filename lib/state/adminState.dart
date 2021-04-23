@@ -27,7 +27,9 @@ class AdminState extends AppState {
   List<String> _brandnames=List<String>();
   List<UserModel> _contestusers=List<UserModel>();
   List<watch_model_Model> _brandmodel=new List<watch_model_Model>();
-
+  int _days,_hours,_mins,_secs;
+  String _contestdate;
+bool _enablecontest;
   List<Notifications> get notification{
     if(_notifications==null){
 
@@ -46,6 +48,57 @@ class AdminState extends AppState {
     else{
       return _contestusers;
     }
+
+  }
+  String get contestdate{
+    if(_contestdate==null){
+      return "";
+    }
+    else{
+      return _contestdate;
+    }
+  }
+  bool get enablecontest{
+    if(_enablecontest==null){
+      return false;
+    }
+    else{
+      return _enablecontest;
+    }
+  }
+  int get days{
+    if(_days==null){
+      return 0;
+    }
+    else{
+      return _days;
+    }
+
+  }
+  int get hours{
+    if(_hours==null){
+      return 0;
+    }
+    else{
+      return _hours;
+    }
+  }
+  int get mins{
+    if(_mins==null){
+      return 0;
+    }
+    else{
+      return _mins;
+    }
+  }
+  int get secs{
+    if(_secs==null){
+      return 0;
+    }
+    else{
+      return _secs;
+    }
+
   }
   String get terms_and_conditions{
     if(_terms_and_condition==null){
@@ -162,6 +215,29 @@ class AdminState extends AppState {
     }
 
   }
+
+  getContestSetting() async {
+    var snapshot = await kDatabase.child('contestsetting').once();
+    if (snapshot.value != null) {
+
+      var map=snapshot.value;
+      String date=map["validtill"]==null?"":map["validtill"];
+
+      _enablecontest=map["enable"]==null?false:map["enable"];
+
+      var temp_date=DateTime.now().difference(DateTime.parse(date)).inDays;
+      _contestdate=date;
+
+
+       if(temp_date<0){
+        _enablecontest=false;
+      }
+      notifyListeners();
+    } else {
+      return null;
+    }
+
+  }
   getterms_and_condition() async{
 
     var snapshot = await kDatabase.child('terms_and_conditions').once();
@@ -268,5 +344,27 @@ String key=DateTime.now().millisecondsSinceEpoch.toString();
     }
 
 }
+  static String formatDuration(Duration d) {
+    var seconds = d.inSeconds;
+    final days = seconds~/Duration.secondsPerDay;
+    seconds -= days*Duration.secondsPerDay;
+    final hours = seconds~/Duration.secondsPerHour;
+    seconds -= hours*Duration.secondsPerHour;
+    final minutes = seconds~/Duration.secondsPerMinute;
+    seconds -= minutes*Duration.secondsPerMinute;
 
+    final List<String> tokens = [];
+    if (days != 0) {
+      tokens.add('${days}d');
+    }
+    if (tokens.isNotEmpty || hours != 0){
+      tokens.add('${hours}h');
+    }
+    if (tokens.isNotEmpty || minutes != 0) {
+      tokens.add('${minutes}m');
+    }
+    tokens.add('${seconds}s');
+
+    return tokens.join(':');
+  }
 }

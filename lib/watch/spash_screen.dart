@@ -101,8 +101,7 @@ Widget _body(){
               var state = Provider.of<AuthState>(context, listen: false);
               // state.authStatus = AuthStatus.NOT_DETERMINED;
               state.getCurrentUser();
-            // Navigator.pushReplacement(
-            //     context, MaterialPageRoute(builder: (context) => Login()));
+
           }
     );
   }

@@ -4,6 +4,7 @@ import 'package:flutter_twitter_clone/model/user.dart';
 import 'package:flutter_twitter_clone/state/authState.dart';
 import 'package:flutter_twitter_clone/watch/home_screen.dart';
 import 'package:flutter_twitter_clone/watch/spash_screen.dart';
+import 'package:flutter_twitter_clone/widgets/newWidget/customLoader.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart';
@@ -24,6 +25,7 @@ class _StripePaymentState extends State<StripePayment> {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final StripeCard card = StripeCard();
+  CustomLoader loader;
 
   // final Stripe stripe = Stripe(
   //   "pk_test_51IhtZHLwf8p7hancgtg4O1ycYT3dpe9rWgkwE9GG5cUA60CPmSwzVmwjXWin2F6BUeM5p4QV9Hm17fBDHm3YNgFI00b8AhfYpN", //Your Publishable Key
@@ -34,6 +36,7 @@ class _StripePaymentState extends State<StripePayment> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    loader=CustomLoader();
    strip.StripePayment.setOptions(
         strip.StripeOptions(publishableKey: "pk_test_51IhtZHLwf8p7hancgtg4O1ycYT3dpe9rWgkwE9GG5cUA60CPmSwzVmwjXWin2F6BUeM5p4QV9Hm17fBDHm3YNgFI00b8AhfYpN"));
 }
@@ -194,6 +197,8 @@ class _StripePaymentState extends State<StripePayment> {
         expYear: card.expYear,
         cvc: card.cvc
     );
+
+    loader.showLoader(context);
     strip.StripePayment.createTokenWithCard(
       testCard1,
     ).then((token) async {
@@ -217,6 +222,8 @@ class _StripePaymentState extends State<StripePayment> {
             user.subscribeDate=DateTime.now().toString();
             authState.updateUserProfile(user);
             //firebase code and dialog box here
+
+            loader.hideLoader();
             showDialog(
                 context: context,
                 builder: (context) =>
@@ -232,6 +239,8 @@ class _StripePaymentState extends State<StripePayment> {
                     WatchSplashScreen()), (Route<dynamic> route) => false);
           }
           else{
+
+            loader.hideLoader();
               //_scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('Payment Confirmed')));
 
 
@@ -243,6 +252,8 @@ class _StripePaymentState extends State<StripePayment> {
   }
 
   void setError(dynamic error) {
+
+    loader.hideLoader();
     print(error);
   }
 }

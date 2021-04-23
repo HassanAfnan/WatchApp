@@ -40,6 +40,7 @@ class _BuyScreenState extends State<BuyScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getdata();
   }
   @override
   Widget build(BuildContext context) {
@@ -86,6 +87,7 @@ class _BuyScreenState extends State<BuyScreen> {
                           list=list1;
                         }
                       });
+                      print(list);
                     },
                     decoration: InputDecoration(
                         labelText: "Search",

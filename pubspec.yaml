@@ -42,6 +42,7 @@ dependencies:
   google_sign_in: "^4.5.1" 
   intl: ^0.16.1
 
+  duration: any
   stripe_sdk: ^3.0.1+1
   http_auth: any
   webview_flutter: any

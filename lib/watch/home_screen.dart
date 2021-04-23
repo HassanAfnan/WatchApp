@@ -40,6 +40,7 @@ import 'package:flutter_twitter_clone/watch/setting/terms.dart';
 import 'package:flutter_twitter_clone/watch/setting/terms_conditions.dart';
 import 'package:flutter_twitter_clone/watch/settings.dart';
 import 'package:flutter_twitter_clone/watch/signin_screen.dart';
+import 'package:flutter_twitter_clone/watch/spash_screen.dart';
 import 'package:flutter_twitter_clone/watch/watch_detail.dart';
 import 'package:flutter_twitter_clone/watch/wish_list.dart';
 import 'package:flutter_twitter_clone/widgets/customWidgets.dart';
@@ -100,6 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
     state.getBrandNames();
     state.getBrandModels();
     state.getNotification();
+    state.getContestSetting();
     state.getContestUsers();
     for (int i = 0; i < state.sliders.length; i++) {
       setState(() {
@@ -183,10 +185,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         onPressed: () {
 
                           authstate.logoutCallback();
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(builder: (context) => Login()),
-                              (Route<dynamic> route) => false);
-                         // exit(0);
+                          // Navigator.of(context).pushAndRemoveUntil(
+                          //     MaterialPageRoute(builder: (context) => WatchSplashScreen()),
+                          //     (Route<dynamic> route) => false);
+                          exit(0);
                         },
                       ),
                       FlatButton(
@@ -397,11 +399,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         SweetAlert.show(context,
                             title: "Subscription",
-                            subtitle: "Get yourself subscibed",
+                            subtitle: "Please subscribe to have full access to Elite Edgeware",
                             style: SweetAlertStyle.confirm,
-                            confirmButtonText: "Ok",
+                            confirmButtonText: "Subscribe",
                             showCancelButton: true, onPress: (bool isConfirm) {
                               if (isConfirm) {
+
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            makePayment(cost: "11.99",)));
                                 //SweetAlert.show(context,style: SweetAlertStyle.success,title: "Success");
                                 // return false to keep dialog
                                 return false;
@@ -435,9 +443,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         SweetAlert.show(context,
                             title: "Subscription",
-                            subtitle: "Get yourself subscibed",
+                            subtitle: "Please subscribe to have full access to Elite Edgeware",
                             style: SweetAlertStyle.confirm,
-                            confirmButtonText: "Ok",
+                            confirmButtonText: "Subscribe",
                             showCancelButton: true, onPress: (bool isConfirm) {
                               if (isConfirm) {
                                 //SweetAlert.show(context,style: SweetAlertStyle.success,title: "Success");
@@ -469,11 +477,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         SweetAlert.show(context,
                             title: "Subscription",
-                            subtitle: "Get yourself subscibed",
+                            subtitle: "Please subscribe to have full access to Elite Edgeware",
                             style: SweetAlertStyle.confirm,
-                            confirmButtonText: "Ok",
+                            confirmButtonText: "Subscribe",
                             showCancelButton: true, onPress: (bool isConfirm) {
                               if (isConfirm) {
+
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            makePayment(cost: "11.99",)));
                                 //SweetAlert.show(context,style: SweetAlertStyle.success,title: "Success");
                                 // return false to keep dialog
                                 return false;
@@ -581,11 +595,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         SweetAlert.show(context,
                             title: "Subscription",
-                            subtitle: "Get yourself subscibed",
+                            subtitle: "Please subscribe to have full access to Elite Edgeware",
                             style: SweetAlertStyle.confirm,
-                            confirmButtonText: "Ok",
+                            confirmButtonText: "Subscribe",
                             showCancelButton: true, onPress: (bool isConfirm) {
                               if (isConfirm) {
+
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            makePayment(cost: "11.99",)));
                                 //SweetAlert.show(context,style: SweetAlertStyle.success,title: "Success");
                                 // return false to keep dialog
                                 return false;
@@ -677,8 +697,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             subtitle: "You are already subscribed",
                             style: SweetAlertStyle.confirm,
                             confirmButtonText: "Ok",
-                            showCancelButton: true, onPress: (bool isConfirm) {
+
+                            showCancelButton: false, onPress: (bool isConfirm) {
                               if (isConfirm) {
+                                Navigator.pop(context);
                                 //SweetAlert.show(context,style: SweetAlertStyle.success,title: "Success");
                                 // return false to keep dialog
                                 return false;
