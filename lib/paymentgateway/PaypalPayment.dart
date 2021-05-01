@@ -28,7 +28,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
   PaypalServices services = PaypalServices();
 
   // you can change default currency according to your need
-  Map<dynamic,dynamic> defaultCurrency = {"symbol": "EUR", "decimalDigits": 2, "symbolBeforeTheNumber": true, "currency": "EURO"};
+  Map<dynamic,dynamic> defaultCurrency = {"symbol": "EUR", "decimalDigits": 2, "symbolBeforeTheNumber": true, "currency": "EUR"};
 
   bool isEnableShipping = false;
   bool isEnableAddress = false;
@@ -150,7 +150,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
 
   @override
   Widget build(BuildContext context) {
-    print(checkoutUrl);
+    var authState = Provider.of<AuthState>(context, listen: false);
 
     if (checkoutUrl != null) {
       return Scaffold(
@@ -172,18 +172,19 @@ class PaypalPaymentState extends State<PaypalPayment> {
                 services
                     .executePayment(executeUrl, payerID, accessToken)
                     .then((id) {
+
                   widget.onFinish(id);
 
-                  var authState = Provider.of<AuthState>(context, listen: false);
                   UserModel user=authState.userModel;
                   user.isSubscribed=true;
                   user.subscribeDate=DateTime.now().toString();
                   authState.updateUserProfile(user);
+
                   //Payment success
 
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) =>
-                          WatchSplashScreen()), (Route<dynamic> route) => false);
+                  // Navigator.of(context).pushAndRemoveUntil(
+                  //     MaterialPageRoute(builder: (context) =>
+                  //         WatchSplashScreen()), (Route<dynamic> route) => false);
                 });
               } else {
                 Navigator.of(context).pop();

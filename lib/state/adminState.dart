@@ -24,6 +24,7 @@ class AdminState extends AppState {
   List<Notifications> _notifications=List<Notifications>();
   String _termsconditionlink="";
   String _privacylink="";
+  String _rulesurl="";
   List<String> _brandnames=List<String>();
   List<UserModel> _contestusers=List<UserModel>();
   List<watch_model_Model> _brandmodel=new List<watch_model_Model>();
@@ -106,6 +107,14 @@ bool _enablecontest;
     }
     else{
       return _terms_and_condition;
+    }
+  }
+  String get rules_url{
+    if(_rulesurl==null){
+      return "";
+    }
+    else{
+      return _rulesurl;
     }
   }
 
@@ -245,6 +254,7 @@ bool _enablecontest;
       _terms_and_condition=(snapshot.value["text"]).toString();
 
       _termsconditionlink=(snapshot.value["pdf_url"]).toString();
+      _rulesurl=(snapshot.value["rules_url"]).toString();
 
       _privacylink=(snapshot.value["privacy_url"]).toString();
     } else {

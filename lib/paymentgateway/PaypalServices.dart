@@ -5,8 +5,8 @@ import 'package:http_auth/http_auth.dart';
 
 class PaypalServices {
 
-  String domain = "https://api.sandbox.paypal.com"; // for sandbox mode
-//  String domain = "https://api.paypal.com"; // for production mode
+ // String domain = "https://api.sandbox.paypal.com"; // for sandbox mode
+  String domain = "https://api.paypal.com"; // for production mode
 
   // change clientId and secret with your own, provided by paypal
   String clientId = 'ASa7A7UUD6yVpUDsG01WOTZhr8SC3_RfyOzz926UQnjC3hVjVwz7RE1ZfUl_Yz7Cy7OvYImWsK8ydjyO';
@@ -77,9 +77,12 @@ class PaypalServices {
           });
 
       final body = convert.jsonDecode(response.body);
+      print(response.statusCode);
       if (response.statusCode == 200) {
+        print(body);
         return body["id"];
       }
+
       return null;
     } catch (e) {
       rethrow;

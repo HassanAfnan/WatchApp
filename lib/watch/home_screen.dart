@@ -36,6 +36,7 @@ import 'package:flutter_twitter_clone/watch/setting/help.dart';
 import 'package:flutter_twitter_clone/watch/setting/notifications.dart';
 import 'package:flutter_twitter_clone/watch/setting/privacy.dart';
 import 'package:flutter_twitter_clone/watch/setting/profile_screen.dart';
+import 'package:flutter_twitter_clone/watch/setting/rules.dart';
 import 'package:flutter_twitter_clone/watch/setting/terms.dart';
 import 'package:flutter_twitter_clone/watch/setting/terms_conditions.dart';
 import 'package:flutter_twitter_clone/watch/settings.dart';
@@ -771,6 +772,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: ListTile(
                       title: Text(
                         'Privacy Policy',
+                        style: TextStyle(
+                            color: notifier.darkTheme ? Colors.white : primary),
+                      ),
+                      leading: Icon(
+                        Icons.privacy_tip,
+                        color: notifier.darkTheme ? Colors.white : primary,
+                      ),
+                    ),
+                  ),   InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Rules()));
+                    },
+                    child: ListTile(
+                      title: Text(
+                        'Giveaway Rulres',
                         style: TextStyle(
                             color: notifier.darkTheme ? Colors.white : primary),
                       ),

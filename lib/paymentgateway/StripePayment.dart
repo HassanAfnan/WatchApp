@@ -38,7 +38,7 @@ class _StripePaymentState extends State<StripePayment> {
     super.initState();
     loader=CustomLoader();
    strip.StripePayment.setOptions(
-        strip.StripeOptions(publishableKey: "pk_test_51IhtZHLwf8p7hancgtg4O1ycYT3dpe9rWgkwE9GG5cUA60CPmSwzVmwjXWin2F6BUeM5p4QV9Hm17fBDHm3YNgFI00b8AhfYpN"));
+        strip.StripeOptions(publishableKey: "pk_live_51IhtZHLwf8p7hancXsPOH2ejEmtYOPzMULzOWL3QJUodq8oV0BRqPj6kKdlOB0ciqoYbtHLrQgljJFw0CJlk63ME00XL2FADh3"));
 }
   @override
   Widget build(BuildContext context) {
