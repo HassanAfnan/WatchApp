@@ -787,7 +787,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     child: ListTile(
                       title: Text(
-                        'Giveaway Rulres',
+                        'Giveaway Rules',
                         style: TextStyle(
                             color: notifier.darkTheme ? Colors.white : primary),
                       ),
