@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:badges/badges.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -25,6 +26,7 @@ import 'package:flutter_twitter_clone/state/notificationState.dart';
 import 'package:flutter_twitter_clone/state/searchState.dart';
 import 'package:flutter_twitter_clone/watch/DummyData/dummy.dart';
 import 'package:flutter_twitter_clone/watch/ThemeModes/Theme.dart';
+import 'package:flutter_twitter_clone/watch/Webview.dart';
 import 'package:flutter_twitter_clone/watch/buy_screen.dart';
 import 'package:flutter_twitter_clone/watch/contact.dart';
 import 'package:flutter_twitter_clone/watch/makePayment.dart';
@@ -106,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
     state.getContestUsers();
     for (int i = 0; i < state.sliders.length; i++) {
       setState(() {
-        _sliders.add(NetworkImage(state.sliders[i]));
+        _sliders.add(NetworkImage(state.sliders[i].slider_url));
       });
       if (i == state.sliders.length - 1) {
         setState(() {
@@ -152,6 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     var authstate = Provider.of<AuthState>(context);
 
+    final adminstate = Provider.of<AdminState>(context, listen: false);
     return Consumer<FeedState>(builder: (context, state, child) {
       final List<watchModel> list = state.getWatches(authstate.userModel);
 
@@ -222,19 +225,39 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.white,
                       size: 40,
                     )
-                  : WidgetAnimator(new Container(
+                  : WidgetAnimator(
+                  new Container(
                       height: 200.0,
-                      child: new Carousel(
-                        boxFit: BoxFit.cover,
-                        images: _sliders,
-                        autoplay: true,
-                        animationCurve: Curves.fastOutSlowIn,
-                        animationDuration: Duration(milliseconds: 1000),
-                        dotColor: secondary,
-//        dotSize: 4.0,
-//        indicatorBgPadding: 2.0,
-                      ),
-                    )),
+            child: CarouselSlider(
+              options: CarouselOptions(),
+              items: adminstate.sliders.map((item) => Container(
+                child: GestureDetector(
+                  onTap: () {
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                WebViewExample(url: item.link_url,)));
+                  },
+                  child: Center(
+                      child: Image.network(item.slider_url, fit: BoxFit.cover, width: 1000)
+                  ),
+                ),
+              )).toList(),
+            )
+        ),
+//                       child: new Carousel(
+//                         boxFit: BoxFit.cover,
+//                         images: _sliders,
+//                         autoplay: true,
+//                         animationCurve: Curves.fastOutSlowIn,
+//                         animationDuration: Duration(milliseconds: 1000),
+//                         dotColor: secondary,
+// //        dotSize: 4.0,
+// //        indicatorBgPadding: 2.0,
+//                       ),
+                    ),
               SizedBox(
                 height: 10.0,
               ),
