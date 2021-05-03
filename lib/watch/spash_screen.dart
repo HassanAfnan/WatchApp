@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_twitter_clone/helper/theme.dart';
 import 'package:flutter_twitter_clone/state/authState.dart';
 import 'package:flutter_twitter_clone/watch/home_screen.dart';
 import 'package:flutter_twitter_clone/watch/signin_screen.dart';
+import 'package:flutter_twitter_clone/welcome.dart';
 import 'package:provider/provider.dart';
 
 class WatchSplashScreen extends StatefulWidget {
@@ -91,17 +91,18 @@ Widget _body(){
     ),
   );
 }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     Timer(
-        Duration(seconds:8),
+        Duration(seconds:5),
             (){
-              var state = Provider.of<AuthState>(context, listen: false);
+              //var state = Provider.of<AuthState>(context, listen: false);
               // state.authStatus = AuthStatus.NOT_DETERMINED;
-              state.getCurrentUser();
-
+              //state.getCurrentUser();
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Welcome()));
           }
     );
   }

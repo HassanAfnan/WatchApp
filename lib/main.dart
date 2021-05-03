@@ -40,7 +40,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<ChatState>(create: (_) => ChatState()),
         ChangeNotifierProvider<SearchState>(create: (_) => SearchState()),
         ChangeNotifierProvider<AdminState>(create: (_) => AdminState()),
-
         ChangeNotifierProvider<ComposeTweetState>(create: (_) => ComposeTweetState()),
         ChangeNotifierProvider<NotificationState>(create: (_) => NotificationState()),
         ChangeNotifierProvider(create: (_) => ThemeNotifier())

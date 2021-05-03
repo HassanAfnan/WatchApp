@@ -304,6 +304,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             title: Text(
                               list[index].title,
                               textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 7,fontWeight: FontWeight.w900),
                             ),
                           ),
                         ),
@@ -313,7 +314,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 10,
-                      mainAxisSpacing: 10),
+                      mainAxisSpacing: 10
+                  ),
                 ),
               ),
             ],
