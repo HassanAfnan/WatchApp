@@ -28,7 +28,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
   PaypalServices services = PaypalServices();
 
   // you can change default currency according to your need
-  Map<dynamic,dynamic> defaultCurrency = {"symbol": "EUR", "decimalDigits": 2, "symbolBeforeTheNumber": true, "currency": "EUR"};
+  Map<dynamic,dynamic> defaultCurrency = {"symbol": "GBP", "decimalDigits": 2, "symbolBeforeTheNumber": true, "currency": "GBP"};
 //  Map<dynamic,dynamic> defaultCurrency = {"symbol": "USD ", "decimalDigits": 2, "symbolBeforeTheNumber": true, "currency": "USD"};
 
   bool isEnableShipping = false;
@@ -73,7 +73,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
   }
 
   // item name, price and quantity
-  String itemName = 'iPhone X';
+  String itemName = 'Elite Edge Ware Premium Package';
   int quantity = 1;
 
   Map<String, dynamic> getOrderParams() {
@@ -98,8 +98,8 @@ class PaypalPaymentState extends State<PaypalPayment> {
     String addressCity = 'Delhi';
     String addressStreet = 'Mathura Road';
     String addressZipCode = '110014';
-    String addressCountry = 'India';
-    String addressState = 'Delhi';
+    String addressCountry = authState.userModel.location;
+    String addressState =  authState.userModel.location;
     String addressPhoneNumber = '+919990119091';
 
     Map<String, dynamic> temp = {

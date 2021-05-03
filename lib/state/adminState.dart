@@ -11,6 +11,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_twitter_clone/helper/enum.dart';
 import 'package:flutter_twitter_clone/helper/utility.dart';
+import 'package:flutter_twitter_clone/model/cart.dart';
 import 'package:flutter_twitter_clone/model/faq.dart';
 import 'package:flutter_twitter_clone/model/notifications.dart';
 import 'package:flutter_twitter_clone/model/user.dart';
@@ -18,7 +19,7 @@ import 'package:flutter_twitter_clone/model/watch_model_Model.dart';
 import 'appState.dart';
 
 class AdminState extends AppState {
-  List<String> _sliders=List<String>();
+  List<Slider> _sliders=List<Slider>();
   String _terms_and_condition="";
   List<Faqs> _faqs=List<Faqs>();
   List<Notifications> _notifications=List<Notifications>();
@@ -180,7 +181,7 @@ bool _enablecontest;
     notifyListeners();
 
   }
-  List<String> get sliders {
+  List<Slider> get sliders {
     if (_sliders == null) {
       return null;
     } else {
@@ -330,12 +331,15 @@ String key=DateTime.now().millisecondsSinceEpoch.toString();
   getslidersfromdatabase() async {
     var snapshot = await kDatabase.child('sliders').once();
     if (snapshot.value != null) {
-      List<dynamic> slides = snapshot.value;
-      for(int i=0;i<slides.length;i++){
-            if(slides[i]!=null){
-              _sliders.add(slides[i]);
-            }
-      }
+
+      var map=snapshot.value;
+
+      map.forEach((key, value) {
+
+        _sliders.add(Slider.fromJson(value));
+
+
+      });
     } else {
       return null;
     }
