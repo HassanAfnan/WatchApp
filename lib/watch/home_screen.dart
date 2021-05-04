@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:badges/badges.dart';
-import 'package:carousel_pro/carousel_pro.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -227,23 +225,27 @@ class _HomeScreenState extends State<HomeScreen> {
                     )
                   : WidgetAnimator(
                   new Container(
-                      height: 200.0,
-            child: CarouselSlider(
-              options: CarouselOptions(),
-              items: adminstate.sliders.map((item) => Container(
-                child: GestureDetector(
-                  onTap: () {
-
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                WebViewExample(url: item.link_url,)));
-                  },
-                  child: Center(
-                      child: Image.network(item.slider_url, fit: BoxFit.cover, width: 1000)
-                  ),
-                ),
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      width: MediaQuery.of(context).size.width,
+                      child: CarouselSlider(
+              options: CarouselOptions(
+                //aspectRatio: 16/9,
+                //viewportFraction: 0.8,
+                viewportFraction: 1,
+                autoPlay: true,
+                autoPlayInterval: Duration(seconds: 3),
+                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                autoPlayCurve: Curves.fastOutSlowIn,
+              ),
+              items: adminstate.sliders.map((item) => GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              WebViewExample(url: item.link_url,)));
+                },
+                child: Image.network(item.slider_url,fit: BoxFit.fill,height: 300,width: MediaQuery.of(context).size.width),
               )).toList(),
             )
         ),
@@ -293,7 +295,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             backgroundColor: Colors.black87,
                             leading: IconButton(
                               icon: Icon(
-                                state.favouriteslist.indexWhere((element) => element.key==list[index].key)>=0?Icons.favorite:Icons.favorite_border,
+                                state.favouriteslist==null?Icons.favorite_border:state.favouriteslist.indexWhere((element) => element.key==list[index].key)>=0?Icons.favorite:Icons.favorite_border,
                                 color: Colors.red,
                               ),
                               onPressed: () {
@@ -626,7 +628,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             confirmButtonText: "Subscribe",
                             showCancelButton: true, onPress: (bool isConfirm) {
                               if (isConfirm) {
-
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(

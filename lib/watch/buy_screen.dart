@@ -100,82 +100,41 @@ class _BuyScreenState extends State<BuyScreen> {
                   ),
                 ),
                  Expanded(
-                  child: GridView.builder(
-                    primary: false,
-                    itemCount: list==null?0:list.length,
-                    itemBuilder: (cyx, index) {
-                      return WidgetAnimator(Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: GridTile(
-                            child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => WatchDetail(
-                                    feed: list[index],
-                                  )));
-                                },
-                                child: Hero(
-                                  tag: list[index].key,
-                                  child: FadeInImage(
-                                    placeholder: NetworkImage(list[index].imagePath),
-                                    image: NetworkImage(list[index].imagePath),
-                                    fit: BoxFit.cover,
-                                  ),
-                                )),
-                            footer: GridTileBar(
-                              backgroundColor: Colors.black87,
-                              leading: IconButton(
-                                icon: Icon(
-                                  state.favouriteslist.indexWhere((element) => element.key==list[index].key)>=0?Icons.favorite:Icons.favorite_border,
-                                  color: Colors.red,
-                                ),
-                                onPressed: () {
-
-                                  if(  state.favouriteslist.indexWhere((element) => element.key==list[index].key)>=0){
-
-                                    state.removeFromFavourites(authstate.userId, list[index].key,list[index]);
-
-                                  }
-                                  else {
-                                    try {
-                                      state.createFavourite(
-                                          list[index], authstate.userId);
-                                      customSnackBar(_scaffoldKey,"Added to your wishlist");
-                                    }
-                                    catch(e){print(e);}
-                                  }
-                                },
-                              ),
-                              trailing: IconButton(
-                                icon: Icon(
-                                  Icons.chat,
-                                  color: Theme.of(context).accentColor,
-                                ),
-                                onPressed: () {
-
-
-                                  final chatState = Provider.of<ChatState>(context, listen: false);
-                                  chatState.setChatUser = list[index].user;
-                                  Navigator.pushNamed(context, '/ChatScreenPage');
-
-                                },
-                              ),
-                              title: Text(
-                                list[index].title,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ));
-                    },
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10),
-                  ),
-                )
+                   child: ListView.builder(
+                       itemCount: list==null?0:list.length,
+                       itemBuilder: (context,index){
+                         return WidgetAnimator(Padding(
+                           padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 8.0),
+                           child: GestureDetector(
+                             onTap: () {
+                               Navigator.push(context, MaterialPageRoute(builder: (context) => WatchDetail(
+                                 feed: list[index],
+                               )));
+                             },
+                             child: Card(
+                               elevation: 5,
+                               child: ListTile(
+                                 leading: Container(
+                                     width: 60,
+                                     height: 60,
+                                     child: Image.network(list[index].imagePath)),
+                                 title: Padding(
+                                   padding: const EdgeInsets.only(top:8.0,left:8.0,right: 8.0),
+                                   child: Text(list[index].title),
+                                 ),
+                                 subtitle: Container(
+                                     height: 45,
+                                     width: 300,
+                                     child: Padding(
+                                       padding: const EdgeInsets.all(8.0),
+                                       child: Text(list[index].description),
+                                     )),
+                               ),
+                             ),
+                           ),
+                         ));
+                       }),
+                 ),
               ],
             )));
      // }
