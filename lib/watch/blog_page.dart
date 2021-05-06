@@ -1,27 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_twitter_clone/animations/bottomAnimation.dart';
-import 'package:flutter_twitter_clone/state/feedState.dart';
-import 'package:flutter_twitter_clone/watch/DummyData/dummy.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_twitter_clone/model/blog_model.dart';
 
-class NewsScreen extends StatefulWidget {
+class BlogPage extends StatefulWidget {
   @override
-  _NewsScreenState createState() => _NewsScreenState();
+  _BlogPageState createState() => _BlogPageState();
 }
 
-class _NewsScreenState extends State<NewsScreen> {
-
+class _BlogPageState extends State<BlogPage> {
   @override
   Widget build(BuildContext context) {
-
-    var state = Provider.of<FeedState>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: Text("News"),
+        title: Text("Blog"),
       ),
       body: ListView.builder(
-          itemCount: state.newslist==null?0:state.newslist.length,
+          itemCount: blog ==null?0:blog.length,
           itemBuilder: (context,index){
             return WidgetAnimator(Padding(
               padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 8.0),
@@ -31,17 +25,17 @@ class _NewsScreenState extends State<NewsScreen> {
                   leading: Container(
                       width: 60,
                       height: 60,
-                      child: Image.network(state.newslist[index].image)),
+                      child: Image.network(blog[index].image)),
                   title: Padding(
                     padding: const EdgeInsets.only(top:8.0,left:8.0,right: 8.0),
-                    child: Text(state.newslist[index].title),
+                    child: Text(blog[index].title),
                   ),
                   subtitle: Container(
                       height: 45,
                       width: 300,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(state.newslist[index].description),
+                        child: Text(blog[index].description),
                       )),
                 ),
               ),

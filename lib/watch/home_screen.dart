@@ -25,6 +25,7 @@ import 'package:flutter_twitter_clone/state/searchState.dart';
 import 'package:flutter_twitter_clone/watch/DummyData/dummy.dart';
 import 'package:flutter_twitter_clone/watch/ThemeModes/Theme.dart';
 import 'package:flutter_twitter_clone/watch/Webview.dart';
+import 'package:flutter_twitter_clone/watch/blog_page.dart';
 import 'package:flutter_twitter_clone/watch/buy_screen.dart';
 import 'package:flutter_twitter_clone/watch/contact.dart';
 import 'package:flutter_twitter_clone/watch/makePayment.dart';
@@ -263,86 +264,182 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 10.0,
               ),
-              Expanded(
-                child: GridView.builder(
-                  primary: false,
-                  itemCount: list == null ? 0 : list.length,
-                  itemBuilder: (cyx, index) {
-
-                    return WidgetAnimator(Padding(
+              WidgetAnimator(Row(
+                children: [
+                  Expanded(
+                    child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: GridTile(
-                          child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => WatchDetail(
-                                          feed: list[index],
-                                            )));
-                              },
-                              child: Hero(
-                                tag:list[index].key,
-                                child: FadeInImage(
-                                  placeholder: NetworkImage(list[index].imagePath),
-                                  image: NetworkImage(list[index].imagePath),
-                                  fit: BoxFit.cover,
-                                ),
-                              )),
-                          footer: GridTileBar(
-                            backgroundColor: Colors.black87,
-                            leading: IconButton(
-                              icon: Icon(
-                                state.favouriteslist==null?Icons.favorite_border:state.favouriteslist.indexWhere((element) => element.key==list[index].key)>=0?Icons.favorite:Icons.favorite_border,
-                                color: Colors.red,
-                              ),
-                              onPressed: () {
-                                if(  state.favouriteslist.indexWhere((element) => element.key==list[index].key)>=0){
-
-                                  state.removeFromFavourites(authstate.userId, list[index].key,list[index]);
-
-                                }
-                              else {
-                                try {
-                                  state.createFavourite(
-                                      list[index], authstate.userId);
-                                  customSnackBar(_scaffoldKey,"Added to your wishlist");
-                                }
-                                catch(e){print(e);}
-                              }
-                              },
-                            ),
-                            trailing: IconButton(
-                              icon: Icon(
-                                Icons.chat,
-                                color: Theme.of(context).accentColor,
-                              ),
-                              onPressed: () {
-
-                                final chatState = Provider.of<ChatState>(context, listen: false);
-                                chatState.setChatUser = list[index].user;
-                                Navigator.pushNamed(context, '/ChatScreenPage');
-                              },
-                            ),
-                            title: Text(
-                              list[index].title,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 7,fontWeight: FontWeight.w900),
-                            ),
+                      child: GestureDetector(
+                        onTap: (){
+                          Navigator.push(context,MaterialPageRoute(builder: (context) => FeedPage()));
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(12))
+                          ),
+                          elevation: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top:28.0,bottom: 28.0),
+                            child: Text("Advert Reel",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
                           ),
                         ),
                       ),
-                    ));
-                  },
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10
+                    ),
                   ),
-                ),
-              ),
+                ],
+              ),),
+              WidgetAnimator(Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: (){
+                          Navigator.push(context,MaterialPageRoute(builder: (context) => BuyScreen()));
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(12))
+                          ),
+                          elevation: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top:28.0,bottom: 28.0),
+                            child: Text("Buy/Sale/Trade",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),),
+              WidgetAnimator(Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: (){
+                          Navigator.push(context,MaterialPageRoute(builder: (context) => BlogPage()));
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(12))
+                          ),
+                          elevation: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top:28.0,bottom: 28.0),
+                            child: Text("Blog Reel",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),),
+              WidgetAnimator(Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: (){
+                          Navigator.push(context,MaterialPageRoute(builder: (context) => NewsScreen()));
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(12))
+                          ),
+                          elevation: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top:28.0,bottom: 28.0),
+                            child: Text("News Reel",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),)
+              // Expanded(
+              //   child: GridView.builder(
+              //     primary: false,
+              //     itemCount: list == null ? 0 : list.length,
+              //     itemBuilder: (cyx, index) {
+              //
+              //       return WidgetAnimator(Padding(
+              //         padding: const EdgeInsets.all(8.0),
+              //         child: ClipRRect(
+              //           borderRadius: BorderRadius.circular(20),
+              //           child: GridTile(
+              //             child: GestureDetector(
+              //                 onTap: () {
+              //                   Navigator.push(
+              //                       context,
+              //                       MaterialPageRoute(
+              //                           builder: (context) => WatchDetail(
+              //                             feed: list[index],
+              //                               )));
+              //                 },
+              //                 child: Hero(
+              //                   tag:list[index].key,
+              //                   child: FadeInImage(
+              //                     placeholder: NetworkImage(list[index].imagePath),
+              //                     image: NetworkImage(list[index].imagePath),
+              //                     fit: BoxFit.cover,
+              //                   ),
+              //                 )),
+              //             footer: GridTileBar(
+              //               backgroundColor: Colors.black87,
+              //               leading: IconButton(
+              //                 icon: Icon(
+              //                   state.favouriteslist==null?Icons.favorite_border:state.favouriteslist.indexWhere((element) => element.key==list[index].key)>=0?Icons.favorite:Icons.favorite_border,
+              //                   color: Colors.red,
+              //                 ),
+              //                 onPressed: () {
+              //                   if(  state.favouriteslist.indexWhere((element) => element.key==list[index].key)>=0){
+              //
+              //                     state.removeFromFavourites(authstate.userId, list[index].key,list[index]);
+              //
+              //                   }
+              //                 else {
+              //                   try {
+              //                     state.createFavourite(
+              //                         list[index], authstate.userId);
+              //                     customSnackBar(_scaffoldKey,"Added to your wishlist");
+              //                   }
+              //                   catch(e){print(e);}
+              //                 }
+              //                 },
+              //               ),
+              //               trailing: IconButton(
+              //                 icon: Icon(
+              //                   Icons.chat,
+              //                   color: Theme.of(context).accentColor,
+              //                 ),
+              //                 onPressed: () {
+              //
+              //                   final chatState = Provider.of<ChatState>(context, listen: false);
+              //                   chatState.setChatUser = list[index].user;
+              //                   Navigator.pushNamed(context, '/ChatScreenPage');
+              //                 },
+              //               ),
+              //               title: Text(
+              //                 list[index].title,
+              //                 textAlign: TextAlign.center,
+              //                 style: TextStyle(fontSize: 7,fontWeight: FontWeight.w900),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       ));
+              //     },
+              //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              //         crossAxisCount: 2,
+              //         crossAxisSpacing: 10,
+              //         mainAxisSpacing: 10
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

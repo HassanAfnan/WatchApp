@@ -234,7 +234,20 @@ class _TweetBody extends StatelessWidget {
                   Container(child: trailing == null ? SizedBox() : trailing),
                 ],
               ),
-
+              UrlText(
+                text: model.description,
+                onHashTagPressed: (tag) {
+                  cprint(tag);
+                },
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: descriptionFontSize,
+                    fontWeight: descriptionFontWeight),
+                urlStyle: TextStyle(
+                    color: Colors.blue,
+                    fontSize: descriptionFontSize,
+                    fontWeight: descriptionFontWeight),
+              ),
               Divider(),
               Row(
                 children: [
@@ -271,29 +284,11 @@ class _TweetBody extends StatelessWidget {
                 ],
               ),
               Divider(),
-
-              Row(
-                children: [
-
-
-
-                  UrlText(
-                    text: model.description,
-                    onHashTagPressed: (tag) {
-                      cprint(tag);
-                    },
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: descriptionFontSize,
-                        fontWeight: descriptionFontWeight),
-                    urlStyle: TextStyle(
-                        color: Colors.blue,
-                        fontSize: descriptionFontSize,
-                        fontWeight: descriptionFontWeight),
-                  ),
-
-                ],
-              )
+              // Row(
+              //   children: [
+              //
+              //   ],
+              // )
             ],
           ),
         ),

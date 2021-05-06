@@ -41,7 +41,7 @@ dependencies:
   firebase_messaging: ^6.0.13
   google_sign_in: "^4.5.1" 
   intl: ^0.16.1
-
+  square_in_app_payments:
   carousel_slider: ^3.0.0
   duration: any
   stripe_sdk: ^3.0.1+1
