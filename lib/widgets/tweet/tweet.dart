@@ -199,7 +199,8 @@ class _TweetBody extends StatelessWidget {
                         ConstrainedBox(
                           constraints: BoxConstraints(
                               minWidth: 0, maxWidth: fullWidth(context) * .5),
-                          child: TitleText(model.user.displayName,
+                          child: TitleText(
+                              model.user.displayName,
                               fontSize: 16,
                               fontWeight: FontWeight.w800,
                               overflow: TextOverflow.ellipsis),
@@ -240,7 +241,6 @@ class _TweetBody extends StatelessWidget {
                   cprint(tag);
                 },
                 style: TextStyle(
-                    color: Colors.black,
                     fontSize: descriptionFontSize,
                     fontWeight: descriptionFontWeight),
                 urlStyle: TextStyle(

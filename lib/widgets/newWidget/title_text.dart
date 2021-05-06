@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_twitter_clone/helper/theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TitleText extends StatelessWidget {
@@ -23,8 +24,8 @@ class TitleText extends StatelessWidget {
       text,
       style: GoogleFonts.muli(
         fontSize: fontSize,
-        fontWeight: fontWeight,
-        color: color,
+        fontWeight: FontWeight.bold,
+        color: Colors.blue,
       ),
       textAlign: textAlign,
       overflow: overflow,
