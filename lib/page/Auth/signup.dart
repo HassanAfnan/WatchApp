@@ -151,10 +151,10 @@ class _SignupState extends State<Signup> {
       customSnackBar(_scaffoldKey, 'Please enter name');
       return;
     }
-    if (_emailController.text.length > 27) {
-      customSnackBar(_scaffoldKey, 'Name length cannot exceed 27 character');
-      return;
-    }
+    // if (_emailController.text.length > 27) {
+    //   customSnackBar(_scaffoldKey, 'Name length cannot exceed 27 character');
+    //   return;
+    // }
     if (_emailController.text == null ||
         _emailController.text.isEmpty ||
         _passwordController.text == null ||

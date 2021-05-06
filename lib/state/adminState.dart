@@ -8,9 +8,13 @@
 //
 //
 // }
+import 'dart:io';
+
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_twitter_clone/helper/enum.dart';
 import 'package:flutter_twitter_clone/helper/utility.dart';
+import 'package:flutter_twitter_clone/model/blog_model.dart';
 import 'package:flutter_twitter_clone/model/cart.dart';
 import 'package:flutter_twitter_clone/model/faq.dart';
 import 'package:flutter_twitter_clone/model/notifications.dart';
@@ -18,6 +22,7 @@ import 'package:flutter_twitter_clone/model/user.dart';
 import 'package:flutter_twitter_clone/model/watch_model_Model.dart';
 import 'appState.dart';
 
+import 'package:path/path.dart' as Path;
 class AdminState extends AppState {
   List<Slider> _sliders=List<Slider>();
   String _terms_and_condition="";
@@ -27,6 +32,7 @@ class AdminState extends AppState {
   String _privacylink="";
   String _rulesurl="";
   List<String> _brandnames=List<String>();
+  List<BlogModel> _blogs=List<BlogModel>();
   List<UserModel> _contestusers=List<UserModel>();
   List<watch_model_Model> _brandmodel=new List<watch_model_Model>();
   int _days,_hours,_mins,_secs;
@@ -49,6 +55,14 @@ bool _enablecontest;
     }
     else{
       return _contestusers;
+    }
+
+  }  List<BlogModel> get blogs{
+    if(_blogs==null){
+      return null;
+    }
+    else{
+      return _blogs;
     }
 
   }
@@ -164,6 +178,23 @@ bool _enablecontest;
 
   }
 
+  getBlogs() async {
+    var snapshot = await kDatabase.child('blogs').once();
+    if (snapshot.value != null) {
+
+      var map=snapshot.value;
+
+      map.forEach((key, value) {
+        _blogs.add(BlogModel.fromJson(value));
+
+
+      });
+    } else {
+      return null;
+    }
+    notifyListeners();
+
+  }
   getContestUsers() async {
     var snapshot = await kDatabase.child('contest').once();
     if (snapshot.value != null) {
@@ -187,6 +218,41 @@ bool _enablecontest;
     } else {
       return _sliders;
     }
+  }
+  Future<String> uploadBlogFile(File file) async {
+    try {
+      notifyListeners();
+      var storageReference = FirebaseStorage.instance
+          .ref()
+          .child("blogs")
+          .child(Path.basename(file.path));
+      await storageReference.putFile(file);
+
+      var url = await storageReference.getDownloadURL();
+      if (url != null) {
+        return url;
+      }
+      return null;
+    } catch (error) {
+      cprint(error, errorIn: 'uploadFileBlog');
+      return null;
+    }
+  }
+
+  createBlog(BlogModel model) {
+    ///  Create tweet in [Firebase kDatabase]
+    notifyListeners();
+    String key=DateTime.now().millisecondsSinceEpoch.toString();
+    model.key=key;
+    try {
+      kDatabase.child('blogs').child(key).set(model.toJson());
+      _blogs.add(model);
+
+      notifyListeners();
+    } catch (error) {
+      cprint(error, errorIn: 'createBlog');
+    }
+    notifyListeners();
   }
   List<String> get brandnames {
     if (_brandnames == null) {

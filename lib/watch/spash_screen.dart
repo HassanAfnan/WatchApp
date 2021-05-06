@@ -66,6 +66,7 @@ class _WatchSplashScreenState extends State<WatchSplashScreen> {
     await remoteConfig.fetch(expiration: const Duration(minutes: 1));
     await remoteConfig.activateFetched();
     var data = remoteConfig.getString('appVersion');
+    print(data);
     if (data != null && data.isNotEmpty) {
       return jsonDecode(data)["key"];
     } else {
@@ -152,19 +153,22 @@ class _WatchSplashScreenState extends State<WatchSplashScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      timer();
+    });
     super.initState();
-    Timer(
-        Duration(seconds:5),
-            (){
-              //var state = Provider.of<AuthState>(context, listen: false);
-              // state.authStatus = AuthStatus.NOT_DETERMINED;
-              //state.getCurrentUser();
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Welcome()));
-          }
-    );
   }
-
+  void timer() async {
+    final isAppUpdated = await _checkAppVersion();
+    if (isAppUpdated) {
+      print("App is updated");
+      Future.delayed(Duration(seconds: 1)).then((_) {
+        var state = Provider.of<AuthState>(context, listen: false);
+        // state.authStatus = AuthStatus.NOT_DETERMINED;
+        state.getCurrentUser();
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
 

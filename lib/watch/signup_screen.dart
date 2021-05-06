@@ -254,10 +254,10 @@ class _RegisterState extends State<Register> {
       customSnackBar(_scaffoldKey, 'Please enter name');
       return;
     }
-    if (email.text.length > 27) {
-      customSnackBar(_scaffoldKey, 'Name length cannot exceed 27 character');
-      return;
-    }
+    // if (email.text.length > 27) {
+    //   customSnackBar(_scaffoldKey, 'Name length cannot exceed 27 character');
+    //   return;
+    // }
     if (email.text == null ||
         email.text.isEmpty ||
         password.text == null ||

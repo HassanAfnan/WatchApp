@@ -2,7 +2,25 @@ class BlogModel{
   String title;
   String description;
   String image;
-  BlogModel(this.title,this.description,this.image);
+  String key;
+  BlogModel(this.title,this.description,this.image); toJson() {
+    return {
+      "key":key,
+      "title":title,
+      "description":description,
+      "image":image,
+
+
+    };
+  }
+
+  BlogModel.fromJson(Map<dynamic, dynamic> map) {
+    key = map['key'];
+    description = map['description'];
+   title=map["title"];
+   image=map["image"];
+
+  }
 }
 
 List<BlogModel> blog = [

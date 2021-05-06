@@ -105,6 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
     state.getNotification();
     state.getContestSetting();
     state.getContestUsers();
+    state.getBlogs();
     for (int i = 0; i < state.sliders.length; i++) {
       setState(() {
         _sliders.add(NetworkImage(state.sliders[i].slider_url));
