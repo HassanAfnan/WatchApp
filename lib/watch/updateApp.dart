@@ -42,7 +42,7 @@ class _UpdateAppState extends State<UpdateApp> with WidgetsBindingObserver {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.asset("assets/images/icon-480.png"),
+            Image.asset("assets/LOGO.png"),
             TitleText(
               "New Update is available",
               fontSize: 25,

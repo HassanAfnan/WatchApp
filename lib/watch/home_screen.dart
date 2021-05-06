@@ -217,38 +217,39 @@ class _HomeScreenState extends State<HomeScreen> {
             feedState.getDataFromDatabase();
             return Future.value(true);
           },
-          child: Column(
-            children: [
-              loader
-                  ? SpinKitRipple(
-                      color: Colors.white,
-                      size: 40,
-                    )
-                  : WidgetAnimator(
-                  new Container(
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      width: MediaQuery.of(context).size.width,
-                      child: CarouselSlider(
-              options: CarouselOptions(
-                //aspectRatio: 16/9,
-                //viewportFraction: 0.8,
-                viewportFraction: 1,
-                autoPlay: true,
-                autoPlayInterval: Duration(seconds: 3),
-                autoPlayAnimationDuration: Duration(milliseconds: 800),
-                autoPlayCurve: Curves.fastOutSlowIn,
-              ),
-              items: adminstate.sliders.map((item) => GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              WebViewExample(url: item.link_url,)));
-                },
-                child: Image.network(item.slider_url,fit: BoxFit.fill,height: 300,width: MediaQuery.of(context).size.width),
-              )).toList(),
-            )
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                loader
+                    ? SpinKitRipple(
+                        color: Colors.white,
+                        size: 40,
+                      )
+                    : WidgetAnimator(
+                    new Container(
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        width: MediaQuery.of(context).size.width,
+                        child: CarouselSlider(
+                options: CarouselOptions(
+                  //aspectRatio: 16/9,
+                  //viewportFraction: 0.8,
+                  viewportFraction: 1,
+                  autoPlay: true,
+                  autoPlayInterval: Duration(seconds: 3),
+                  autoPlayAnimationDuration: Duration(milliseconds: 800),
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                ),
+                items: adminstate.sliders.map((item) => GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                WebViewExample(url: item.link_url,)));
+                  },
+                  child: Image.network(item.slider_url,fit: BoxFit.fill,height: 300,width: MediaQuery.of(context).size.width),
+                )).toList(),
+              )
         ),
 //                       child: new Carousel(
 //                         boxFit: BoxFit.cover,
@@ -260,187 +261,188 @@ class _HomeScreenState extends State<HomeScreen> {
 // //        dotSize: 4.0,
 // //        indicatorBgPadding: 2.0,
 //                       ),
-                    ),
-              SizedBox(
-                height: 10.0,
-              ),
-              WidgetAnimator(Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                        onTap: (){
-                          Navigator.push(context,MaterialPageRoute(builder: (context) => FeedPage()));
-                        },
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(12))
-                          ),
-                          elevation: 5,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top:28.0,bottom: 28.0),
-                            child: Text("Advert Reel",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
-                          ),
-                        ),
                       ),
-                    ),
-                  ),
-                ],
-              ),),
-              WidgetAnimator(Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                        onTap: (){
-                          Navigator.push(context,MaterialPageRoute(builder: (context) => BuyScreen()));
-                        },
-                        child: Card(
-                          shape: RoundedRectangleBorder(
+                SizedBox(
+                  height: 10.0,
+                ),
+                WidgetAnimator(Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                          onTap: (){
+                            Navigator.push(context,MaterialPageRoute(builder: (context) => FeedPage()));
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.circular(12))
-                          ),
-                          elevation: 5,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top:28.0,bottom: 28.0),
-                            child: Text("Buy/Sale/Trade",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),),
-              WidgetAnimator(Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                        onTap: (){
-                          Navigator.push(context,MaterialPageRoute(builder: (context) => BlogPage()));
-                        },
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(12))
-                          ),
-                          elevation: 5,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top:28.0,bottom: 28.0),
-                            child: Text("Blog Reel",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                            ),
+                            elevation: 5,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top:28.0,bottom: 28.0),
+                              child: Text("Advert Reel",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),),
-              WidgetAnimator(Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                        onTap: (){
-                          Navigator.push(context,MaterialPageRoute(builder: (context) => NewsScreen()));
-                        },
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(12))
-                          ),
-                          elevation: 5,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top:28.0,bottom: 28.0),
-                            child: Text("News Reel",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                  ],
+                ),),
+                WidgetAnimator(Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                          onTap: (){
+                            Navigator.push(context,MaterialPageRoute(builder: (context) => BuyScreen()));
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(12))
+                            ),
+                            elevation: 5,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top:28.0,bottom: 28.0),
+                              child: Text("Buy/Sale/Trade",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),)
-              // Expanded(
-              //   child: GridView.builder(
-              //     primary: false,
-              //     itemCount: list == null ? 0 : list.length,
-              //     itemBuilder: (cyx, index) {
-              //
-              //       return WidgetAnimator(Padding(
-              //         padding: const EdgeInsets.all(8.0),
-              //         child: ClipRRect(
-              //           borderRadius: BorderRadius.circular(20),
-              //           child: GridTile(
-              //             child: GestureDetector(
-              //                 onTap: () {
-              //                   Navigator.push(
-              //                       context,
-              //                       MaterialPageRoute(
-              //                           builder: (context) => WatchDetail(
-              //                             feed: list[index],
-              //                               )));
-              //                 },
-              //                 child: Hero(
-              //                   tag:list[index].key,
-              //                   child: FadeInImage(
-              //                     placeholder: NetworkImage(list[index].imagePath),
-              //                     image: NetworkImage(list[index].imagePath),
-              //                     fit: BoxFit.cover,
-              //                   ),
-              //                 )),
-              //             footer: GridTileBar(
-              //               backgroundColor: Colors.black87,
-              //               leading: IconButton(
-              //                 icon: Icon(
-              //                   state.favouriteslist==null?Icons.favorite_border:state.favouriteslist.indexWhere((element) => element.key==list[index].key)>=0?Icons.favorite:Icons.favorite_border,
-              //                   color: Colors.red,
-              //                 ),
-              //                 onPressed: () {
-              //                   if(  state.favouriteslist.indexWhere((element) => element.key==list[index].key)>=0){
-              //
-              //                     state.removeFromFavourites(authstate.userId, list[index].key,list[index]);
-              //
-              //                   }
-              //                 else {
-              //                   try {
-              //                     state.createFavourite(
-              //                         list[index], authstate.userId);
-              //                     customSnackBar(_scaffoldKey,"Added to your wishlist");
-              //                   }
-              //                   catch(e){print(e);}
-              //                 }
-              //                 },
-              //               ),
-              //               trailing: IconButton(
-              //                 icon: Icon(
-              //                   Icons.chat,
-              //                   color: Theme.of(context).accentColor,
-              //                 ),
-              //                 onPressed: () {
-              //
-              //                   final chatState = Provider.of<ChatState>(context, listen: false);
-              //                   chatState.setChatUser = list[index].user;
-              //                   Navigator.pushNamed(context, '/ChatScreenPage');
-              //                 },
-              //               ),
-              //               title: Text(
-              //                 list[index].title,
-              //                 textAlign: TextAlign.center,
-              //                 style: TextStyle(fontSize: 7,fontWeight: FontWeight.w900),
-              //               ),
-              //             ),
-              //           ),
-              //         ),
-              //       ));
-              //     },
-              //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              //         crossAxisCount: 2,
-              //         crossAxisSpacing: 10,
-              //         mainAxisSpacing: 10
-              //     ),
-              //   ),
-              // ),
-            ],
+                  ],
+                ),),
+                WidgetAnimator(Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                          onTap: (){
+                            Navigator.push(context,MaterialPageRoute(builder: (context) => BlogPage()));
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(12))
+                            ),
+                            elevation: 5,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top:28.0,bottom: 28.0),
+                              child: Text("Blog Reel",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),),
+                WidgetAnimator(Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                          onTap: (){
+                            Navigator.push(context,MaterialPageRoute(builder: (context) => NewsScreen()));
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(12))
+                            ),
+                            elevation: 5,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top:28.0,bottom: 28.0),
+                              child: Text("News Reel",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),)
+                // Expanded(
+                //   child: GridView.builder(
+                //     primary: false,
+                //     itemCount: list == null ? 0 : list.length,
+                //     itemBuilder: (cyx, index) {
+                //
+                //       return WidgetAnimator(Padding(
+                //         padding: const EdgeInsets.all(8.0),
+                //         child: ClipRRect(
+                //           borderRadius: BorderRadius.circular(20),
+                //           child: GridTile(
+                //             child: GestureDetector(
+                //                 onTap: () {
+                //                   Navigator.push(
+                //                       context,
+                //                       MaterialPageRoute(
+                //                           builder: (context) => WatchDetail(
+                //                             feed: list[index],
+                //                               )));
+                //                 },
+                //                 child: Hero(
+                //                   tag:list[index].key,
+                //                   child: FadeInImage(
+                //                     placeholder: NetworkImage(list[index].imagePath),
+                //                     image: NetworkImage(list[index].imagePath),
+                //                     fit: BoxFit.cover,
+                //                   ),
+                //                 )),
+                //             footer: GridTileBar(
+                //               backgroundColor: Colors.black87,
+                //               leading: IconButton(
+                //                 icon: Icon(
+                //                   state.favouriteslist==null?Icons.favorite_border:state.favouriteslist.indexWhere((element) => element.key==list[index].key)>=0?Icons.favorite:Icons.favorite_border,
+                //                   color: Colors.red,
+                //                 ),
+                //                 onPressed: () {
+                //                   if(  state.favouriteslist.indexWhere((element) => element.key==list[index].key)>=0){
+                //
+                //                     state.removeFromFavourites(authstate.userId, list[index].key,list[index]);
+                //
+                //                   }
+                //                 else {
+                //                   try {
+                //                     state.createFavourite(
+                //                         list[index], authstate.userId);
+                //                     customSnackBar(_scaffoldKey,"Added to your wishlist");
+                //                   }
+                //                   catch(e){print(e);}
+                //                 }
+                //                 },
+                //               ),
+                //               trailing: IconButton(
+                //                 icon: Icon(
+                //                   Icons.chat,
+                //                   color: Theme.of(context).accentColor,
+                //                 ),
+                //                 onPressed: () {
+                //
+                //                   final chatState = Provider.of<ChatState>(context, listen: false);
+                //                   chatState.setChatUser = list[index].user;
+                //                   Navigator.pushNamed(context, '/ChatScreenPage');
+                //                 },
+                //               ),
+                //               title: Text(
+                //                 list[index].title,
+                //                 textAlign: TextAlign.center,
+                //                 style: TextStyle(fontSize: 7,fontWeight: FontWeight.w900),
+                //               ),
+                //             ),
+                //           ),
+                //         ),
+                //       ));
+                //     },
+                //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                //         crossAxisCount: 2,
+                //         crossAxisSpacing: 10,
+                //         mainAxisSpacing: 10
+                //     ),
+                //   ),
+                // ),
+              ],
+            ),
           ),
         ),
         drawer: Consumer<ThemeNotifier>(
@@ -524,7 +526,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         SweetAlert.show(context,
                             title: "Subscription",
-                            subtitle: "Please subscribe to have full access to Elite Edgeware",
+                            subtitle: "Subscribe to have full access",
                             style: SweetAlertStyle.confirm,
                             confirmButtonText: "Subscribe",
                             showCancelButton: true, onPress: (bool isConfirm) {
@@ -568,7 +570,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         SweetAlert.show(context,
                             title: "Subscription",
-                            subtitle: "Please subscribe to have full access to Elite Edgeware",
+                            subtitle: "Subscribe to have full access",
                             style: SweetAlertStyle.confirm,
                             confirmButtonText: "Subscribe",
                             showCancelButton: true, onPress: (bool isConfirm) {
@@ -602,7 +604,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         SweetAlert.show(context,
                             title: "Subscription",
-                            subtitle: "Please subscribe to have full access to Elite Edgeware",
+                            subtitle: "Subscribe to have full access",
                             style: SweetAlertStyle.confirm,
                             confirmButtonText: "Subscribe",
                             showCancelButton: true, onPress: (bool isConfirm) {
@@ -720,7 +722,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         SweetAlert.show(context,
                             title: "Subscription",
-                            subtitle: "Please subscribe to have full access to Elite Edgeware",
+                            subtitle: "Subscribe to have full access",
                             style: SweetAlertStyle.confirm,
                             confirmButtonText: "Subscribe",
                             showCancelButton: true, onPress: (bool isConfirm) {
