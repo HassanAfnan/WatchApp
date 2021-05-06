@@ -189,6 +189,9 @@ bool _enablecontest;
 
 
       });
+
+      _blogs.sort((x, y) => DateTime.parse(x.date)
+          .compareTo(DateTime.parse(y.date)));
     } else {
       return null;
     }

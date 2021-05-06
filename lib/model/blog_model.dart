@@ -2,13 +2,15 @@ class BlogModel{
   String title;
   String description;
   String image;
+  String date;
   String key;
-  BlogModel(this.title,this.description,this.image); toJson() {
+  BlogModel(this.title,this.description,this.image,this.date); toJson() {
     return {
       "key":key,
       "title":title,
       "description":description,
       "image":image,
+      "date":date,
 
 
     };
@@ -17,17 +19,12 @@ class BlogModel{
   BlogModel.fromJson(Map<dynamic, dynamic> map) {
     key = map['key'];
     description = map['description'];
-   title=map["title"];
-   image=map["image"];
+    title=map["title"];
+    image=map["image"];
+    date=map["date"];
 
   }
 }
 
-List<BlogModel> blog = [
-  BlogModel("A good blog","No internet available, cannot connect to FIRMessaging No internet available, cannot connect to FIRMessaging No internet available, cannot connect to FIRMessaging No internet available, cannot connect to FIRMessaging","https://www.start-business-online.com/images/thumbs/420_270/article_manager_uploads/blog.jpg"),
-  BlogModel("A good blog","No internet available, cannot connect to FIRMessaging No internet available, cannot connect to FIRMessaging No internet available, cannot connect to FIRMessaging No internet available, cannot connect to FIRMessaging","https://www.start-business-online.com/images/thumbs/420_270/article_manager_uploads/blog.jpg"),
-  BlogModel("A good blog","No internet available, cannot connect to FIRMessaging No internet available, cannot connect to FIRMessaging No internet available, cannot connect to FIRMessaging No internet available, cannot connect to FIRMessaging","https://www.start-business-online.com/images/thumbs/420_270/article_manager_uploads/blog.jpg"),
-  BlogModel("A good blog","No internet available, cannot connect to FIRMessaging No internet available, cannot connect to FIRMessaging No internet available, cannot connect to FIRMessaging No internet available, cannot connect to FIRMessaging","https://www.start-business-online.com/images/thumbs/420_270/article_manager_uploads/blog.jpg"),
-  BlogModel("A good blog","No internet available, cannot connect to FIRMessaging No internet available, cannot connect to FIRMessaging No internet available, cannot connect to FIRMessaging No internet available, cannot connect to FIRMessaging","https://www.start-business-online.com/images/thumbs/420_270/article_manager_uploads/blog.jpg"),
-];
+
 
