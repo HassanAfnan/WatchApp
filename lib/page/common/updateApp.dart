@@ -28,8 +28,6 @@ class _UpdateAppState extends State<UpdateApp> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => SplashPage()));
     }
   }
 
@@ -47,12 +45,13 @@ class _UpdateAppState extends State<UpdateApp> with WidgetsBindingObserver {
               "New Update is available",
               fontSize: 25,
               textAlign: TextAlign.center,
+              color: Colors.black,
             ),
             SizedBox(height: 20),
             TitleText(
               "The current version of app is no longer supported. We aploigize for any inconveiience we may have caused you",
               fontSize: 14,
-              color: AppColor.darkGrey,
+              color: Colors.black,
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 30),
@@ -62,7 +61,7 @@ class _UpdateAppState extends State<UpdateApp> with WidgetsBindingObserver {
               child: FlatButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)),
-                color: TwitterColor.dodgetBlue,
+                color: Colors.black,
                 onPressed: () {
                   launchURL(
                       "https://play.google.com/store/apps/details?id=com.watchapp.elite");

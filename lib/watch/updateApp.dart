@@ -52,7 +52,7 @@ class _UpdateAppState extends State<UpdateApp> with WidgetsBindingObserver {
             TitleText(
               "The current version of app is no longer supported. We aploigize for any inconveiience we may have caused you",
               fontSize: 14,
-              color: AppColor.darkGrey,
+              color: Colors.black,
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 30),
@@ -62,7 +62,7 @@ class _UpdateAppState extends State<UpdateApp> with WidgetsBindingObserver {
               child: FlatButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)),
-                color: TwitterColor.dodgetBlue,
+                color: Colors.black,
                 onPressed: () {
                   launchURL(
                       "https://play.google.com/store/apps/details?id=com.watchapp.elite");

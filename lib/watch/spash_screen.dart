@@ -28,12 +28,16 @@ class _WatchSplashScreenState extends State<WatchSplashScreen> {
     final currentAppVersion = "${packageInfo.version}";
     final appVersion = await _getAppVersionFromFirebaseConfig();
     if (appVersion != currentAppVersion) {
-      if(kDebugMode){
-        cprint("Latest version of app is not installed on your system");
-        cprint("In debug mode we are not restrict devlopers to redirect to update screen");
-        cprint("Redirect devs to update screen can put other devs in confusion");
-        return true;
-      }
+      print(currentAppVersion);
+      print(appVersion);
+
+
+      // if(kDebugMode){
+      //   cprint("Latest version of app is not installed on your system");
+      //   cprint("In debug mode we are not restrict devlopers to redirect to update screen");
+      //   cprint("Redirect devs to update screen can put other devs in confusion");
+      //   return true;
+      // }
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
