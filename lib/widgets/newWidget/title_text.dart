@@ -24,7 +24,7 @@ class TitleText extends StatelessWidget {
       style: GoogleFonts.muli(
         fontSize: fontSize,
         fontWeight: fontWeight,
-        color: color,
+        color: Colors.blue,
       ),
       textAlign: textAlign,
       overflow: overflow,

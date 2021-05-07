@@ -48,7 +48,7 @@ class UrlText extends StatelessWidget {
       } else {
         widgets.add(TextSpan(
             text: result.text,
-            style: style != null ? style : TextStyle(color: Colors.black)));
+            style: style != null ? style : TextStyle()));
       }
     }
     return widgets;

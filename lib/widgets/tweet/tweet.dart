@@ -6,6 +6,7 @@ import 'package:flutter_twitter_clone/helper/theme.dart';
 import 'package:flutter_twitter_clone/helper/utility.dart';
 import 'package:flutter_twitter_clone/model/feedModel.dart';
 import 'package:flutter_twitter_clone/state/feedState.dart';
+import 'package:flutter_twitter_clone/watch/ThemeModes/Theme.dart';
 import 'package:flutter_twitter_clone/widgets/newWidget/customUrlText.dart';
 import 'package:flutter_twitter_clone/widgets/newWidget/title_text.dart';
 import 'package:flutter_twitter_clone/widgets/tweet/widgets/parentTweet.dart';
@@ -234,19 +235,21 @@ class _TweetBody extends StatelessWidget {
                   Container(child: trailing == null ? SizedBox() : trailing),
                 ],
               ),
-              UrlText(
-                text: model.description,
-                onHashTagPressed: (tag) {
-                  cprint(tag);
-                },
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: descriptionFontSize,
-                    fontWeight: descriptionFontWeight),
-                urlStyle: TextStyle(
-                    color: Colors.blue,
-                    fontSize: descriptionFontSize,
-                    fontWeight: descriptionFontWeight),
+              Consumer<ThemeNotifier>(
+                builder: (context,notifier,child) => UrlText(
+                  text: model.description,
+                  onHashTagPressed: (tag) {
+                    cprint(tag);
+                  },
+                  style: TextStyle(
+                      color: notifier.darkTheme? Colors.white:Colors.black,
+                      fontSize: descriptionFontSize,
+                      fontWeight: descriptionFontWeight),
+                  urlStyle: TextStyle(
+                      color: Colors.blue,
+                      fontSize: descriptionFontSize,
+                      fontWeight: descriptionFontWeight),
+                ),
               ),
               Divider(),
               Row(
@@ -273,7 +276,7 @@ class _TweetBody extends StatelessWidget {
                     //   cprint(tag);
                     // },
                     style: TextStyle(
-                        color: Colors.black,
+                        //color: Colors.black,
                         fontSize: descriptionFontSize+2,
                         fontWeight: FontWeight.bold),
                     urlStyle: TextStyle(

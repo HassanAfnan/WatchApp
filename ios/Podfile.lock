@@ -439,12 +439,6 @@ PODS:
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
-  - square_in_app_payments (1.3.0):
-    - Flutter
-    - SquareBuyerVerificationSDK (= 1.3.0)
-    - SquareInAppPaymentsSDK (= 1.4.0)
-  - SquareBuyerVerificationSDK (1.3.0)
-  - SquareInAppPaymentsSDK (1.4.0)
   - Stripe (19.4.0)
   - stripe_payment (1.0.0):
     - Flutter
@@ -474,7 +468,6 @@ DEPENDENCIES:
   - share (from `.symlinks/plugins/share/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
-  - square_in_app_payments (from `.symlinks/plugins/square_in_app_payments/ios`)
   - stripe_payment (from `.symlinks/plugins/stripe_payment/ios`)
   - uni_links (from `.symlinks/plugins/uni_links/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
@@ -511,8 +504,6 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - Protobuf
-    - SquareBuyerVerificationSDK
-    - SquareInAppPaymentsSDK
     - Stripe
 
 EXTERNAL SOURCES:
@@ -550,8 +541,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
-  square_in_app_payments:
-    :path: ".symlinks/plugins/square_in_app_payments/ios"
   stripe_payment:
     :path: ".symlinks/plugins/stripe_payment/ios"
   uni_links:
@@ -608,9 +597,6 @@ SPEC CHECKSUMS:
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
-  square_in_app_payments: 339aa5d1c828be189639090149e0fb303c2d9812
-  SquareBuyerVerificationSDK: 6a73cc3b073d8e613cb1fe8643600ff9ac4d6373
-  SquareInAppPaymentsSDK: 6c3293e5600c121bbdc5499ffa3b3976e2cf0054
   Stripe: 92f1c73a9dbd3c54277ed06a1fea6e08f20414c6
   stripe_payment: 1cbe9c339c21b5ecf01035e80eea351067c67c56
   uni_links: d97da20c7701486ba192624d99bffaaffcfc298a
