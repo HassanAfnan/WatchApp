@@ -25,12 +25,14 @@ import 'package:flutter_twitter_clone/state/searchState.dart';
 import 'package:flutter_twitter_clone/watch/DummyData/dummy.dart';
 import 'package:flutter_twitter_clone/watch/ThemeModes/Theme.dart';
 import 'package:flutter_twitter_clone/watch/Webview.dart';
+import 'package:flutter_twitter_clone/watch/blog_detail.dart';
 import 'package:flutter_twitter_clone/watch/blog_page.dart';
 import 'package:flutter_twitter_clone/watch/buy_screen.dart';
 import 'package:flutter_twitter_clone/watch/contact.dart';
 import 'package:flutter_twitter_clone/watch/makePayment.dart';
 import 'package:flutter_twitter_clone/watch/mywatch_screen.dart';
 import 'package:flutter_twitter_clone/watch/news.dart';
+import 'package:flutter_twitter_clone/watch/news_detail.dart';
 import 'package:flutter_twitter_clone/watch/sale_screen.dart';
 import 'package:flutter_twitter_clone/watch/setting/give_away.dart';
 import 'package:flutter_twitter_clone/watch/setting/help.dart';
@@ -86,6 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
     state.getDataFromDatabase();
     state.getwatchDataFromDatabase();
     state.getNewsFromDatabase();
+    state.getBlogs();
     state.getFavouritesFromDatabase(authstate.user.uid);
   }
 
@@ -105,7 +108,6 @@ class _HomeScreenState extends State<HomeScreen> {
     state.getNotification();
     state.getContestSetting();
     state.getContestUsers();
-    state.getBlogs();
     for (int i = 0; i < state.sliders.length; i++) {
       setState(() {
         _sliders.add(NetworkImage(state.sliders[i].slider_url));
@@ -220,6 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           child: SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 loader
                     ? SpinKitRipple(
@@ -248,63 +251,166 @@ class _HomeScreenState extends State<HomeScreen> {
                             builder: (context) =>
                                 WebViewExample(url: item.link_url,)));
                   },
-                  child: Image.network(item.slider_url,fit: BoxFit.fill,height: 300,width: MediaQuery.of(context).size.width),
+                  child:
+                 // Image.network(item.slider_url,fit: BoxFit.fill,height: 300,width: MediaQuery.of(context).size.width),
+                  customNetworkImage(
+                   item.slider_url,
+                    fit: BoxFit.cover,
+                  ),
                 )).toList(),
               )
         ),
-//                       child: new Carousel(
-//                         boxFit: BoxFit.cover,
-//                         images: _sliders,
-//                         autoplay: true,
-//                         animationCurve: Curves.fastOutSlowIn,
-//                         animationDuration: Duration(milliseconds: 1000),
-//                         dotColor: secondary,
-// //        dotSize: 4.0,
-// //        indicatorBgPadding: 2.0,
-//                       ),
+
                       ),
                 SizedBox(
                   height: 10.0,
                 ),
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Buy/Sell/Trade',style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold),),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.9,
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  width: MediaQuery.of(context).size.width,
                   child: ListView.builder(
                       itemCount: list == null ? 0 : list.length,
                       itemBuilder: (context,index){
-                      return WidgetAnimator(Padding(
-                        padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 8.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => WatchDetail(
-                                      feed: list[index],
-                                    )));
-                          },
-                          child: Card(
-                            elevation: 5,
-                            child: ListTile(
-                              leading: Container(
-                                  width: 60,
-                                  height: 60,
-                                  child: Image.network(list[index].imagePath),),
-                              title: Padding(
-                                padding: const EdgeInsets.only(top:8.0,left:8.0,right: 8.0),
-                                child: Text(list[index].title),
-                              ),
-                              subtitle: Container(
-                                  height: 45,
-                                  width: 300,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(list[index].description),
-                                  )),
-                            ),
-                          ),
+                      return CarouselSlider(
+                        options: CarouselOptions(
+                        //aspectRatio: 16/9,
+                        //viewportFraction: 0.8,
+                        viewportFraction: 1,
+                        autoPlay: true,
+                        autoPlayInterval: Duration(seconds: 3),
+                        autoPlayAnimationDuration: Duration(milliseconds: 800),
+                        autoPlayCurve: Curves.fastOutSlowIn,
                         ),
-                      ));
+                        items: list.map((item) => GestureDetector(
+                        onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    WatchDetail(feed: item,)));
+                        },
+                        child:
+                        // Image.network(item.slider_url,fit: BoxFit.fill,height: 300,width: MediaQuery.of(context).size.width),
+                        customNetworkImage(
+                        item.imagePath,
+                        fit: BoxFit.fill,
+                        ),
+                        )).toList(),
+                        );
                   }),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Blogs',style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold),),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  width: MediaQuery.of(context).size.width,
+                  child: ListView.builder(
+                      itemCount: state.blogs == null ? 0 : state.blogs.length,
+                      itemBuilder: (context,index){
+                        return CarouselSlider(
+                          options: CarouselOptions(
+                            //aspectRatio: 16/9,
+                            //viewportFraction: 0.8,
+                            viewportFraction: 1,
+                            autoPlay: true,
+                            autoPlayInterval: Duration(seconds: 3),
+                            autoPlayAnimationDuration: Duration(milliseconds: 800),
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                          ),
+                          items: state.blogs.map((item) => GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          BlogDetail(
+                                       blog: item,
+                                          )));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             WebViewExample(url: item.link_url,)));
+                            },
+                            child:
+                            // Image.network(item.slider_url,fit: BoxFit.fill,height: 300,width: MediaQuery.of(context).size.width),
+                            customNetworkImage(
+                              item.image,
+                              fit: BoxFit.fill,
+                            ),
+                          )).toList(),
+                        );
+                      }),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('News',style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold),),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  width: MediaQuery.of(context).size.width,
+                  child: ListView.builder(
+                      itemCount: state.newslist == null ? 0 : state.newslist.length,
+                      itemBuilder: (context,index){
+                        return CarouselSlider(
+                          options: CarouselOptions(
+                            //aspectRatio: 16/9,
+                            //viewportFraction: 0.8,
+                            viewportFraction: 1,
+                            autoPlay: true,
+                            autoPlayInterval: Duration(seconds: 3),
+                            autoPlayAnimationDuration: Duration(milliseconds: 800),
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                          ),
+                          items: state.newslist.map((item) => GestureDetector(
+                            onTap: () {
+
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          NewsDetail(
+                                            news: item,
+                                          )));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             WebViewExample(url: item.link_url,)));
+                            },
+                            child:
+                            // Image.network(item.slider_url,fit: BoxFit.fill,height: 300,width: MediaQuery.of(context).size.width),
+                            customNetworkImage(
+                              item.image,
+                              fit: BoxFit.fill,
+                            ),
+                          )).toList(),
+                        );
+                      }),
                 )
                 // Expanded(
                 //   child: GridView.builder(
@@ -592,7 +698,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => new BlogPage()));
+                    },
+                    child: ListTile(
+                      title: Text(
+                        'Blogs',
+                        style: TextStyle(
+                            color: notifier.darkTheme ? Colors.white : primary),
+                      ),
+                      leading: Icon(
+                        Icons.description,
+                        color: notifier.darkTheme ? Colors.white : primary,
+                      ),
+                    ),
+                  ),
                   InkWell(
                     onTap: () {
                       Navigator.push(context,

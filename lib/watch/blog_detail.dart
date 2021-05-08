@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_twitter_clone/model/blog_model.dart';
+import 'package:flutter_twitter_clone/widgets/customWidgets.dart';
 
 class BlogDetail extends StatefulWidget {
-  final String title;
-  final String image;
-  final String description;
+  final BlogModel blog;
 
-  const BlogDetail({Key key, this.title, this.image, this.description}) : super(key: key);
+  const BlogDetail({Key key, this.blog}) : super(key: key);
 
   @override
   _BlogDetailState createState() => _BlogDetailState();
@@ -20,14 +20,19 @@ class _BlogDetailState extends State<BlogDetail> {
       ),
       body: ListView(
         children: [
-           Image.network(widget.image),
+          Image.network(
+            widget.blog.image,
+
+            fit: BoxFit.fill,
+        ),
            Container(
              width: MediaQuery.of(context).size.width * 0.5,
-             child: Text(widget.title,style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
+             child: Text(widget.blog.title,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
            ),
+          SizedBox(height: 10,),
           Container(
             width: MediaQuery.of(context).size.width * 0.5,
-            child: Text(widget.description),
+            child: Text(widget.blog.description),
           )
         ],
       ),

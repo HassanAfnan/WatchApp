@@ -65,11 +65,16 @@ class _WishListState extends State<WishList> {
                             },
                             child: Hero(
                               tag: state.favouriteslist[index].key,
-                              child: FadeInImage(
-                                placeholder: NetworkImage(state.favouriteslist[index].imagePath),
-                                image: NetworkImage(state.favouriteslist[index].imagePath),
+                              child:
+                              customNetworkImage(
+                                state.favouriteslist[index].imagePath,
                                 fit: BoxFit.cover,
                               ),
+                              // FadeInImage(
+                              //   placeholder: NetworkImage(state.favouriteslist[index].imagePath),
+                              //   image: NetworkImage(state.favouriteslist[index].imagePath),
+                              //   fit: BoxFit.cover,
+                              // ),
                             )),
                         footer: GridTileBar(
                           backgroundColor: Colors.black87,

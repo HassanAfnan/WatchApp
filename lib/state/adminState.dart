@@ -32,7 +32,6 @@ class AdminState extends AppState {
   String _privacylink="";
   String _rulesurl="";
   List<String> _brandnames=List<String>();
-  List<BlogModel> _blogs=List<BlogModel>();
   List<UserModel> _contestusers=List<UserModel>();
   List<watch_model_Model> _brandmodel=new List<watch_model_Model>();
   int _days,_hours,_mins,_secs;
@@ -57,15 +56,8 @@ bool _enablecontest;
       return _contestusers;
     }
 
-  }  List<BlogModel> get blogs{
-    if(_blogs==null){
-      return null;
-    }
-    else{
-      return _blogs;
-    }
-
   }
+
   String get contestdate{
     if(_contestdate==null){
       return "";
@@ -178,26 +170,7 @@ bool _enablecontest;
 
   }
 
-  getBlogs() async {
-    var snapshot = await kDatabase.child('blogs').once();
-    if (snapshot.value != null) {
 
-      var map=snapshot.value;
-
-      map.forEach((key, value) {
-        _blogs.add(BlogModel.fromJson(value));
-
-
-      });
-
-      _blogs.sort((x, y) => DateTime.parse(x.date)
-          .compareTo(DateTime.parse(y.date)));
-    } else {
-      return null;
-    }
-    notifyListeners();
-
-  }
   getContestUsers() async {
     var snapshot = await kDatabase.child('contest').once();
     if (snapshot.value != null) {
@@ -242,21 +215,21 @@ bool _enablecontest;
     }
   }
 
-  createBlog(BlogModel model) {
-    ///  Create tweet in [Firebase kDatabase]
-    notifyListeners();
-    String key=DateTime.now().millisecondsSinceEpoch.toString();
-    model.key=key;
-    try {
-      kDatabase.child('blogs').child(key).set(model.toJson());
-      _blogs.add(model);
-
-      notifyListeners();
-    } catch (error) {
-      cprint(error, errorIn: 'createBlog');
-    }
-    notifyListeners();
-  }
+  // createBlog(BlogModel model) {
+  //   ///  Create tweet in [Firebase kDatabase]
+  //   notifyListeners();
+  //   String key=DateTime.now().millisecondsSinceEpoch.toString();
+  //   model.key=key;
+  //   try {
+  //     kDatabase.child('blogs').child(key).set(model.toJson());
+  //     _blogs.add(model);
+  //
+  //     notifyListeners();
+  //   } catch (error) {
+  //     cprint(error, errorIn: 'createBlog');
+  //   }
+  //   notifyListeners();
+  // }
   List<String> get brandnames {
     if (_brandnames == null) {
       return null;

@@ -29,9 +29,7 @@ class _NewsScreenState extends State<NewsScreen> {
               child: GestureDetector(
                 onTap: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) => NewsDetail(
-                    title: state.newslist[index].title,
-                    description: state.newslist[index].description,
-                    image: state.newslist[index].image,
+                   news: state.newslist[index],
                   )));
                 },
                 child: Card(

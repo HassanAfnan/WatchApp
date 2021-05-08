@@ -230,7 +230,7 @@ Widget customNetworkImage(String path, {BoxFit fit = BoxFit.contain}) {
         ),
       ),
     ),
-    placeholderFadeInDuration: Duration(milliseconds: 500),
+   // placeholderFadeInDuration: Duration(milliseconds: 500),
     placeholder: (context, url) => Container(
       color: Color(0xffeeeeee),
     ),

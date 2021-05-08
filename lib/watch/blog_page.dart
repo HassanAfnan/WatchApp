@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_twitter_clone/animations/bottomAnimation.dart';
 import 'package:flutter_twitter_clone/model/blog_model.dart';
 import 'package:flutter_twitter_clone/state/adminState.dart';
+import 'package:flutter_twitter_clone/state/feedState.dart';
 import 'package:flutter_twitter_clone/watch/blog_detail.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +16,7 @@ class _BlogPageState extends State<BlogPage> {
   @override
   Widget build(BuildContext context) {
 
-    final state = Provider.of<AdminState>(context, listen: false);
+    final state = Provider.of<FeedState>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: Text("Blogs"),
@@ -28,9 +29,7 @@ class _BlogPageState extends State<BlogPage> {
               child: GestureDetector(
                 onTap: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context) => BlogDetail(
-                    title: state.blogs[index].title,
-                    description: state.blogs[index].description,
-                    image: state.blogs[index].image,
+                  blog: state.blogs[index],
                   )));
                 },
                 child: Card(

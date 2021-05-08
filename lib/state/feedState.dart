@@ -5,6 +5,7 @@ import 'package:firebase_database/firebase_database.dart' as dabase;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_twitter_clone/helper/enum.dart';
+import 'package:flutter_twitter_clone/model/blog_model.dart';
 import 'package:flutter_twitter_clone/model/feedModel.dart';
 import 'package:flutter_twitter_clone/helper/utility.dart';
 import 'package:flutter_twitter_clone/model/news_model.dart';
@@ -425,6 +426,38 @@ List<watchModel>  _watchlist=List<watchModel>();
       isBusy = false;
       cprint(error, errorIn: 'getNewsFromDatabase');
     }
+  }  List<BlogModel> _blogs=List<BlogModel>();
+  List<BlogModel> get blogs{
+    if(_blogs==null){
+      return null;
+    }
+    else{
+      return _blogs;
+    }
+
+  }
+  getBlogs() async {
+    isBusy = true;
+    var snapshot = await kDatabase.child('blogs').once();
+    if (snapshot.value != null) {
+
+      var map=snapshot.value;
+
+      map.forEach((key, value) {
+        _blogs.add(BlogModel.fromJson(value));
+
+
+      });
+
+      _blogs.sort((x, y) => DateTime.parse(x.date)
+          .compareTo(DateTime.parse(y.date)));
+      isBusy = false;
+      notifyListeners();
+    } else { isBusy = false;
+      return null;
+    }
+    notifyListeners();
+
   }
   /// get [Tweet Detail] from firebase realtime kDatabase
   /// If model is null then fetch tweet from firebase
