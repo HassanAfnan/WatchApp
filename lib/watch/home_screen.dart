@@ -266,102 +266,46 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: 10.0,
                 ),
-                WidgetAnimator(Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.9,
+                  child: ListView.builder(
+                      itemCount: list == null ? 0 : list.length,
+                      itemBuilder: (context,index){
+                      return WidgetAnimator(Padding(
+                        padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 8.0),
                         child: GestureDetector(
-                          onTap: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context) => FeedPage()));
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => WatchDetail(
+                                      feed: list[index],
+                                    )));
                           },
                           child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(12))
-                            ),
                             elevation: 5,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top:28.0,bottom: 28.0),
-                              child: Text("Advert Reel",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                            child: ListTile(
+                              leading: Container(
+                                  width: 60,
+                                  height: 60,
+                                  child: Image.network(list[index].imagePath),),
+                              title: Padding(
+                                padding: const EdgeInsets.only(top:8.0,left:8.0,right: 8.0),
+                                child: Text(list[index].title),
+                              ),
+                              subtitle: Container(
+                                  height: 45,
+                                  width: 300,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(list[index].description),
+                                  )),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ],
-                ),),
-                WidgetAnimator(Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          onTap: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context) => BuyScreen()));
-                          },
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(12))
-                            ),
-                            elevation: 5,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top:28.0,bottom: 28.0),
-                              child: Text("Buy/Sale/Trade",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),),
-                WidgetAnimator(Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          onTap: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context) => BlogPage()));
-                          },
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(12))
-                            ),
-                            elevation: 5,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top:28.0,bottom: 28.0),
-                              child: Text("Blog Reel",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),),
-                WidgetAnimator(Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          onTap: (){
-                            Navigator.push(context,MaterialPageRoute(builder: (context) => NewsScreen()));
-                          },
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(12))
-                            ),
-                            elevation: 5,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top:28.0,bottom: 28.0),
-                              child: Text("News Reel",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),)
+                      ));
+                  }),
+                )
                 // Expanded(
                 //   child: GridView.builder(
                 //     primary: false,
@@ -374,14 +318,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 //           borderRadius: BorderRadius.circular(20),
                 //           child: GridTile(
                 //             child: GestureDetector(
-                //                 onTap: () {
-                //                   Navigator.push(
-                //                       context,
-                //                       MaterialPageRoute(
-                //                           builder: (context) => WatchDetail(
-                //                             feed: list[index],
-                //                               )));
-                //                 },
+
                 //                 child: Hero(
                 //                   tag:list[index].key,
                 //                   child: FadeInImage(
